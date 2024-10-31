@@ -10,483 +10,152 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/4.0.1/wavesurfer.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-
     <style>
         body {
-            background: url('b6.jpeg');
+            background: url('b1.jpeg');
             background-size: cover;
             transition: filter 0.3s ease; /* Smooth transition for blur effect */
-
         }
-        .blur-background {
-            filter: blur(2px); /* Adjust blur intensity */
-        }
-        .typing-indicator {
-            display: flex;
-            align-items: center;
-        }
-        .typing-indicator span {
-            display: block;
-            width: 8px;
-            height: 8px;
-            margin: 0 2px;
-            background: #fff;
-            border-radius: 50%;
-            opacity: 0;
-            animation: typing 0.9s infinite;
-        }
-        .typing-indicator span:nth-child(1) { animation-delay: 0s; }
-        .typing-indicator span:nth-child(2) { animation-delay: 0.3s; }
-        .typing-indicator span:nth-child(3) { animation-delay: 0.6s; }
-        @keyframes typing {
-            0%, 60%, 100% { opacity: 0; }
-            30% { opacity: 1; }
-        }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .message {
-            background: linear-gradient(135deg, #ffb1d3 0%, #f73f9b 30%, #89003e 100%);
-            padding: 10px;
-            border-radius: 15px;
-            color: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .message.user {
-            background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%,  #f84da2 80%, #ffffff 100%);
-        }
-        .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-            border-radius: 10px;       
-        }
-        .popup img {
-            width: 600px;
-            border-radius: 10px;
-        }
-                /* Heart animation */
-        .heart {
+        .floating-word {
             position: absolute;
-
-            animation: float 2s forwards;
+            font-size: 20px;
+            color: white;
+            white-space: nowrap;
+            pointer-events: none;
+            animation: float 2s linear forwards;
+            font-family: 'Pacifico', cursive;
         }
         @keyframes float {
-            0% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-200px);
-                opacity: 0;
-            }
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100vh); opacity: 0; }
         }
-.profile-container {
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
-    padding: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-.profile-pic {
-    width: 96px; /* 24 * 4 */
-    height: 96px; /* 24 * 4 */
-    border: 4px solid #ea0376; /* Pink border */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease; /* Smooth scaling */
-}
+        @keyframes floatCenter {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); } /* Adjust the float height */
+        }
+        #centerGif {
+            position: fixed;
+            top: 37%;
+            left: 27%;
+            transform: translate(-50%, -50%);
+            z-index: 1; /* Ensure it appears above other elements */
+            width: 190px;
+            animation: floatCenter 3s ease-in-out infinite; /* Apply the floating animation */
+        }
+        #circleBackground {
+            position: fixed;
+            top: 42%;
+            left: 30%;
+            width: 160px; /* Adjust the size of the circle */
+            height: 160px; /* Adjust the size of the circle */
+            background-color: black;
+            border-radius: 50%; /* Makes the div circular */
+            transform: translate(-50%, -50%); /* Centers the circle */
+            z-index: 0; /* Behind the GIF */
+            filter: drop-shadow(0 0 30px rgba(255, 148, 193, 0.945)); /* Adjust color and spread */
+            animation: floatCenter 3s ease-in-out infinite; /* Apply the floating animation */
+        }
 
-.profile-pic:hover {
-    transform: scale(1.05); /* Scale up on hover */
-}
-
-/* Username Styles */
-.username {
-    font-size: 1.5rem; /* 2xl */
-    font-weight: 600; /* Semi-bold */
-    color: #fff; /* White color */
-}
-#profilePicLarge {
-    margin-top: -30px; /* Adjust this value to move it up further */
-}  
-#usernameLarge {
-    background: linear-gradient(to right, #ffffff, #ffffff); /* Gradient background */
-    -webkit-background-clip: text; /* Clip background to text */
-    -webkit-text-fill-color: transparent; /* Make text color transparent */
-} 
-
-.progress-container {
-    background-color:  #68002f;
-      border-radius: 1rem; /* Rounded corners */
-        height: 0.5rem; /* Adjusted height for better visibility */
-        overflow: hidden; /* Hide overflow */
-    }
-    .progress-bar {
-        position: relative;
-        background-color: transparent; /* Remove solid color */
-        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3); /* Inner shadow */
-        animation: pulse 1.5s infinite alternate; /* Optional animation */
-    }
-    @keyframes pulse {
-        0% { transform: scaleX(1); }
-        100% { transform: scaleX(1.05); }
-    }
-
-
-</style>
-   <script>
-        const messageInput = document.getElementById('messageInput');
-
-        messageInput.addEventListener('focus', function() {
-            document.body.classList.add('blur-background'); // Add the blur effect when focused
-        });
-
-        messageInput.addEventListener('blur', function() {
-            document.body.classList.remove('blur-background'); // Remove the blur effect when not focused
-        });
-    </script>
+    </style>
 </head>
-<body class="text-white h-screen flex flex-col">
+<body class="text-white h-screen flex flex-col" id="messageInput" >
+    <div id="floatingWords" class="absolute inset-0 pointer-events-none"></div>
     <div class="flex items-center p-0">
-        <a href="index.html">
-        <img alt="Profile picture" id="profilePic" src="icon.png" style="margin-top: -25px; width:120px;"></a>
+        <img alt="Profile picture" id="profilePic" src="icon.png" style="margin-top: -25px; width:120px;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
         <div class="ml-4 flex-1"></div>
         <div class="flex space-x-4">
-            <i id="infoIcon" class="fas fa-info-circle text-white cursor-pointer" style="font-size: 24px; margin-bottom: 30px; margin-right: 10px;"></i>
+            <i id="infoIcon" class="fas fa-info-circle text-white cursor-pointer" style="font-size: 24px; margin-bottom: 30px; margin-right: 10px;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));"></i>
         </div>
     </div>
-    <div id="infoModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div id="circleBackground"></div>
+    <img id="centerGif" src="dp.gif" alt="Center GIF" />
+    <div id="infoModal" class="fixed inset-0 flex items-center justify-center hidden" style="z-index: 10;">
         <div class="bg-white text-black p-6 rounded-lg shadow-lg max-w-sm" style="background: linear-gradient(135deg, #ffb1d3 0%, #e01279 30%, #82003a 80%, #e01279 100%)">
-            <img src="popup.png" style="width: 280px; display: block; margin: 0 auto;">
+            <img src="popup.png" style="width: 280px; display: block; margin: 0 auto;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
             <h3 class="mt-2 text-center" style="color: #fff; margin-bottom: 10px;">Created by:
                 <a href="https://www.instagram.com/rajesh_k_rishi/" style="color: #ff87c3;"><b>Rajesh K Rishi</b></a>
             </h3>
             <h3 class="mt-2 text-center" style="color: #fff; margin-bottom: 10px;">The app is still under development!</h3>
             <input type="file" id="bgImageInput" accept="image/*" class="mt-4" style="display: none;" />
-            <button id="closeModal" class="mt-2 px-5 py-2 bg-gray-300 rounded" style="background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%,  #f13191 80%); color: #fff; border-radius: 10px; margin-left: 110px;">OK</button>
+            <button id="closeModal" class="mt-2 px-5 py-2 bg-gray-300 rounded" style="background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%,  #f13191 80%); color: #fff; border-radius: 10px; margin-left: 110px;filter: drop-shadow(0 0 10px rgba(148, 1, 62, 0.945));">OK</button>
         </div>
     </div>
-    <div class="flex flex-col items-center p-0 rounded-lg ">
-        <div class="relative">
-            <a href="index.html">
-            <img alt="Profile picture" class="rounded-full w-20 h-20 border-4 border-pink-500 shadow-lg transition-transform duration-300 hover:scale-105" id="profilePicLarge" src="dp2.jpeg" /></a>
-            <span id="onlineButton" class="absolute bottom-12 right-0 w-5 h-5 rounded-full bg-gradient-to-r from-pink-900 to-pink-500 border-2 border-white flex items-center justify-center shadow-lg transition-colors duration-300" id="onlineLarge">
-                <i class="fas fa-heart text-white text-xs" style="margin-top: 1px;"></i>
-            </span>
-        </div>
-        <h2 class="text-2xl font-bold mt-1 text-white drop-shadow-lg transition-transform duration-300 hover:scale-105" id="usernameLarge" style="font-family: 'Dancing Script', cursive;">the_cutie_pie </h2>
-    </div>
-    <div class="flex flex-col p-4 space-y-4 overflow-y-auto flex-1 no-scrollbar" id="chatContainer" style="font-family: 'Pacifico', cursive;" ></div>
-    <div class="flex items-center p-2">
-        <input class="flex-1 p-2 rounded-full" id="messageInput" placeholder="Solluu..." type="text" style="color: #c01f72;outline: none; font-family:'Pacifico', cursive; border-radius: 10px;">
-    </div>
-    <div id="imagePopup" class="popup " >
-        <img src="sms.gif" alt="Image Response" style="width: 300px;">
-        <button id="closePopup" class="mt-2 px-4 py-2 " style="color: #c01f72;"></button>
-    </div>
-    <div id="breakupPopup" class="popup" style="display: none;">
-        <img src="blocked.gif" alt="Breakup Response" style="width: 300px;">
-        <button id="closeBreakupPopup" class="mt-2 px-4 py-2" style="color: #c01f72;"></button>
-    </div>
-    <div id="audioPlayerContainer" class="flex items-center hidden">
-        <audio id="audioPlayer" controls>
-            <source id="audioSource" src="winner.ogg" type="audio/mpeg">
-        </audio>
-    </div>
-
+    <div class="flex flex-col items-center p-0 rounded-lg "></div>
+    <div class="flex flex-col p-4 space-y-4 overflow-y-auto flex-1 no-scrollbar" id="chatContainer" style="font-family: 'Pacifico', cursive;"></div>
+    <div class="flex items-center p-2"></div>
     <script>
-                document.getElementById('messageInput').addEventListener('input', function () {
-            createHeartAnimation();
+        document.getElementById('centerGif').addEventListener('click', function() {
+            window.location.href = 'home.html'; // Redirect to home.html
         });
 
-        function createHeartAnimation() {
-            const heart = document.createElement('img');
-    heart.src = 'icon.png'; // Replace with the path to your heart image
-    heart.className = 'heart'; // Optional: keep the class for styling
-    heart.style.position = 'absolute';
-    heart.style.width = '50px'; // Set the size as needed
-    heart.style.height = '50px'; // Set the size as needed
-    document.body.appendChild(heart);
-    const inputField = document.getElementById('messageInput');
-    const rect = inputField.getBoundingClientRect();
-        const randomX = Math.random() * window.innerWidth;
-    heart.style.left = `${randomX}px`; // Random horizontal position
-    heart.style.top = `${rect.top + window.scrollY - 20}px`; // Position it just above the input
-   const floatDistance = Math.random() * 50 + 30; // Random distance to float upwards
-    const floatDuration = Math.random() * 1000 + 1000; // Random duration between 1s and 2s
-    const angle = Math.random() * 360; // Random angle between 0 and 360
-    const distance = Math.random() * 50 + 30; // Random distance to float
-            // Remove heart after animation
-            heart.addEventListener('animationend', () => {
-                heart.remove();
+        const words = [
+            "Hi", "Hello", "Saptiya", "Enna pandra", "I love you", "Cute",
+            "Poo di", "Poo da", "Number", "Okay", "Appa vantaanga bye",
+            "Mmmm", "Online", "Solluu", "Love you too", "wow",
+            "seri", "Miss you", "Sorry", "Thanks", "Breakup",
+            "Blocked", "🥰", "❤️", "🙈", "🫂", "💗", "🤗", "😘", "❤️", "💔", "😍", "Solluu", "Offline", "Love you too", "Solluu"
+        ];
+        const floatingWordsContainer = document.getElementById('floatingWords');
+
+        function createFloatingWord(word) {
+            const span = document.createElement('span');
+            span.innerText = word;
+            span.className = 'floating-word';
+
+            // Start position at the center of the screen
+            const startX = window.innerWidth / 2;
+            const startY = window.innerHeight / 2;
+
+            // Randomly set the angle (in radians) for direction
+            const angle = Math.random() * 2 * Math.PI;
+            const distance = Math.random() * 600 + 100; // Shortened distance for faster fill
+
+            // Calculate the end position based on angle and distance
+            const endX = startX + distance * Math.cos(angle);
+            const endY = startY + distance * Math.sin(angle);
+
+            // Set initial styles
+            span.style.position = 'absolute';
+            span.style.left = `${startX}px`;
+            span.style.top = `${startY}px`;
+            span.style.opacity = '1';
+
+            // Set the animation for movement
+            span.animate([
+                { transform: `translate(0, 0)` },
+                { transform: `translate(${endX - startX}px, ${endY - startY}px)`, opacity: 0 }
+            ], {
+                duration: 2000, // Reduced duration for faster movement
+                easing: 'linear',
+                fill: 'forwards'
             });
+
+            floatingWordsContainer.appendChild(span);
+
+            // Remove the word after the animation ends
+            setTimeout(() => {
+                span.remove();
+            }, 2000); // Match the animation duration
         }
 
+        // Create floating words at intervals
+        setInterval(() => {
+            const word = words[Math.floor(Math.random() * words.length)];
+            createFloatingWord(word);
+        }, 500); // Faster interval to generate a new word every half second
+    </script>
+    <script>
         document.getElementById('infoIcon').addEventListener('click', function () {
-        document.getElementById('infoModal').classList.remove('hidden'); // Show modal
-    });
-    
-    document.getElementById('closeModal').addEventListener('click', function () {
-        document.getElementById('infoModal').classList.add('hidden'); // Hide modal
-    });
+            document.getElementById('infoModal').classList.remove('hidden'); // Show modal
+        });
+
+        document.getElementById('closeModal').addEventListener('click', function () {
+            document.getElementById('infoModal').classList.add('hidden'); // Hide modal
+        });
+
         document.getElementById('changeBgButton').addEventListener('click', function () {
             document.getElementById('bgImageInput').click(); // Trigger file input
         });
-        document.getElementById('bgImageInput').addEventListener('change', function (e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (event) {
-                    document.body.style.backgroundImage = `url('${event.target.result}')`;
-                    document.body.style.backgroundSize = 'cover';
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-        
-      </script>
-      <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        function updateProgressBar(percentage) {
-            const progressBar = document.querySelector('.progress-bar');
-            progressBar.style.width = percentage + '%';
-        }
-        updateProgressBar(80);
-    });
     </script>
-    
-<script>   
-    let loveYouCount = 0; // Counter for "I love you" messages
-let isBreakupActive = false; // Flag to control bot replies
-let hasSaidGoodbye = false; // Flag to track if "appa vantaanga bye" has been sent
-document.getElementById('messageInput').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') {
-        const message = e.target.value.trim();
-        const chatContainer = document.getElementById('chatContainer');
-        if (message.includes('voice')) {
-    e.target.value = '';
-    setTimeout(() => {
-        const audioPlayerDiv = document.createElement('div');
-        audioPlayerDiv.classList.add('flex', 'items-start', 'space-x-2', 'p-0', 'rounded-lg', 'shadow-lg');
-
-        audioPlayerDiv.innerHTML = `
-            <img alt="Profile picture" class="rounded-full w-10 h-10" src="dp2.jpeg"/>
-            <div class="message max-w-xs flex-1">
-                <div class="flex items-center justify-between">
-                    <audio id="audioPlayer" class="hidden">
-                        <source src="voice.mp3" type="audio/mpeg">
-                    </audio>
-                    <button id="playPauseButton" class="text-white rounded-full p-1">
-                        <i class="fas fa-play"></i>
-                    </button>
-               <div class="progress-container flex-1 mx-2">
-       <div class="progress-bar bg-gradient-to-r from-white to-white rounded-full h-2 " style="width: 0%; transition: width 0.5s ease;"></div>
-
-                </div>
-            </div>
-        `;
-
-        chatContainer.appendChild(audioPlayerDiv);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-
-        const audioPlayer = audioPlayerDiv.querySelector('#audioPlayer');
-        const playPauseButton = audioPlayerDiv.querySelector('#playPauseButton');
-        const progressBar = audioPlayerDiv.querySelector('.progress-bar');
-
-        playPauseButton.addEventListener('click', () => {
-            if (audioPlayer.paused) {
-                audioPlayer.play();
-                playPauseButton.innerHTML = '<i class="fas fa-pause" style="margin-right:6px;"></i>';
-                updateProgressBar();
-            } else {
-                audioPlayer.pause();
-                playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
-            }
-        });
-
-        audioPlayer.addEventListener('ended', () => {
-            playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
-            progressBar.style.width = '0%';
-        });
-
-        function updateProgressBar() {
-            const interval = setInterval(() => {
-                if (audioPlayer.ended) {
-                    clearInterval(interval);
-                    return;
-                }
-                const percentage = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-                progressBar.style.width = `${percentage}%`;
-            }, 1000);
-        }
-    }, 3000); // Simulate audio processing time
-}
-
-
-
-            if (isBreakupActive) {
-            e.target.value = ''; // Clear input
-            return; // Exit the function if breakup is active
-        }
-        const userMessageDiv = document.createElement('div');
-        userMessageDiv.classList.add('flex', 'justify-end');
-        userMessageDiv.innerHTML = `<div class="message user max-w-xs" style="font-family: 'Pacifico', cursive;"><p>${message}</p></div>`;
-        chatContainer.appendChild(userMessageDiv);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-        e.target.value = ''; // Clear input
-        let botReply = '';
-        const lowerCaseMessage = message.toLowerCase();
-          
-        if (hasSaidGoodbye) {
-    messageCountAfterGoodbye++;
-    if (messageCountAfterGoodbye === 3) {
-        setTimeout(() => {
-            document.getElementById('onlineButton').style.display = 'block'; // Show the image popup
-            document.getElementById('imagePopup').style.display = 'block'; // Show SMS popup
-        }, 7000); // 7000 milliseconds = 7 seconds
-    }
-    e.target.value = ''; // Clear input
-    return; // Exit the function
-}
-        if (lowerCaseMessage.match(/i love you/i)) {
-            loveYouCount++; // Increment the count for "I love you"
-            if (loveYouCount === 2) {
-                botReply = 'en appa oththuka maatrada, lets breakup💔';
-                isBreakupActive = true; // Stop further replies
-                setTimeout(() => {
-                    document.getElementById('breakupPopup').style.display = 'block'; // Show the breakup popup image
-                }, 5000);
-            } else {
-                botReply = 'love you too😘'; // Replace with your meme image URL
-            }
-        }else if (lowerCaseMessage.match(/hi/i)) {
-            botReply = 'Hello🙋🏻‍♀️';
-        }else if (lowerCaseMessage.match(/photo/i)) {
-            botReply = `
-               <img src="photo.png" alt="Here’s your photo!" style="width: 100%; border-radius: 15px;">
-                 <p>Eppidi iruken🥰</p>
-            `;
-        }else if (lowerCaseMessage.match(/hey/i)) {
-            botReply = 'Hello🙋🏻‍♀️';
-        }else if (lowerCaseMessage.match(/busy/i)) {
-            botReply = 'illa da,sollu';
-        }else if (lowerCaseMessage.match(/number/i)) {
-            botReply = '9004470167';
-        }else if (lowerCaseMessage.match(/bye/i)) {
-            botReply = 'Byee👋';
-            hasSaidGoodbye = true; // Set the flag to true
-            document.getElementById('onlineButton').style.display = 'none'; // Hide the online button
-        } else if (lowerCaseMessage === 'okay') {
-            botReply = 'Ok😊';
-        } else if (lowerCaseMessage.match(/un appa yaaru|Un appa yaaru|Un appa yaru|un appa yaru|appa|Un appa name enna|appa ah|appa va|Appa va|Appa ah|who made you?|un appa name enna|Un appa per enna|Un appa name enna|Un appa per enna|un appa name yenna|Un appa per yenna|Un appa name yenna|Un appa name enna|appa ah|appa va|Appa va|Appa ah|who made you?|who created you?|created by?|whose your creater?|developer|developer name|Developer name|developer|developed by/i)) {
-            botReply = 'Rajesh K Rishi';
-        }else if (lowerCaseMessage.match(/nice|wow|awww|semma|azhaga iruka|romba azhaga iruka|beautiful|pretty|uyire|haiyo|kolriye|paah|pah|cute|cutie pie|cutey|angel|devatha|azhagi/i)) {
-            botReply = '🙈tq';
-        }else if (lowerCaseMessage.match(/name/i)) {            
-            botReply = 'en peru Rejinamotvani🥰';
-                }else if (lowerCaseMessage.match(/per/i)) {            
-            botReply = 'en peru Rejinamotvani🥰';
-                }else if (lowerCaseMessage.match(/pandra/i)) { 
-                botReply = 'unta thaan chat pandren😅';
-                }else if (lowerCaseMessage.match(/panra/i)) { 
-                botReply = 'unta thaan chat pandren😅';
-                }else if (lowerCaseMessage.match(/ooru/i)) { 
-                botReply = 'Trichy❤️';
-                }else if (lowerCaseMessage.match(/area/i)) { 
-                botReply = 'Trichy thaan ';
-                }else if (lowerCaseMessage.match(/place/i)) { 
-                botReply = 'Trichy❤️';
-                }else if (lowerCaseMessage.match(/saptiya/i)) {
-                 botReply = 'Sapten, nee saptiya';
-                }else if (lowerCaseMessage.match(/love ethum/i)) {
-                 botReply = 'pannalanu idea iruku😅🥰'; 
-                } else if (lowerCaseMessage.match(/love pandriya/i)) {
-                 botReply = 'pannalanu idea iruku😅🥰'; 
-                }else if (lowerCaseMessage.match(/love pannuviya/i)) {
-                 botReply = 'pannalamey🙈';
-                }else if (lowerCaseMessage.match(/love pannalama/i)) {
-                 botReply = 'pannalamey🙈';
-                }else if (lowerCaseMessage.match(/love pannalaama/i)) {
-                 botReply = 'pannalamey🙈';
-                }else if (lowerCaseMessage.match(/eppidi iruka/i)) {
-                 botReply = 'nalla iruken,neenga😊';
-                }else if (lowerCaseMessage.match(/eppidi irukinga/i)) {
-                 botReply = 'nalla iruken,neenga😊';
-                }else if (lowerCaseMessage.match(/how are you/i)) {
-                 botReply = 'nalla iruken,neenga😊';
-                }else if (lowerCaseMessage.match(/hru?/i)) {
-                 botReply = 'nalla iruken,neenga😊';
-                }else if (lowerCaseMessage.match(/school/i)) {
-                 botReply = 'JJ college,neenga';
-                }else if (lowerCaseMessage.match(/college/i)) {
-                 botReply = 'JJ college,neenga';
-                }else if (lowerCaseMessage.match(/clg/i)) {
-                 botReply = 'JJ college,neenga';
-                }else if (lowerCaseMessage.match(/scl/i)) {
-                 botReply = 'JJ college,neenga';
-                }else if (lowerCaseMessage.match(/fan/i)) {
-                 botReply = 'Thalapathy❤️';
-                }else if (lowerCaseMessage.match(/hero/i)) {
-                 botReply = 'Thalapathy❤️';
-                }else if (lowerCaseMessage.match(/enna sapta|Enna sapta|Enna saptinga|enna saptinga|enna di sapta|Enna di sapta|Enna ma sapta|enna ma sapta|enna pa sapta|Enna pa sapta|ennanga saptinga/i)) {
-                    botReply = 'Biryani😋'; // Replace with your meme image URL
-                } else if (lowerCaseMessage.match(/biryani|Biryani|biriyani|Biriyani|dosa|Dosa|idly|Idly|sapadu|Sapadu/i)) {
-                    botReply = 'Okay😊'; // Replace with your meme image URL
-                } else if (lowerCaseMessage.match(/sapadala|sapadanum|naa sapadala|Na sapadala|sapdala|illa|Illa|Naa sapadala|illa sapadala|Illa sapadala|innum sapadala|Innum sapadala|innum illa|Innum illa/i)) {
-                    botReply = 'sapadalaiya🥺,pooi sapudu🤨'; // Replace with your meme image URL
-                }else {
-            const randomResponses = [ "seri", "ok", "okay","Mmm", "appa vantaanga bye","Mmm", ];
-            botReply = randomResponses[Math.floor(Math.random() * randomResponses.length)];
-            if (botReply === "appa vantaanga bye") {
-                hasSaidGoodbye = true; // Set the flag to true
-                document.getElementById('onlineButton').style.display = 'none'; // Hide the online button
-                setTimeout(() => {
-            document.getElementById('onlineButton').style.display = 'none'; // Show the image popup
-            document.getElementById('imagePopup').style.display = 'block'; // Show SMS popup
-        }, 7000);
-            }
-        }
-const typingDiv = document.createElement('div');
-typingDiv.classList.add('flex', 'items-start', 'space-x-2');
-typingDiv.innerHTML = `
-    <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40"/>
-    <div class="message max-w-xs">
-        <p>Typing</p>
-        <div class="typing-indicator">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </div>`;
-chatContainer.appendChild(typingDiv);
-chatContainer.scrollTop = chatContainer.scrollHeight;
-
-setTimeout(() => {
-    chatContainer.removeChild(typingDiv);
-    const botMessageDiv = document.createElement('div');
-    botMessageDiv.classList.add('flex', 'items-start', 'space-x-2');
-    botMessageDiv.innerHTML = `
-    <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40"/>
-    <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
-        <p>${botReply}</p>
-    </div>`;
-    chatContainer.appendChild(botMessageDiv);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-}, 2000);
-    }
-});
-document.getElementById('closePopup').addEventListener('click', function () {
-            document.getElementById('imagePopup').style.display = 'none'; // Close the popup
-        });       
-document.getElementById('messageInput').addEventListener('input', function (e) {
-    const maxLength = 45;
-    if (e.target.value.length > maxLength) {
-        alert(`Ivalo perusalaam type pannatha`);
-        e.target.value = e.target.value.substring(0, maxLength); // Trim the input to max length
-    }
-});
-</script>
 </body>
 </html>
