@@ -2,6 +2,9 @@
 <head>
     <title>Solluu</title>
     <link rel="icon" href="logo.png">
+    <link rel="preload" href="b1.jpeg" as="image">
+    <link rel="preload" href="dp.gif" as="image">
+     <link rel="preload" href="s.gif" as="image">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <meta charset="UTF-8" />
@@ -11,20 +14,31 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/4.0.1/wavesurfer.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            background: url('b1.jpeg');
-            background-size: cover;
-            transition: filter 0.3s ease; /* Smooth transition for blur effect */
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url('b1.jpeg');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden; /* Prevent content from overflowing */
+}
+        .blur-background {
+            filter: blur(2px); 
         }
         .floating-word {
-            position: absolute;
-            font-size: 20px;
-            color: white;
-            white-space: nowrap;
-            pointer-events: none;
-            animation: float 2s linear forwards;
-            font-family: 'Pacifico', cursive;
-        }
+    position: absolute;
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.7); /* Reduced opacity */
+    white-space: nowrap;
+    pointer-events: none;
+    animation: float 2s linear forwards;
+    font-family: 'Pacifico', cursive;
+    z-index: 1; /* Ensure they are behind other elements */
+    text-shadow: drop-shadow(0 0 10px rgba(255, 255, 255, 0.945)); /* Adjust color and spread */
+
+}
         @keyframes float {
             0% { transform: translateY(0); opacity: 1; }
             100% { transform: translateY(-100vh); opacity: 0; }
@@ -41,108 +55,376 @@
             z-index: 1; /* Ensure it appears above other elements */
             width: 190px;
             animation: floatCenter 3s ease-in-out infinite; /* Apply the floating animation */
+            filter: drop-shadow(0 0 40px rgba(255, 148, 193, 0.945)); /* Adjust color and spread */
         }
-        #circleBackground {
-            position: fixed;
-            top: 42%;
-            left: 30%;
-            width: 160px; /* Adjust the size of the circle */
-            height: 160px; /* Adjust the size of the circle */
-            background-color: black;
-            border-radius: 50%; /* Makes the div circular */
-            transform: translate(-50%, -50%); /* Centers the circle */
-            z-index: 0; /* Behind the GIF */
-            filter: drop-shadow(0 0 30px rgba(255, 148, 193, 0.945)); /* Adjust color and spread */
-            animation: floatCenter 3s ease-in-out infinite; /* Apply the floating animation */
-        }
+        
+  
+        
+        .message-cloud {
+    position: absolute;
+    background-color: #ffffff;
+    border-radius: 15px;
+        padding:10px 20px;
+        color: #ad004e;
+        font-family: 'Dancing Script', cursive;
+        font-weight: bold;
+        z-index: 2;
+        transform: translate(-50%, -100%);
+        transition: opacity 0.5s;
+        animation: pop-in 0.3s ease forwards; /* Keep only the pop-in animation */
+box-shadow:0 0 40px rgba(255, 148, 193, 0.945);
+}
 
+    @keyframes pop-in {
+        from {
+            transform: translate(-50%, -120%);
+            opacity: 0;
+        }
+        to {
+            transform: translate(-50%, -100%);
+            opacity: 1;
+        }
+    }
+
+    .arrow {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -10px;
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-top: 10px solid rgb(255, 255, 255);
+    }
+
+    .message-cloud::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 15px;
+        z-index: 1; /* Behind the message */
+        opacity: 0.5; /* Slight transparency */
+        filter: drop-shadow(0 0 30px rgba(255, 148, 193, 0.945)); /* Adjust color and spread */
+
+    }
     </style>
+
+<style>
+    /* Splash Screen Styles */
+    #splashScreen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgb(0, 0, 0); /* Simple black background */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        transition: opacity 0.5s ease-out;
+    }
+
+/* Logo Styles */
+#splashLogo {
+    width: 180px; /* Increased size for visibility */
+    height: 180px;
+    animation: fadeIn 1.5s ease-in-out, logoGlow 1.5s ease-in-out infinite alternate; /* Logo animation */
+}
+
+/* Animation for splash logo fade-in */
+@keyframes fadeIn {
+    0% { opacity: 0; transform: scale(0.5); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* Glow effect for the logo */
+@keyframes logoGlow {
+    0% {
+        filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); /* Initial glow */
+    }
+    50% {
+        filter: drop-shadow(0 0 10px rgba(255, 148, 193, 1), 0 0 17px rgba(255, 87, 148, 1)); /* Increased glow at halfway */
+    }
+    100% {
+        filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); /* Return to the initial glow */
+    }
+}
+
+    .hide-splash {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none; /* Prevent interaction with the hidden splash */
+    }
+    /* Footer Image Styles */
+#footerImage {
+    position: absolute;
+    bottom: 20px; /* Adjust distance from the bottom as needed */
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally */
+    opacity: 0; /* Initially hidden */
+    animation: fadeInFooter 1.5s ease-in forwards; /* Fade-in effect */
+    width: 60px;
+}
+
+@keyframes fadeInFooter {
+    from {
+        opacity: 0;
+        
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+</style>
+
 </head>
 <body class="text-white h-screen flex flex-col" id="messageInput" >
+    <div id="splashScreen">
+        <div class="text-center">
+            <img id="splashLogo" src="icon.png" alt="Solluu Logo">
+            <img id="footerImage" src="rkr.png" alt="Footer Image" style=" filter: drop-shadow(0 0 10px rgba(255, 148, 193, 1));">
+        </div>
+    </div>
+    <img id="footerImage" src="rkr.png" alt="Footer Image" style=" filter: drop-shadow(0 0 10px rgba(255, 148, 193, 1));">
+
     <div id="floatingWords" class="absolute inset-0 pointer-events-none"></div>
     <div class="flex items-center p-0">
         <img alt="Profile picture" id="profilePic" src="icon.png" style="margin-top: -25px; width:120px;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
         <div class="ml-4 flex-1"></div>
         <div class="flex space-x-4">
-            <i id="infoIcon" class="fas fa-info-circle text-white cursor-pointer" style="font-size: 24px; margin-bottom: 30px; margin-right: 10px;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));"></i>
+            <i id="infoIcon" class="fas fa-exclamation-circle text-white cursor-pointer" style="font-size: 24px; margin-bottom: 30px; margin-right: 10px; filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));"></i>
         </div>
     </div>
     <div id="circleBackground"></div>
-    <img id="centerGif" src="dp.gif" alt="Center GIF" />
-    <div id="infoModal" class="fixed inset-0 flex items-center justify-center hidden" style="z-index: 10;">
+    <img id="centerGif" src="dp.gif" alt="Center GIF" >
+    <div id="infoModal" class="fixed inset-0 flex items-center justify-center  hidden" style="z-index: 1000;  overflow-y: auto;">
         <div class="bg-white text-black p-6 rounded-lg shadow-lg max-w-sm" style="background: linear-gradient(135deg, #ffb1d3 0%, #e01279 30%, #82003a 80%, #e01279 100%)">
-            <img src="popup.png" style="width: 280px; display: block; margin: 0 auto;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
-            <h3 class="mt-2 text-center" style="color: #fff; margin-bottom: 10px;">Created by:
-                <a href="https://www.instagram.com/rajesh_k_rishi/" style="color: #ff87c3;"><b>Rajesh K Rishi</b></a>
-            </h3>
-            <h3 class="mt-2 text-center" style="color: #fff; margin-bottom: 10px;">The app is still under development!</h3>
-            <input type="file" id="bgImageInput" accept="image/*" class="mt-4" style="display: none;" />
-            <button id="closeModal" class="mt-2 px-5 py-2 bg-gray-300 rounded" style="background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%,  #f13191 80%); color: #fff; border-radius: 10px; margin-left: 110px;filter: drop-shadow(0 0 10px rgba(148, 1, 62, 0.945));">OK</button>
-        </div>
+            
+            <img src="disclaimer.png" style="width: 280px; display: block; margin: 0 auto;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); margin-bottom: -20px; margin-top: -30px;">
+
+              <!-- Disclaimer Points with Images and Text -->
+        <div id="disclaimerPoints" class="mt-2" style="margin-bottom: 30px; font-family: 'Pacifico', cursive;">
+            <!-- Point 1: For Fun and Entertainment Only -->
+            <div class="disclaimer-point" id="point1">
+                <img src="point.png" alt="For Fun" class="disclaimer-img">
+                <span class="disclaimer-btn">No Intent to Offend or Harm</span>
+                </div>
+                <p class="disclaimer-description hidden" id="desc1">
+                    It aims to provide a fun & friendly convo, using compliments & light-hearted roasting, all with positive intentions.</p>                   
+                    <div class="disclaimer-point" id="point2">
+                    <img src="point.png" alt="For Fun" class="disclaimer-img">
+                    <span class="disclaimer-btn">Replying Character</span>
+                    </div>
+                    <p class="disclaimer-description hidden" id="desc2">
+                     It portrays a girl character, which is intended to be playful & humorous.It is not meant to disrespect or offend any girl or woman.</p>
+                    
+                    
+                     <div class="disclaimer-point" id="point3">
+                        <img src="point.png" alt="For Fun" class="disclaimer-img">
+                        <span class="disclaimer-btn">Mindvoice Response</span>
+                        </div>
+                        <p class="disclaimer-description hidden" id="desc3">
+                            Some responses from her include audio to make interactions more engaging. Only designed to make your experience more lively & fun.</p>
+
+                       <div class="disclaimer-point" id="point4">
+                          <img src="point.png" alt="For Fun" class="disclaimer-img">
+                          <span class="disclaimer-btn">User Discretion Advised</span>
+                         </div>
+                         <p class="disclaimer-description hidden" id="desc4">
+                            I understand that humor is subjective. If at any point you feel uncomfortable with any interaction, you can choose to exit the App.</p>            
+                        </div>
+    
+          
+ <!-- Center the button using flexbox -->
+ <div class="button-container">
+    <button id="closeModal" class="mt-2 px-5 py-2 bg-gray-300 rounded" style="background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%, #f13191 80%); color: #fff; border-radius: 10px;  font-family: 'Pacifico', cursive;">Mmm</button>
+</div>        </div>
     </div>
+    <!-- Audio element -->
+    <audio id="splashAudio" preload="auto">
+        <source src="solluu.mp3" type="audio/mp3">
+    
+    </audio>
+    <script>
+        // Function to hide the splash screen and show the main content
+        function hideSplashScreen() {
+            const splashScreen = document.getElementById('splashScreen');
+            const mainContent = document.getElementById('mainContent');
+            
+            // Add the fade-out effect for splash screen
+            splashScreen.classList.add('hide-splash');
+            
+            // Show the main content after the splash screen fades out
+            setTimeout(() => {
+                splashScreen.style.display = 'none'; // Hide splash screen
+                mainContent.style.display = 'block'; // Show main content
+            }, 3000); // Wait for the splash screen fade-out to complete after 3 seconds
+        }
+        
+        // Simulate loading process (you can replace this with your actual loading logic)
+        window.onload = () => {
+            // Show the splash screen initially
+            document.getElementById('splashScreen').style.display = 'flex';
+        
+            // Play the audio as soon as the page loads (with splash screen visible)
+            const splashAudio = document.getElementById('splashAudio');
+            splashAudio.play();  // Play the audio
+        
+            // Simulate a delay (e.g., loading assets or waiting for the page to be ready)
+            setTimeout(hideSplashScreen, 2500); // Splash screen will disappear after 3 seconds
+        };
+        
+        </script>
+    <style>
+        .hidden {
+            display: none;
+        }
+        .disclaimer-point {
+        display: flex; /* Align image and title horizontally */
+        align-items: center; /* Vertically center image and title */
+        margin-bottom: 7px;
+        cursor: pointer;
+    }
+    .disclaimer-img {
+        width: 30px;
+        height: 30px;
+        margin-right: 3px;
+        margin-left: 22px;
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.945)); /* Adjust color and spread */
+    }
+
+        .disclaimer-btn {
+            background: none;
+            border: none;
+            color: #ff87c3;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+            user-select: none;
+            margin-left: 5px;
+        }
+        
+        .disclaimer-description{
+            color: #ffffff;
+            font-size: 15px;
+            text-align: center;
+
+        }
+        .button-container {
+    display: flex;               /* Use flexbox */
+    justify-content: center;     /* Center horizontally */
+    margin-top: 20px;            /* Add spacing above the button if needed */
+} 
+    </style>
+    
+    <script>
+        // Toggle description visibility when a disclaimer point is clicked
+        document.getElementById('point1').addEventListener('click', function() {
+            document.getElementById('desc1').classList.toggle('hidden');
+        });
+        document.getElementById('point2').addEventListener('click', function() {
+            document.getElementById('desc2').classList.toggle('hidden');
+        });
+        document.getElementById('point3').addEventListener('click', function() {
+            document.getElementById('desc3').classList.toggle('hidden');
+        });
+        document.getElementById('point4').addEventListener('click', function() {
+            document.getElementById('desc4').classList.toggle('hidden');
+        });
+
+    
+       // Reset the modal and close it when the "OK" button is clicked
+document.getElementById('closeModal').addEventListener('click', function() {
+    // Hide the modal
+    document.getElementById('infoModal').classList.add('hidden');
+
+    // Reset all descriptions to hidden state
+    document.querySelectorAll('.disclaimer-description').forEach(function(description) {
+        description.classList.add('hidden');
+    });
+});
+
+    </script>
+    
     <div class="flex flex-col items-center p-0 rounded-lg "></div>
     <div class="flex flex-col p-4 space-y-4 overflow-y-auto flex-1 no-scrollbar" id="chatContainer" style="font-family: 'Pacifico', cursive;"></div>
     <div class="flex items-center p-2"></div>
+    <audio id="notificationSound" src="msg.mp3" preload="auto"></audio>
+
+
     <script>
         document.getElementById('centerGif').addEventListener('click', function() {
             window.location.href = 'home.html'; // Redirect to home.html
         });
 
         const words = [
-            "Hi", "Hello", "Saptiya", "Enna pandra", "I love you", "Cute",
-            "Poo di", "Poo da", "Number", "Okay", "Appa vantaanga bye",
-            "Mmmm", "Online", "Solluu", "Love you too", "wow",
-            "seri", "Miss you", "Sorry", "Thanks", "Breakup",
-            "Blocked", "🥰", "❤️", "🙈", "🫂", "💗", "🤗", "😘", "❤️", "💔", "😍", "Solluu", "Offline", "Love you too", "Solluu"
-        ];
-        const floatingWordsContainer = document.getElementById('floatingWords');
+    "Hi", "Hello", "Saptiya", "Enna pandra", "love you", "Cute",
+    "Poo di", "Poo da", "Number", "Okay", "Mmmm",
+    "Mmmm", "Online", "Solluu", "Love you too", "wow",
+    "seri", "Miss you", "Sorry", "Thanks", "Breakup",
+    "Blocked", "clg", "name", "sweet", "ayyo", "poolama", "Wait", "enna sapta", "Chlm", "love", "Solluu", "Offline", "Bye", "Solluu"
+];
+const floatingWordsContainer = document.getElementById('floatingWords');
 
-        function createFloatingWord(word) {
-            const span = document.createElement('span');
-            span.innerText = word;
-            span.className = 'floating-word';
+function createFloatingWord(word) {
+    const span = document.createElement('span');
+    span.innerText = word;
+    span.className = 'floating-word';
 
-            // Start position at the center of the screen
-            const startX = window.innerWidth / 2;
-            const startY = window.innerHeight / 2;
+    // Start position at the center of the screen
+    const startX = window.innerWidth / 2;
+    const startY = window.innerHeight / 2;
 
-            // Randomly set the angle (in radians) for direction
-            const angle = Math.random() * 2 * Math.PI;
-            const distance = Math.random() * 600 + 100; // Shortened distance for faster fill
+    // Randomly set the angle (in radians) for direction
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = Math.random() * 600 + 100; // Adjusted distance
 
-            // Calculate the end position based on angle and distance
-            const endX = startX + distance * Math.cos(angle);
-            const endY = startY + distance * Math.sin(angle);
+    // Calculate the end position based on angle and distance
+    let endX = startX + distance * Math.cos(angle);
+    let endY = startY + distance * Math.sin(angle);
 
-            // Set initial styles
-            span.style.position = 'absolute';
-            span.style.left = `${startX}px`;
-            span.style.top = `${startY}px`;
-            span.style.opacity = '1';
+    // Ensure the end positions stay within the window boundaries
+    endX = Math.max(0, Math.min(endX, window.innerWidth - 50));  // Subtract 50 to keep the word fully visible
+    endY = Math.max(0, Math.min(endY, window.innerHeight - 50));  // Subtract 50 to keep the word fully visible
 
-            // Set the animation for movement
-            span.animate([
-                { transform: `translate(0, 0)` },
-                { transform: `translate(${endX - startX}px, ${endY - startY}px)`, opacity: 0 }
-            ], {
-                duration: 2000, // Reduced duration for faster movement
-                easing: 'linear',
-                fill: 'forwards'
-            });
+    // Set initial styles
+    span.style.left = `${startX}px`;
+    span.style.top = `${startY}px`;
+    span.style.opacity = '1';
 
-            floatingWordsContainer.appendChild(span);
+    // Append the span to the container
+    floatingWordsContainer.appendChild(span);
 
-            // Remove the word after the animation ends
-            setTimeout(() => {
-                span.remove();
-            }, 2000); // Match the animation duration
-        }
+    // Set the animation for movement
+    span.animate([{
+        transform: `translate(0, 0)`
+    }, {
+        transform: `translate(${endX - startX}px, ${endY - startY}px)`,
+        opacity: 0
+    }], {
+        duration: 2000,
+        easing: 'linear',
+        fill: 'forwards'
+    });
 
-        // Create floating words at intervals
-        setInterval(() => {
-            const word = words[Math.floor(Math.random() * words.length)];
-            createFloatingWord(word);
-        }, 500); // Faster interval to generate a new word every half second
+    // Remove the word after the animation ends
+    setTimeout(() => {
+        span.remove();
+    }, 2000);
+}
+
+// Create floating words at intervals
+setInterval(() => {
+    const word = words[Math.floor(Math.random() * words.length)];
+    createFloatingWord(word);
+}, 700); // Adjusted interval to 1 second
     </script>
     <script>
         document.getElementById('infoIcon').addEventListener('click', function () {
@@ -156,6 +438,79 @@
         document.getElementById('changeBgButton').addEventListener('click', function () {
             document.getElementById('bgImageInput').click(); // Trigger file input
         });
+    </script>
+ 
+    <script>
+const messages = [
+    "Hi , I'm online😍 ♡︎",
+    "Pesalaama🥰 ♡︎",
+    "Hey🤗 ♡",
+    "I'm here for you😌 ♡︎",
+    "Pesamaatiya😕 ♡︎ "
+
+];
+
+let showMessageClouds = true; // Flag to control message clouds
+let messageIndex = 0; // Variable to track the current message index
+
+document.getElementById('centerGif').addEventListener('click', function() {
+    showMessageClouds = false; // Stop showing message clouds
+    window.location.href = 'home.html'; // Navigate to call1.html
+
+    // Stop the notification sound if it's playing
+    notificationSound.pause();
+    notificationSound.currentTime = 0; // Reset sound to start
+});
+
+function createMessageCloud() {
+    if (!showMessageClouds) return; // Stop if flag is false
+
+    const messageContainer = document.createElement('div');
+    messageContainer.className = 'message-cloud';
+    messageContainer.innerText = messages[messageIndex]; // Show message in order
+
+    // Play notification sound
+    notificationSound.currentTime = 0; // Reset sound to start
+    notificationSound.play().catch(error => {
+        console.error('Error playing sound:', error);
+    });
+
+    // Position the message cloud above the center GIF
+    const centerGif = document.getElementById('centerGif');
+    const rect = centerGif.getBoundingClientRect();
+
+    // Positioning the cloud
+    messageContainer.style.left = `${rect.left + rect.width / 2}px`;
+    messageContainer.style.top = `${rect.top}px`;
+
+    const arrow = document.createElement('div');
+    arrow.className = 'arrow';
+
+    // Append arrow and message to the document
+    document.body.appendChild(messageContainer);
+    messageContainer.appendChild(arrow);
+
+    // Remove the message cloud after 3 seconds
+    setTimeout(() => {
+        messageContainer.style.opacity = '0';
+        setTimeout(() => {
+            messageContainer.remove();
+        }, 500); // Wait for fade-out transition
+    }, 3000); // Show message for 3 seconds
+
+    messageIndex++; // Move to the next message
+
+    // Reset messageIndex to 0 if all messages have been shown
+    if (messageIndex >= messages.length) {
+        messageIndex = 0;
+    }
+}
+
+setTimeout(() => {
+    createMessageCloud();
+    // Then set an interval for subsequent clouds (with 4 seconds delay between each message)
+    setInterval(createMessageCloud, 4000);
+}, 2000);
     </script>
 </body>
 </html>

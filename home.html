@@ -2,25 +2,40 @@
 <head>
     <title>Solluu</title>
     <link rel="icon" href="logo.png">
+    <link rel="preload" href="b6.jpeg" as="image">
+    <link rel="preload" href="d.gif" as="image">
+    <link rel="preload" href="dpm.gif" as="image">
+    <link rel="preload" href="dp2.jpeg" as="image">
+    <link rel="preload" href="angry.gif" as="image">
+    <link rel="preload" href="bye.gif" as="image">
+
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/4.0.1/wavesurfer.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 
     <style>
-        body {
-            background: url('b6.jpeg');
-            background-size: cover;
-            transition: filter 0.3s ease; /* Smooth transition for blur effect */
-
-        }
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url('b6.jpeg');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh; /* Use min-height instead of height */
+  position: relative;
+}
         .blur-background {
-            filter: blur(2px); /* Adjust blur intensity */
+            filter: blur(2px); 
         }
         .typing-indicator {
             display: flex;
@@ -63,13 +78,13 @@
             transform: translate(-50%, -50%);
             width: 300px;
             border-radius: 10px;  
-            filter: drop-shadow(0 0 15px rgba(255, 148, 193, 0.945));     
+            filter: drop-shadow(0 0 15px rgba(255, 148, 193, 0.807)); 
+            z-index: 1000; 
         }
         .popup img {
             width: 600px;
             border-radius: 10px;
-        }
-                /* Heart animation */
+        }              
         .heart {
             position: absolute;
 
@@ -85,63 +100,64 @@
                 opacity: 0;
             }
         }
-.profile-container {
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
-    padding: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
+         .profile-container {
+             border-radius: 20px;
+             backdrop-filter: blur(10px);
+             padding: 20px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
 .profile-pic {
-    width: 96px; /* 24 * 4 */
-    height: 96px; /* 24 * 4 */
-    border: 4px solid #ea0376; /* Pink border */
+    width: 96px; 
+    height: 96px; 
+    border: 4px solid #ea0376;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease; /* Smooth scaling */
+    transition: transform 0.3s ease;
 }
 
 .profile-pic:hover {
-    transform: scale(1.05); /* Scale up on hover */
+    transform: scale(1.05);
 }
 
-/* Username Styles */
 .username {
-    font-size: 1.5rem; /* 2xl */
-    font-weight: 600; /* Semi-bold */
-    color: #fff; /* White color */
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #fff; 
 }
 #profilePicLarge {
-    margin-top: -30px; /* Adjust this value to move it up further */
+    margin-top: -30px; 
 }  
 #usernameLarge {
-    background: linear-gradient(to right, #ffffff, #ffffff); /* Gradient background */
-    -webkit-background-clip: text; /* Clip background to text */
-    -webkit-text-fill-color: transparent; /* Make text color transparent */
+    background: linear-gradient(to right, #ffffff, #ffffff); 
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
 } 
 
 .progress-container {
     background-color:  #68002f;
-      border-radius: 1rem; /* Rounded corners */
-        height: 0.5rem; /* Adjusted height for better visibility */
-        overflow: hidden; /* Hide overflow */
+      border-radius: 1rem;
+        height: 0.5rem; 
+        overflow: hidden; 
     }
     .progress-bar {
         position: relative;
-        background-color: transparent; /* Remove solid color */
-        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3); /* Inner shadow */
-        animation: pulse 1.5s infinite alternate; /* Optional animation */
+        background-color: transparent;
+        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3); 
+        animation: pulse 1.5s infinite alternate;
     }
     @keyframes pulse {
         0% { transform: scaleX(1); }
         100% { transform: scaleX(1.05); }
     }
-
+   
 #micButton{
     margin-right: 10px;
     border-radius: 10px;
     height: 40px;
     background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%,  #f84da2 50%, #470020 100%);
-    filter: drop-shadow(0 0 10px rgba(255, 148, 193, 0.945));
+    filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));
 }
+
+
 #upload{
     
     margin-left: 30px;
@@ -149,70 +165,301 @@
     height: 40px;
     width: 28px;
     background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%,  #f84da2 50%, #470020 100%);
-    filter: drop-shadow(0 0 10px rgba(255, 148, 193, 0.945));
+    filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));
 
 }
+.send-icon {
+    color: #a5a5a5; 
+    cursor: pointer;
+    margin-bottom: 0px;
+    margin-right: 40px;
+    
+}
+
+.send-icon:hover {
+    filter: drop-shadow(0 0 10px rgba(255, 148, 193, 0.945));
+    background: linear-gradient(135deg, #ffffff 0%, #f994be 30%,  #f84da2 50%, #470020 100%); 
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent; 
+}
+#mindVoiceIcon {
+    position: absolute; 
+    top: -18px; 
+    right: 0px; 
+    z-index: 10; 
+}
+.video-call-overlay {
+            
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+        .video-player {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+        .user-video-frame {
+    position: absolute;
+    bottom: 20px;
+    right: 95px;
+    width: 55vw; 
+    height: auto;
+    border: 4px solid white; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.7); 
+    z-index: 10;
+    overflow: hidden; 
+}
+
+        .end-call-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%,  #f84da2 50%, #470020 100%);
+            filter: drop-shadow(0 0 10px rgba(255, 148, 193, 0.945));
+            color: #000;
+            padding: 10px 15px;
+            border-radius: 5px;
+            z-index: 1001; 
+            cursor: pointer;
+        }
+        @keyframes bulge {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(4.2); 
+    }
+}
+
+.bulging {
+    animation: bulge 0.5s ease-in-out; 
+}
+        #butterfly {
+            display: none; 
+            position: absolute;
+            top: -40px;
+            right: 0;
+            width: 50px;
+            height: 50px;
+            background: url('butterfly.gif') no-repeat center center;
+            background-size: contain;
+            animation: moveButterfly 3s linear forwards;
+            z-index: 2001;
+            transform: rotate(-105deg);
+            filter: drop-shadow(0 0 2px rgba(255, 148, 193, 0.945)); 
+        }
+
+        @keyframes moveButterfly {
+            0% {
+              
+                top: -10px;
+            }
+            100% {
+                right: 123px;
+                top: 133px; 
+                transform: rotate(-10deg);
+            }
+        }
+        .move-left {
+            left: -150px; 
+            transition: left 1s ease-in-out; 
+        }
+                .button-container {
+    display: flex;               /* Use flexbox */
+    justify-content: center;     /* Center horizontally */
+    margin-top: 20px;            /* Add spacing above the button if needed */
+} 
 
 
 </style>
-   <script>
-        const messageInput = document.getElementById('messageInput');
 
-        messageInput.addEventListener('focus', function() {
-            document.body.classList.add('blur-background'); // Add the blur effect when focused
-        });
 
-        messageInput.addEventListener('blur', function() {
-            document.body.classList.remove('blur-background'); // Remove the blur effect when not focused
-        });
-    </script>
+<script>
+const messageInput = document.getElementById('messageInput');
+// Lock the body height on page load and when resizing
+function lockBodyHeight() {
+  document.body.style.height = `${window.innerHeight}px`;
+}
+
+// Lock body height when the page loads
+window.addEventListener('load', lockBodyHeight);
+
+// Lock body height when the viewport changes (e.g., on resize)
+window.addEventListener('resize', lockBodyHeight);
+
+</script>
+<script>
+    const videoCallButton = document.getElementById('videoCallButton');
+    const videoCallOverlay = document.getElementById('videoCallOverlay');
+    const endCallButton = document.getElementById('endCallButton');
+    const userVideo = document.getElementById('userVideo');
+    const backgroundVideo = document.getElementById('backgroundVideo'); // Reference to the background video
+
+    videoCallButton.addEventListener('click', () => {
+        videoCallOverlay.style.display = 'block'; // Show overlay
+        startVideoCall(); // Start video call logic
+    });
+
+    endCallButton.addEventListener('click', () => {
+        videoCallOverlay.style.display = 'none'; // Hide overlay
+        stopVideoCall(); // Stop video call logic
+    });
+
+    function startVideoCall() {
+        // Reset video to start from the beginning
+        backgroundVideo.currentTime = 0;
+        backgroundVideo.play(); // Ensure the background video starts playing
+        
+        // Request camera access and start video
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                userVideo.srcObject = stream;
+            })
+            .catch(error => {
+                console.error('Error accessing media devices.', error);
+            });
+    }
+
+    function stopVideoCall() {
+        const stream = userVideo.srcObject;
+        if (stream) {
+            const tracks = stream.getTracks();
+            tracks.forEach(track => track.stop());
+        }
+        userVideo.srcObject = null; // Clear video feed
+        backgroundVideo.pause(); // Pause background video when ending the call
+    }
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+// Delay the butterfly's appearance by 60 seconds (60000 ms)
+setTimeout(function () {
+    const butterfly = document.getElementById('butterfly');
+    butterfly.style.display = 'block'; // Show the butterfly after 60 seconds
+}, 10000); 
+
+// Event listener for the butterfly click
+document.getElementById('butterfly').addEventListener('click', function () {
+    playAudioWithMindVoice();
+    botReply(getRandomReply()); // Call random reply function
+    moveButterfly(); // Trigger butterfly movement
+});
+
+// Play Audio Function
+function playAudioWithMindVoice() {
+    const audio = new Audio('mindVoice.mp3'); // Ensure this path is correct
+    audio.play();
+}
+
+// Bot Reply Function with random replies
+function botReply(message) {
+    const chatContainer = document.getElementById('chatContainer');
+    const botMessageDiv = document.createElement('div');
+    botMessageDiv.classList.add('flex', 'items-start', 'space-x-2');
+    botMessageDiv.innerHTML = `
+    <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
+    <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
+        <p>${message}</p>
+    </div>`;
+    chatContainer.appendChild(botMessageDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+// Function to get a random reply
+function getRandomReply() {
+    const replies = [
+        'Butterflies ku aasa padatha😂',
+        'Butterflies kaga life ah tholachidatha!🦋',
+        'Butterflies venaam namba😅',
+    ];
+    const randomIndex = Math.floor(Math.random() * replies.length);
+    return replies[randomIndex];
+}
+
+// Move the butterfly image to the left side
+function moveButterfly() {
+    const butterfly = document.getElementById('butterfly');
+    butterfly.classList.add('move-left');
+}
+});
+
+</script>
 </head>
+
 <body class="text-white h-screen flex flex-col">
-    <div class="flex items-center p-0">
-        <a href="index.html">
-        <img alt="Profile picture" id="profilePic" src="icon.png" style="margin-top: -25px; width:120px; filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));
-"></a>
+    <div class="flex items-center p-0">   
+        <img alt="Profile picture" id="profilePic" src="icon.png" style="margin-top: -25px; width:120px; filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
         <div class="ml-4 flex-1"></div>
         <div class="flex space-x-4">
             <i id="infoIcon" class="fas fa-info-circle text-white cursor-pointer" style="font-size: 24px; margin-bottom: 30px; margin-right: 10px;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));"></i>
         </div>
     </div>
-    <div id="infoModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div id="butterfly" class="butterfly"></div>
+    <div id="infoModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden" style="z-index: 1000;  font-family: 'Pacifico', cursive; ">
         <div class="bg-white text-black p-6 rounded-lg shadow-lg max-w-sm" style="background: linear-gradient(135deg, #ffb1d3 0%, #e01279 30%, #82003a 80%, #e01279 100%)">
-            <img src="popup.png" style="width: 280px; display: block; margin: 0 auto;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
-            <h3 class="mt-2 text-center" style="color: #fff; margin-bottom: 10px;">Created by:
+            <img src="popup.png" style="width: 280px; display: block; margin: 0 auto;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); ">
+            <h3 class="mt-2 text-center" style="color: #fff; margin-bottom: 10px;">developed by:
                 <a href="https://www.instagram.com/rajesh_k_rishi/" style="color: #ff87c3;"><b>Rajesh K Rishi</b></a>
             </h3>
             <h3 class="mt-2 text-center" style="color: #fff; margin-bottom: 10px;">The app is still under development!</h3>
             <input type="file" id="bgImageInput" accept="image/*" class="mt-4" style="display: none;" />
-            <button id="closeModal" class="mt-2 px-5 py-2 bg-gray-300 rounded" style="background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%,  #f13191 80%); color: #fff; border-radius: 10px; margin-left: 110px;">OK</button>
+            <div class="button-container">
+                <button id="closeModal" class="mt-2 px-5 py-2 bg-gray-300 rounded" style="background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%, #f13191 80%); color: #fff; border-radius: 10px;  font-family: 'Pacifico', cursive;">Mmm</button>
+            </div>
         </div>
     </div>
-    <div class="flex flex-col items-center p-0 rounded-lg ">
+<!-- Custom Popup Modal -->
+<div id="customPopup" class="bg-white text-black p-6 rounded-lg shadow-lg max-w-sm hidden" style="background: linear-gradient(135deg, #ffb1d3 0%, #e01279 30%, #82003a 80%, #e01279 100%); position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
+    <h3 id="popupMessage" class="mt-2 text-center" style="color: #fff; margin-bottom: 10px;"></h3> <!-- This is where the message will go -->
+    <div class="button-container">
+        <button id="closePopup" class="mt-2 px-5 py-2 bg-gray-300 rounded" style="background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%, #f13191 80%); color: #fff; border-radius: 10px; font-family: 'Pacifico', cursive;">Mmm</button>
+    </div>
+</div>
+<div id="overlay" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
+
+
+    <div class="flex flex-col items-center p-0 rounded-lg " style="z-index: 1001;">
+
         <div class="relative">
             <a href="home.html">
             <img alt="Profile picture" class="rounded-full w-20 h-20 border-4 border-pink-500 shadow-lg transition-transform duration-300 hover:scale-105" id="profilePicLarge" src="dp2.jpeg" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));" /></a>
             <span id="onlineButton" class="absolute bottom-12 right-0 w-5 h-5 rounded-full bg-gradient-to-r from-pink-900 to-pink-500 border-2 border-white flex items-center justify-center shadow-lg transition-colors duration-300" id="onlineLarge" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
                 <i class="fas fa-heart text-white text-xs" style="margin-top: 1px;"></i>
             </span>
+            <div id="mindVoiceIcon" class="absolute bottom-12 right-0 w-5 h-5 rounded-full bg-gradient-to-r from-pink-900 to-pink-500 border-2 border-white flex items-center justify-center hidden" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
+                <img src="icon.png" alt="Mind Voice Icon" class="w-full h-full" />
+            </div>
         </div>
-        <h2 class="text-2xl font-bold mt-1 text-white drop-shadow-lg transition-transform duration-300 hover:scale-105" id="usernameLarge" style="font-family: 'Dancing Script', cursive;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">the_cutie_pie </h2>
+        <h2 class="text-2xl font-bold mt-1 text-white drop-shadow-lg transition-transform duration-300 hover:scale-105" id="usernameLarge" style="font-family: 'Dancing Script', cursive;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); z-index: 10;">the_cutie_pie </h2>
+        
     </div>
+
+
     <div class="flex flex-col p-4 space-y-4 overflow-y-auto flex-1 no-scrollbar" id="chatContainer" style="font-family: 'Pacifico', cursive;" ></div>
     <div class="flex items-center p-2">
         <button id="micButton" class="ml-0 p-2 rounded-full bg-pink-500 text-white"><i class="fas fa-microphone"></i></button>
 
-        <input class="flex-1 p-2 rounded-full" id="messageInput" placeholder="Solluu..." type="text" style="color: #c01f72;outline: none; font-family:'Pacifico', cursive; border-radius: 10px; margin-right: -20px;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
-        
-        <label for="imageUpload" class="cursor-pointer" id="upload">
-            <i class="fas fa-paperclip text-white" style="font-size: 17px; margin-left: 4px; margin-top: 11px;"></i>
+        <input class="flex-1 p-2 pl-4 pr-8 rounded-full" id="messageInput" placeholder="Solluu..." type="text" style="color: #c01f72;outline: none; font-family:'Pacifico', cursive; border-radius: 10px; margin-right: -20px;filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.945));  background-image: url('bg2.gif');filter: hue-rotate(10deg);background-size: cover; box-shadow: 0 0 20px rgba(255, 148, 193, 0.945);">
+        <i class="fas fa-paper-plane send-icon cursor-pointer text-1xl absolute right-4  hover:text-pink-600" id="sendButton"></i>         
+        <label for="imageUpload" class="cursor-pointer" id="upload"><a href="vc.html">
+            <i class="fas fa-video video-call-icon text-white" style="font-size: 15px; margin-left: 6px; margin-top: 13px;"></i>
         </label>
-        <input type="file" id="imageUpload" accept="image/*" style="display: none;" />
-
     </div>
     <div id="imagePopup" class="popup" >
         <img src="sms.gif" alt="Image Response" style="width: 300px;">
         <button id="closePopup" class="mt-2 px-4 py-2 " style="color: #c01f72;"></button>
+        
     </div>
     <div id="breakupPopup" class="popup" style="display: none;">
         <img src="blocked.gif" alt="Breakup Response" style="width: 300px;">
@@ -223,96 +470,113 @@
             <source id="audioSource" src="winner.ogg" type="audio/mpeg">
         </audio>
     </div>
-<script>
- document.addEventListener('DOMContentLoaded', () => {
-            const messageInput = document.getElementById('messageInput');
-            const micButton = document.getElementById('micButton');
-
-            micButton.addEventListener('click', () => {
-                if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-                    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                    const recognition = new SpeechRecognition();
-                    recognition.lang = 'en-US'; // Set language
-                    recognition.interimResults = false; // Get final results only
-
-                    recognition.onstart = () => {
-                        console.log('Voice recognition started. Speak into the microphone.');
-                    };
-
-                    recognition.onresult = (event) => {
-                        const transcript = event.results[0][0].transcript;
-                        messageInput.value = transcript; // Fill the input with the recognized text
-                        console.log('Recognized:', transcript);
-                    };
-
-                    recognition.onerror = (event) => {
-                        console.error('Error occurred in recognition: ' + event.error);
-                    };
-
-                    recognition.onend = () => {
-                        console.log('Voice recognition ended.');
-                    };
-
-                    recognition.start(); // Start the speech recognition
-                } else {
-                    alert('Speech recognition not supported in this browser.');
-                }
-            });
-        });
-</script>
-<script>
-
+    <audio id="loveYouAudio" src="loveyoutoo.mp3" preload="auto"></audio>
+    <audio id="byeAudio" src="appavantaangabye.mp3" preload="auto"></audio>
+    <audio id="badWordAlert" src="badwords.mp3" preload="auto"></audio>
+    <audio src="a.mp3" preload="auto"></audio>
+    <audio src="msg.mp3" preload="auto"></audio>
+    <audio src="tamil.mp3" preload="auto"></audio>
     
-    document.getElementById('imageUpload').addEventListener('change', function (e) {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function (event) {
-            const chatContainer = document.getElementById('chatContainer');
-            const userMessageDiv = document.createElement('div');
-            userMessageDiv.classList.add('flex', 'justify-end');
-            userMessageDiv.innerHTML = `
-                <div class="message user max-w-xs" style="font-family: 'Pacifico', cursive;">
-                    <img src="${event.target.result}" alt="Attached Image" style="width: 200px; border-radius: 15px;">
-                </div>`;
-            chatContainer.appendChild(userMessageDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
+    <script>
+        document.getElementById('navigateToIndex').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default anchor click behavior (page reload)
+            
+            // Update the URL in the address bar to "index.html"
+            window.history.pushState({ page: "index" }, "Index", "index.html");
+            document.getElementById('splashScreen').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        });
+    </script>
+<script>
+function playAudioWithMindVoice(audioSrc) {
+    const audio = new Audio(audioSrc);
+    audio.play();
 
-            const typingDiv = document.createElement('div');
-typingDiv.classList.add('flex', 'items-start', 'space-x-2');
-typingDiv.innerHTML = `
-    <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
-    <div class="message max-w-xs">
-        <p>Typing</p>
-        <div class="typing-indicator">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </div>`;
-chatContainer.appendChild(typingDiv);
-chatContainer.scrollTop = chatContainer.scrollHeight;
+    // Show the mind voice icon
+    const mindVoiceIcon = document.getElementById('mindVoiceIcon');
+    mindVoiceIcon.classList.remove('hidden'); // Show the icon
 
-setTimeout(() => {
-    chatContainer.removeChild(typingDiv);
-    const botMessageDiv = document.createElement('div');
-    botMessageDiv.classList.add('flex', 'items-start', 'space-x-2');
-    botMessageDiv.innerHTML = `
-    <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40"style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
-    <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
-        <p>Nice🥰</p>
-    </div>`;
-    chatContainer.appendChild(botMessageDiv);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-}, 2000);
-    }
+    // Add the bulging effect
+    mindVoiceIcon.classList.add('bulging'); // Add bulging effect
 
-        reader.readAsDataURL(file);
-        e.target.value = ''; // Clear the input
-    }
-});
+    // Remove the bulging class after the animation ends
+    mindVoiceIcon.addEventListener('animationend', () => {
+        mindVoiceIcon.classList.remove('bulging'); // Remove bulging class
+    }, { once: true }); // Ensure the listener is removed after the first execution
+
+    // Hide the icon after the audio ends
+    audio.addEventListener('ended', () => {
+        mindVoiceIcon.classList.add('hidden');
+    
+          const profilePic = document.getElementById('profilePicLarge');
+        profilePic.src = 'dp2.jpeg'; 
+    });
+      
+}
 
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+               const messageInput = document.getElementById('messageInput');
+               const micButton = document.getElementById('micButton');
+               const sendButton = document.getElementById('sendButton'); // The send button reference
+               // Function to send message
+             const sendMessage = () => {
+               const message = messageInput.value;
+               if (message.trim() !== "") {
+               console.log("Message sent:", message);
+               messageInput.value = ''; // Clear the input after sending
+               }
+               };
+
+   
+               // Event listener for mic button click
+      micButton.addEventListener('click', () => {
+       if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'en-US'; // Set language
+      recognition.interimResults = false; // Get final results only
+
+      recognition.onstart = () => {
+        console.log('Voice recognition started. Speak into the microphone.');
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        console.log('Recognized:', transcript);
+
+        // Set the transcript to the input field, but without the word "send"
+        if (transcript.toLowerCase().includes("send")) {
+          // Remove the word "send" from the input field before sending
+          messageInput.value = messageInput.value.replace(/send$/i, '').trim();
+          console.log('Send command detected. Message will be sent without "send"');
+          sendButton.click(); // Trigger the send button click event
+        } else if (transcript.includes("clear")) {
+          messageInput.value = ''; // Clear the input field
+          console.log('Clear command detected. Input field cleared.');
+        } else {
+          messageInput.value = transcript; // Fill the input with the recognized text
+        } 
+      };
+
+      recognition.onerror = (event) => {
+        console.error('Error occurred in recognition: ' + event.error);
+      };
+
+      recognition.onend = () => {
+        console.log('Voice recognition ended.');
+      };
+
+      recognition.start(); // Start the speech recognition
+    } else {
+      alert('Speech recognition not supported in this browser.');
+    }
+  });
+});
+   </script>
+     
 
     <script>
                 document.getElementById('messageInput').addEventListener('input', function () {
@@ -349,21 +613,6 @@ setTimeout(() => {
     document.getElementById('closeModal').addEventListener('click', function () {
         document.getElementById('infoModal').classList.add('hidden'); // Hide modal
     });
-        document.getElementById('changeBgButton').addEventListener('click', function () {
-            document.getElementById('bgImageInput').click(); // Trigger file input
-        });
-        document.getElementById('bgImageInput').addEventListener('change', function (e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (event) {
-                    document.body.style.backgroundImage = `url('${event.target.result}')`;
-                    document.body.style.backgroundSize = 'cover';
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-        
       </script>
       <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -375,27 +624,142 @@ setTimeout(() => {
     });
     </script>
     
+    <script>
+        // Function to show the custom popup
+        function showCustomPopup(message) {
+            // Set the popup message
+            document.getElementById('popupMessage').innerText = message;
+    
+            // Remove the 'hidden' class to show the overlay and the popup
+            document.getElementById('overlay').classList.remove('hidden');
+            document.getElementById('customPopup').classList.remove('hidden');
+        }
+    
+        // Function to close the custom popup
+        function closeCustomPopup() {
+            // Add the 'hidden' class to hide the overlay and the popup
+            document.getElementById('overlay').classList.add('hidden');
+            document.getElementById('customPopup').classList.add('hidden');
+        }
+    
+        // Add an event listener to the close button to close the popup
+        document.getElementById('closePopup').addEventListener('click', closeCustomPopup);
+    </script> 
 <script>   
-
-    let loveYouCount = 0; // Counter for "I love you" messages
+let loveYouCount = 0; // Counter for "I love you" messages
 let isBreakupActive = false; // Flag to control bot replies
 let hasSaidGoodbye = false; // Flag to track if "appa vantaanga bye" has been sent
+let canSendMessage = true; // Flag to control sending messages
+let respondedNoAppa = false;
+let responseIndex = 0;
+let isGameResponseSent = false; // Flag to track if the game response is already sent
 
+
+const badWords = ["sex", "fuck", "ass", "asshole", "clit", "vagina", "virgin", "nude","amanama", "bra", "bikini", "jatti", "panties","amanama","avu", "uru","boobs", "punda", "sunni","Thevidiya", "dhevidiya", "*", "otha", "Ootha", "*tha","mairu","maira","matter", "hair", "kunji", "koothi", "kuthi", "koodhi","kudhi", "oluka", "pundaiya", "kanji", "oothu", "uthu","sala", "saala", "vai", "potta", "pochi", "pochchi","mava", "mavale", "siluku", "silk", "olukka","umburiya","umbu","oombu","kundi","poodu","podu"];
+const forbiddenWords = ["what","how", "why", "where", "who", "doing", "obs", "will"]; // Words you want to detect
+document.getElementById('sendButton').addEventListener('click', function () {
+    const messageInput = document.getElementById('messageInput');
+    const event = new KeyboardEvent('keypress', { key: 'Enter' });
+    messageInput.dispatchEvent(event);
+});
+let isPageLoad = true;
+function loadChatHistory() {
+    const chatContainer = document.getElementById('chatContainer');
+    const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+    chatHistory.forEach(message => {
+        const messageDiv = document.createElement('div');
+        if (message.sender === 'user') {
+            messageDiv.classList.add('flex', 'justify-end');
+            messageDiv.innerHTML = `<div class="message user max-w-xs" style="font-family: 'Pacifico', cursive;"><p>${message.message}</p></div>`;
+        } else if (message.sender === 'bot') {
+            messageDiv.classList.add('flex', 'items-start', 'space-x-2');
+            messageDiv.innerHTML = `
+                <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
+                <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
+                    <p>${message.message}</p>
+                </div>
+            `;
+        }
+        chatContainer.appendChild(messageDiv);
+    });
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+function saveMessageToHistory(message, sender) {
+    let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+    const newMessage = {
+        sender: sender,
+        message: message,
+        timestamp: new Date().toISOString()
+    };
+
+    chatHistory.push(newMessage);
+    localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+}
 document.getElementById('messageInput').addEventListener('keypress', function (e) {
 
     if (e.key === 'Enter') {
         const message = e.target.value.trim();
         const chatContainer = document.getElementById('chatContainer');
+        const badWordAlert = document.getElementById('badWordAlert');
         
-        if (message.includes('voice')) {
+       if (message === '') {
+                 const profilePic = document.getElementById('profilePicLarge');
+                 profilePic.src = 'dpm.gif';
+                playAudioWithMindVoice('a.mp3'); // Play audio for empty message
+                return; // Exit if the message is empty
+            }
+        
+            // Check if message is a single character
+    if (message.length === 1) {
+            showCustomPopup("En oru letter type pandra🤨");
+            e.target.value = ''; // Clear the input
+            return; // Prevent sending a single character message
+        }
+
+        // Check if message consists of repeated characters
+        const repeatedCharRegex = /^([a-zA-Z])\1+$/; // Regex to check if the message consists of a single repeated character
+        if (repeatedCharRegex.test(message)) {
+            showCustomPopup("En orey letter ah type pandra😐");
+            e.target.value = ''; // Clear the input
+            return; // Prevent sending repeated characters
+        }       // Save the user's message to chat history only if it's valid
+        saveMessageToHistory(message, 'user');
+                const containsBadWord = badWords.some(badWord => message.includes(badWord));
+        if (containsBadWord) {
+            setTimeout(() => {
+                const profilePic = document.getElementById('profilePicLarge');
+            profilePic.src = 'angry.gif';
+            playAudioWithMindVoice('badwords.mp3'); // Play the audio alert immediately
+                localStorage.removeItem('chatHistory');
+                showCustomPopup("**Ketta vaartha use pannatha😤😠**");
+            }, 0); // Show alert without delay
+            e.target.value = ''; // Clear the input
+            canSendMessage = false; // Disable sending messages until bot replies
+
+            return; // Exit the function
+        }
+    const containsThanglish = forbiddenWords.some(word => message.includes(word));
+    if (containsThanglish) { 
+setTimeout(() => {
+    const profilePic = document.getElementById('profilePicLarge');
+    profilePic.src = 'dpm.gif';
+    playAudioWithMindVoice('tamil.mp3');
+}, 2000); // 2000 milliseconds = 2 seconds delay
+
+      showCustomPopup("Thanglish la pesu da🙄"); // Alert as soon as detected
+        e.target.value = ''; // Optionally clear the input or leave it for the user to fix
+        canSendMessage = false; // You can disable sending if needed
+    }
+        let hasSaidVoice = false;  // Track whether the user has already asked for a voice note
+if (message.includes('voice')) {
     e.target.value = '';
     setTimeout(() => {
+                if (!hasSaidVoice) {
         const audioPlayerDiv = document.createElement('div');
         audioPlayerDiv.classList.add('flex', 'items-start', 'space-x-2', 'p-0', 'rounded-lg', 'shadow-lg');
-
         audioPlayerDiv.innerHTML = `
-            <img alt="Profile picture" class="rounded-full w-10 h-10" src="dp2.jpeg" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
-            <div class="message max-w-xs flex-1">
+        <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); ">
+             <div class="message max-w-xs flex-1">
                 <div class="flex items-center justify-between">
                     <audio id="audioPlayer" class="hidden">
                         <source src="voice.mp3" type="audio/mpeg">
@@ -409,46 +773,47 @@ document.getElementById('messageInput').addEventListener('keypress', function (e
                 </div>
             </div>
         `;
-
         chatContainer.appendChild(audioPlayerDiv);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-
         const audioPlayer = audioPlayerDiv.querySelector('#audioPlayer');
         const playPauseButton = audioPlayerDiv.querySelector('#playPauseButton');
         const progressBar = audioPlayerDiv.querySelector('.progress-bar');
-
         playPauseButton.addEventListener('click', () => {
             if (audioPlayer.paused) {
                 audioPlayer.play();
                 playPauseButton.innerHTML = '<i class="fas fa-pause" style="margin-right:6px;"></i>';
                 updateProgressBar();
-            } else {
+            } 
+            
+            else {
                 audioPlayer.pause();
                 playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
             }
         });
-
         audioPlayer.addEventListener('ended', () => {
             playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
             progressBar.style.width = '0%';
         });
-
         function updateProgressBar() {
-            const interval = setInterval(() => {
-                if (audioPlayer.ended) {
-                    clearInterval(interval);
-                    return;
-                }
-                const percentage = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-                progressBar.style.width = `${percentage}%`;
-            }, 1000);
+                const interval = setInterval(() => {
+                    if (audioPlayer.ended) {
+                        clearInterval(interval);
+                        return;
+                    }
+                    const percentage = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                    progressBar.style.width = `${percentage}%`;
+                }, 1000);
+            }
+            hasSaidVoice = true; // Set flag to prevent the voice message from repeating
         }
-    }, 3000); // Simulate audio processing time
+    }, 3000); // Simulate audio processing time   
+} 
+function isRandomMessage(message) {
+    // Regular expression to match messages that contain a mix of random characters
+    // This can be adjusted to catch more cases depending on the type of nonsense messages you expect
+    return /^[a-zA-Z]{5,}$/i.test(message) && !/[aeiou]{3,}/i.test(message);
 }
 
-
-
-            if (isBreakupActive) {
+if (isBreakupActive) {
             e.target.value = ''; // Clear input
             return; // Exit the function if breakup is active
         }
@@ -459,8 +824,7 @@ document.getElementById('messageInput').addEventListener('keypress', function (e
         chatContainer.scrollTop = chatContainer.scrollHeight;
         e.target.value = ''; // Clear input
         let botReply = '';
-        const lowerCaseMessage = message.toLowerCase();
-          
+        const lowerCaseMessage = message.toLowerCase();          
         if (hasSaidGoodbye) {
     messageCountAfterGoodbye++;
     if (messageCountAfterGoodbye === 3) {
@@ -471,57 +835,433 @@ document.getElementById('messageInput').addEventListener('keypress', function (e
     }
     e.target.value = ''; // Clear input
     return; // Exit the function
+} // Check if message is a valid arithmetic expression
+        if (isValidArithmeticExpression(message)) {
+            botReply = evaluateExpression(message);
+        }
+else if (lowerCaseMessage.match(/love you/i)) {
+    loveYouCount++; // Increment the count for "I love you"
+    if (loveYouCount === 2) {
+        botReply = 'en appa oththuka maatrada, lets breakup💔';
+        isBreakupActive = true; // Stop further replies
+        setTimeout(() => {
+            hasSaidGoodbye = true; // Set the flag to true
+        document.getElementById('onlineButton').style.display = 'none'; // Hide the online button
+
+        // Get the profile picture element
+        const profilePic = document.getElementById('profilePicLarge');
+
+        // Change the profile picture to 'byee.gif'
+        profilePic.src = 'byee.gif';
+
+        // Preload dp2empty.png to avoid flickering
+        const dp2emptyImage = new Image();
+        dp2emptyImage.src = 'dp2empty.png';
+
+        // Once dp2empty.png is loaded, change the profile picture
+        dp2emptyImage.onload = () => {
+            setTimeout(() => {
+                localStorage.removeItem('chatHistory');
+                profilePic.src = 'dp2empty.png'; // Change image to 'dp2empty.png' after 3 seconds
+            }, 3000);}
+            document.getElementById('onlineButton').style.display = 'none'; // Hide the online button
+            document.getElementById('breakupPopup').style.display = 'block'; // Show the breakup popup image
+        }, 5000);
+    } else {
+        botReply = 'love you too🙈😘';
+        setTimeout(() => {
+                              // Get the profile picture element
+    const profilePic = document.getElementById('profilePicLarge');
+
+// Replace the profile picture with the dphi.gif
+profilePic.src = 'dpm.gif';
+
+// After 3 seconds, restore the profile picture to dp2.jpeg
+setTimeout(() => {
+    profilePic.src = 'dp2.jpeg'; // Restore original image
+}, 6400); // 3000 milliseconds = 3 seconds
+            const mindVoiceIcon = document.getElementById('mindVoiceIcon');
+            mindVoiceIcon.classList.remove('hidden'); // Show the mind voice icon
+            const loveYouAudio = document.getElementById('loveYouAudio');
+            playAudioWithMindVoice('loveyoutoo.mp3');
+
+            // Remove animation after it finishes
+            setTimeout(() => {
+                mindVoiceIcon.classList.add('hidden'); // Hide the mind voice icon after the audio
+                // Assuming there's some animation element to hide
+                colorBlast.style.display = 'none';
+            }, 7000); // Match this to the animation duration
+        }, 2000); // 2000 milliseconds = 2 seconds
+    }
 }
-        if (lowerCaseMessage.match(/i love you/i)) {
-            loveYouCount++; // Increment the count for "I love you"
-            if (loveYouCount === 2) {
-                botReply = 'en appa oththuka maatrada, lets breakup💔';
-                isBreakupActive = true; // Stop further replies
-                setTimeout(() => {
-                    document.getElementById('breakupPopup').style.display = 'block'; // Show the breakup popup image
-                }, 5000);
-            } else {
-                botReply = 'love you too😘'; // Replace with your meme image URL
-            }
-        }else if (lowerCaseMessage.match(/hi/i)) {
-            botReply = 'Hello🙋🏻‍♀️';
-        }else if (lowerCaseMessage.match(/photo/i)) {
-            botReply = `
-               <img src="photo.png" alt="Here’s your photo!" style="width: 100%; border-radius: 15px;">
-                 <p>Eppidi iruken🥰</p>
-            `;
-        }else if (lowerCaseMessage.match(/hey/i)) {
-            botReply = 'Hello🙋🏻‍♀️';
-        }else if (lowerCaseMessage.match(/busy/i)) {
+
+else if (lowerCaseMessage.match(/hi/i)) {
+    const responses = [
+        'hi🙋🏻‍♀️',
+        'Hii😊'
+    ];
+    botReply = responses[Math.floor(Math.random() * responses.length)];
+
+    // Get the profile picture element
+    const profilePic = document.getElementById('profilePicLarge');
+
+    // Preload the d.gif image to avoid delays
+    const gifImage = new Image();
+    gifImage.src = 'd.gif';
+
+    // Apply fade-out effect and change the image immediately
+    profilePic.classList.add('fade-out'); // Start fading out the old image
+    setTimeout(() => {
+        profilePic.src = gifImage.src; // Change to the new image after the fade-out
+        profilePic.classList.remove('fade-out'); // Remove fade-out class to restore visibility
+    }, 500); // Wait for the fade-out effect to complete (500ms)
+
+    // Set a timeout to revert back to dp2.jpeg after 3.4 seconds
+    setTimeout(() => {
+        profilePic.classList.add('fade-out'); // Fade-out again when reverting
+        setTimeout(() => {
+            profilePic.src = 'dp2.jpeg'; // Restore the original image
+            profilePic.classList.remove('fade-out'); // Remove fade-out class to restore visibility
+        }, 500); // Wait for the fade-out to complete before restoring the original image
+    }, 3400); // 3400 milliseconds = 3.4 seconds
+}
+
+
+              
+                else if (lowerCaseMessage.match(/saree|sare|pudava/i)) {   
+    // This condition will handle saree/pudava related requests first
+    botReply = `
+    <img src="photo2.jpg"  style="width: 100%; border-radius: 15px; filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">`;
+} 
+
+else if (lowerCaseMessage.match(/call|phone/i)) {
+    if (respondedNoAppa) {
+        // Define the ordered responses
+        const orderedResponses = [
+            "naathaan sonnenla appa irukaanganu🤨", 
+            "purinjikoda😕❤️",  
+            "Seri iru pandren😕🤗❤️"
+        ];
+
+        // Use the responseIndex to pick the next response in order
+        botReply = orderedResponses[responseIndex];
+
+        // Increment the index and reset it if it exceeds the length of the array
+        responseIndex = (responseIndex + 1) % orderedResponses.length;
+    } 
+    else if (lowerCaseMessage.match(/phone number/i)) {
+        botReply = '9004470167 ok ah';
+    } 
+else {
+        // Define possible responses for "call"
+        const callResponses = [
+            "nooo appa irukaanga😮",
+            "naane call pandren🥰",
+            "iru naan pandren🤗",
+            "wait naane pandren🤗",
+            "nooo appa irukaanga😮"
+        ];
+
+        // Choose a random response from the available call responses
+        botReply = callResponses[Math.floor(Math.random() * callResponses.length)];
+    }
+
+    // Check if botReply is one of the responses that should trigger the redirect
+    const redirectReplies = [
+        "naane call pandren🥰",
+        "iru naan pandren🤗",
+        "wait naane pandren🤗",
+        "Seri iru pandren😕🤗❤️"
+    ];
+
+    // If the botReply matches any of the redirectReplies, initiate the redirect
+    if (redirectReplies.includes(botReply)) {
+        console.log("Redirecting to call.html..."); // Debug log to ensure the correct response
+        setTimeout(() => {
+            window.location.href = 'call.html'; // Redirect to call.html after 4 seconds
+        }, 3500);
+    }
+
+    // If the response is "nooo appa irukaanga", set respondedNoAppa to true
+    if (botReply === "nooo appa irukaanga😮") {
+        respondedNoAppa = true;
+    }
+}
+
+
+else if (lowerCaseMessage.match(/photo|pic|image|img/i)) {
+    // This condition will handle general image requests only if no saree/pudava request is found
+    const photos = [
+        'photo2.jpg',
+        'photo3.png',
+        'photo1.png'
+    ];
+
+    const messages = [
+        'Eppidi iruken🥰',
+        '🥰'
+    ];
+
+    // Select a random photo and message
+    const randomPhoto = photos[Math.floor(Math.random() * photos.length)];
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+
+    botReply = `
+        <img src="${randomPhoto}" alt="Here’s your photo!" style="width: 100%; border-radius: 15px; filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
+        <p>${randomMessage}</p>
+    `;
+}
+
+
+                    else if (lowerCaseMessage.match(/panra|pandra|enna doing/i)) { 
+                        const responses = [
+                            'summa thaan iruken🙃',
+                        'unta thaan chat pandren😅'
+                         
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
+else if (lowerCaseMessage.match(/oi/i)) {
+    botReply = 'Oh Hoi😅';
+} 
+else if (lowerCaseMessage.match(/number/i)) {
+        botReply = '9004470167 ok ah';
+    }
+else if (lowerCaseMessage.match(/hey/i)) {
+            const responses = [
+                         'hi🙋🏻‍♀️',
+                         'Hii😊'
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }else if (lowerCaseMessage.match(/busy/i)) {
             botReply = 'illa da,sollu';
-        }else if (lowerCaseMessage.match(/number/i)) {
-            botReply = '9004470167';
         }else if (lowerCaseMessage.match(/bye/i)) {
             botReply = 'Byee👋';
             hasSaidGoodbye = true; // Set the flag to true
-            document.getElementById('onlineButton').style.display = 'none'; // Hide the online button
-        } else if (lowerCaseMessage === 'okay') {
+            setTimeout(() => {
+        const mindVoiceIcon = document.getElementById('mindVoiceIcon');
+        hasSaidGoodbye = true; // Set the flag to true
+        document.getElementById('onlineButton').style.display = 'none'; // Hide the online button
+
+        // Get the profile picture element
+        const profilePic = document.getElementById('profilePicLarge');
+
+        // Change the profile picture to 'byee.gif'
+        profilePic.src = 'byee.gif';
+
+        // Preload dp2empty.png to avoid flickering
+        const dp2emptyImage = new Image();
+        dp2emptyImage.src = 'dp2empty.png';
+
+        // Once dp2empty.png is loaded, change the profile picture
+        dp2emptyImage.onload = () => {
+            setTimeout(() => {
+                profilePic.src = 'dp2empty.png'; // Change image to 'dp2empty.png' after 3 seconds
+            }, 3000);
+        };
+
+    }, 2000); // Initial delay before bot says "appa vantaanga bye"
+}
+ 
+
+else if (lowerCaseMessage === 'okay') {
             botReply = 'Ok😊';
-        } else if (lowerCaseMessage.match(/un appa yaaru|Un appa yaaru|Un appa yaru|un appa yaru|appa|Un appa name enna|appa ah|appa va|Appa va|Appa ah|who made you?|un appa name enna|Un appa per enna|Un appa name enna|Un appa per enna|un appa name yenna|Un appa per yenna|Un appa name yenna|Un appa name enna|appa ah|appa va|Appa va|Appa ah|who made you?|who created you?|created by?|whose your creater?|developer|developer name|Developer name|developer|developed by/i)) {
-            botReply = 'Rajesh K Rishi';
+        } else if (lowerCaseMessage.match(/un appa yaaru|Un appa yaaru|Un appa yaru|un appa yaru|appa|Un appa name enna|appa ah|appa va|Appa va|Appa ah|who made you?|un appa name enna|Un appa per enna|Un appa name enna|Un appa per enna|un appa name yenna|Un appa per yenna|Un appa name yenna|Un appa name enna|appa ah|appa va|Appa va|Appa ah|who made you?|who created you?|created by?|whose your creater?|developer|developer name|Developer name|developer|developed by|father/i)) {
+            botReply = 'Rajesh K Rishi💗';
         }else if (lowerCaseMessage.match(/nice|wow|awww|semma|azhaga iruka|romba azhaga iruka|beautiful|pretty|uyire|haiyo|kolriye|paah|pah|cute|cutie pie|cutey|angel|devatha|azhagi/i)) {
             botReply = '🙈tq';
-        }else if (lowerCaseMessage.match(/name/i)) {            
-            botReply = 'en peru Rejinamotvani🥰';
-                }else if (lowerCaseMessage.match(/per/i)) {            
-            botReply = 'en peru Rejinamotvani🥰';
-                }else if (lowerCaseMessage.match(/pandra/i)) { 
-                botReply = 'unta thaan chat pandren😅';
-                }else if (lowerCaseMessage.match(/panra/i)) { 
-                botReply = 'unta thaan chat pandren😅';
-                }else if (lowerCaseMessage.match(/ooru/i)) { 
+        }
+        else if (lowerCaseMessage.match(/amma name|amma per|mom name|mother name/i)) {
+    botReply = 'Aira💗';
+}
+else if (lowerCaseMessage.match(/initial/i)) {
+    botReply = 'AR💗';
+}else if (lowerCaseMessage.match(/name|per/i)) {
+    botReply = 'Haha Hasini🥰';
+    setTimeout(() => {
+        const profilePic = document.getElementById('profilePicLarge');
+        profilePic.src = 'dpm.gif';
+        playAudioWithMindVoice('hasini.mp3');
+    }, 2000); // 2000 milliseconds = 2 seconds delay
+}
+else if (message.toLowerCase().match(/game|truth or dare|truth/i) && !isGameResponseSent) {
+    isGameResponseSent = true; // Set the flag to true to prevent duplicate replies
+    
+    // Show the bot reply
+    setTimeout(() => {
+        // Bot reply setup
+        botReply = "Truth or Dare velaiyadalaam😀, but naanthaan kepen😁";
+        botReply = botReply.replace(/, /g, '<br>');
+        const typingDiv = document.createElement('div');
+        typingDiv.classList.add('flex', 'items-start', 'space-x-2');
+        typingDiv.innerHTML = `
+            <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); ">
+            <div class="message max-w-xs">
+                <p>Typing</p>
+                <div class="typing-indicator"  style="margin-top:5px;">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>`;
+        chatContainer.appendChild(typingDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        // Save the bot reply to localStorage
+        saveMessageToHistory(botReply, 'bot');
+
+        // Handle the bot reply after a delay
+        setTimeout(() => {
+            chatContainer.removeChild(typingDiv); // Remove typing indicator
+            const botMessageDiv = document.createElement('div');
+            botMessageDiv.classList.add('flex', 'items-start', 'space-x-2');
+            botMessageDiv.innerHTML = `
+                <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); ">
+                <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
+                    <p>${botReply.replace("\n", "<br>")}</p>  <!-- Line break after comma -->
+                </div>
+            `;
+            chatContainer.appendChild(botMessageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // After 4 seconds, open the td.html page
+            setTimeout(() => {
+                window.location.href = 'td.html'; // Open the td.html page
+            }, 2000);
+        }, 1500); // Delay for bot's reply
+    }, 0); // Initial delay before the reply
+}
+
+                else if (lowerCaseMessage.match(/nice name/i)) { 
+                botReply = 'Thanks🥰';
+                }
+
+                else if (lowerCaseMessage.match(/nalla iruku/i)) { 
+                botReply = 'Thanks🥰';
+                }
+                else if (lowerCaseMessage.match(/sapten/i)) { 
+                botReply = 'okay,god boy😊';
+                }
+                else if (lowerCaseMessage.match(/enga poolam|enga poogalaam|poogalaam|engaiyathu poolaama|pogalama/i)) { 
+                botReply = 'movie🤔';
+                }
+                else if (lowerCaseMessage.match(/entha movie|movie ah|yaar movie|movie poolama| movie pogalama|movie poogalaama/i)) { 
+                botReply = 'un istam🥰';
+                }
+                else if (lowerCaseMessage.match(/enga iruka|engadi iruka|enga di iruka|where|engatha iruka|ippo enga iruka|veetulaiya iruka|veetlaiya iruka/i)) { 
+                   const responses = [
+                   'veetula thaan',
+                  'veliya iruken, apparam pesuren,kochikatha bye👋🏻' // Keep the original response
+                 ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                botReply = botReply.replace(/, /g, '<br>');
+                }
+                else if (lowerCaseMessage.match(/address|adress/i)) { 
+                    botReply = 'Osama Bin Laden, Indugus malai, kabul nagar, Afghanistan, care of  Mullah Omar';
+                    botReply = botReply.replace(/, /g, '<br>');
+           setTimeout(() => {
+            const profilePic = document.getElementById('profilePicLarge');
+            profilePic.src = 'dpm.gif';
+            playAudioWithMindVoice('address.mp3');
+            }, 2000);
+        }
+        else if (lowerCaseMessage.match(/nakku/i)) { 
+                    botReply = 'seththa payale🤬';
+                    setTimeout(() => {
+        const profilePic = document.getElementById('profilePicLarge');
+    profilePic.src = 'dpm.gif'; 
+                        playAudioWithMindVoice('nakku.mp3');
+                     }, 2000);
+        }
+        else if (lowerCaseMessage.match(/kastam|kastama|senthurava|sethuruven|sethuten|seththurava|seththuten|sethuru|sethura|seththura|sethth|seth|saaga|saga|saavu|savu/i)) { 
+            const responses = [
+                        'Saavu😠',
+                         'Saavu da😤',
+                         'Saavula Seththapayala🤬'
+                         ];
+                         
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                   setTimeout(() => {
+                    const profilePic = document.getElementById('profilePicLarge');
+                    profilePic.src = 'angry.gif';
+                    playAudioWithMindVoice('saavu.mp3');
+                   }, 2000);
+        }
+        else if (lowerCaseMessage.match(/sapudu|take care|paathuko|paathukalaam|pathu|paathu|feel pannatha|iruken|ooti|miss you|unna paakanum|unta pesanum|olunga|good girl/i)) {
+             const responses = [
+              '😏',
+              'Seri🙄',
+             'haan🙃'
+         ];
+
+              const audioFiles = [
+              'nallavan1.mp3',
+              'nallavan2.mp3'
+ 
+          ];
+
+    botReply = responses[Math.floor(Math.random() * responses.length)];
+
+    setTimeout(() => {
+        const randomAudio = audioFiles[Math.floor(Math.random() * audioFiles.length)];
+        const profilePic = document.getElementById('profilePicLarge');
+        profilePic.src = 'dpm.gif';
+        playAudioWithMindVoice(randomAudio);
+    }, 2000);
+}                else if (lowerCaseMessage.match(/mind/i)) { 
+                botReply = 'i know😏';
+                }
+
+                else if (lowerCaseMessage.match(/ooru/i)) { 
                 botReply = 'Trichy❤️';
                 }else if (lowerCaseMessage.match(/area/i)) { 
                 botReply = 'Trichy thaan ';
                 }else if (lowerCaseMessage.match(/place/i)) { 
                 botReply = 'Trichy❤️';
-                }else if (lowerCaseMessage.match(/saptiya/i)) {
-                 botReply = 'Sapten, nee saptiya';
+                }
+                else if (lowerCaseMessage.match(/vara/i)) { 
+                botReply = 'Adi vaanguva😅';
+                
+                }else if (lowerCaseMessage.match(/saptiya|sapta|sapti/i)) {
+                    const responses = [
+                        'illa pasikala, nee',
+                        'Illa vanthu ooturiya',
+                        'Sapten,nee saptiya😊', 
+                         'Sapten, nee'
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
+                else if (lowerCaseMessage.match(/eppidi iruka|iruka|iruki|how|how are you|hru/i)) {
+                    const responses = [
+                        'Nalla iruken,neenga',
+                        'fine,U',
+                        'Nalla iruken😊,neenga'
+                 ];
+
+              const audioFiles = [
+              'hru1.mp3',
+              'mamapayale.mp3'
+ 
+                    ];
+
+                     botReply = responses[Math.floor(Math.random() * responses.length)];
+
+                 setTimeout(() => {
+                    const profilePic = document.getElementById('profilePicLarge');
+                    profilePic.src = 'dpm.gif';
+                 const randomAudio = audioFiles[Math.floor(Math.random() * audioFiles.length)];
+                 playAudioWithMindVoice(randomAudio);
+                 
+                }, 2000);
+                }         
+                else if (lowerCaseMessage.match(/theriu|theriy/i)) {
+                    const responses = [
+                        'theriyum theriyum',
+                        'enaku theriyum',
+                        'theriyum' 
+                         
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
                 }else if (lowerCaseMessage.match(/love ethum/i)) {
                  botReply = 'pannalanu idea iruku😅🥰'; 
                 } else if (lowerCaseMessage.match(/love pandriya/i)) {
@@ -553,30 +1293,74 @@ document.getElementById('messageInput').addEventListener('keypress', function (e
                 }else if (lowerCaseMessage.match(/hero/i)) {
                  botReply = 'Thalapathy❤️';
                 }else if (lowerCaseMessage.match(/enna sapta|Enna sapta|Enna saptinga|enna saptinga|enna di sapta|Enna di sapta|Enna ma sapta|enna ma sapta|enna pa sapta|Enna pa sapta|ennanga saptinga/i)) {
-                    botReply = 'Biryani😋'; // Replace with your meme image URL
-                } else if (lowerCaseMessage.match(/biryani|Biryani|biriyani|Biriyani|dosa|Dosa|idly|Idly|sapadu|Sapadu/i)) {
+                    const responses = [
+                        'Biryani😋',
+                         'Dosa thaan'
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }else if (lowerCaseMessage.match(/biryani|Biryani|biriyani|Biriyani|dosa|Dosa|idly|Idly|sapadu|Sapadu/i)) {
                     botReply = 'Okay😊'; // Replace with your meme image URL
                 } else if (lowerCaseMessage.match(/sapadala|sapadanum|naa sapadala|Na sapadala|sapdala|illa|Illa|Naa sapadala|illa sapadala|Illa sapadala|innum sapadala|Innum sapadala|innum illa|Innum illa/i)) {
                     botReply = 'sapadalaiya🥺,pooi sapudu🤨'; // Replace with your meme image URL
-                }else {
-            const randomResponses = [ "seri", "ok", "okay","Mmm", "appa vantaanga bye","Mmm", ];
-            botReply = randomResponses[Math.floor(Math.random() * randomResponses.length)];
-            if (botReply === "appa vantaanga bye") {
-                hasSaidGoodbye = true; // Set the flag to true
-                document.getElementById('onlineButton').style.display = 'none'; // Hide the online button
-                setTimeout(() => {
-            document.getElementById('onlineButton').style.display = 'none'; // Show the image popup
+                }
+                else if (isRandomMessage(lowerCaseMessage)) {
+    botReply = "illa puriyala😏";
+    setTimeout(() => {
+        // Play an audio file associated with the "kai nadungutha" reply
+        playAudioWithMindVoice('illapuriyala.mp3'); // Ensure you have this audio file available
+    }, 1000); // 1000 milliseconds = 1 second delay
+}
+else {
+    const randomResponses =  [ "seri", "ok", "okay","Mmm", "appa vantaanga bye","Mmm","appa vantaanga bye"];
+    botReply = randomResponses[Math.floor(Math.random() * randomResponses.length)];
+
+    if (botReply === "appa vantaanga bye") {
+    setTimeout(() => {
+        localStorage.removeItem('chatHistory');
+        const mindVoiceIcon = document.getElementById('mindVoiceIcon');
+        hasSaidGoodbye = true; // Set the flag to true
+        document.getElementById('onlineButton').style.display = 'none'; // Hide the online button
+
+        // Display mind voice icon and popup message
+        setTimeout(() => {
+            mindVoiceIcon.classList.remove('hidden'); // Show the mind voice icon
+            mindVoiceIcon.classList.add('hidden'); // Hide the mind voice icon
             document.getElementById('imagePopup').style.display = 'block'; // Show SMS popup
-        }, 7000);
-            }
+        }, 8000);
+
+        // Get the profile picture element
+        const profilePic = document.getElementById('profilePicLarge');
+
+        // Change the profile picture to 'byee.gif'
+        profilePic.src = 'byee.gif';
+
+        // Preload dp2empty.png to avoid flickering
+        const dp2emptyImage = new Image();
+        dp2emptyImage.src = 'dp2empty.png';
+
+        // Once dp2empty.png is loaded, change the profile picture
+        dp2emptyImage.onload = () => {
+            setTimeout(() => {
+                profilePic.src = 'dp2empty.png'; // Change image to 'dp2empty.png' after 3 seconds
+            }, 3000);
+        };
+
+    }, 2000); // Initial delay before bot says "appa vantaanga bye"
+}
+ }
+    if (!botReply) {
+            console.log("No reply from bot, exiting."); // Log when no reply
+            return; // Exit early if no bot reply is set
         }
+
+        console.log("Bot reply:", botReply); // Log the bot reply
 const typingDiv = document.createElement('div');
 typingDiv.classList.add('flex', 'items-start', 'space-x-2');
 typingDiv.innerHTML = `
-    <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40"style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
+    <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); ">
     <div class="message max-w-xs">
         <p>Typing</p>
-        <div class="typing-indicator">
+        <div class="typing-indicator"  style="margin-top:5px;">
             <span></span>
             <span></span>
             <span></span>
@@ -584,32 +1368,64 @@ typingDiv.innerHTML = `
     </div>`;
 chatContainer.appendChild(typingDiv);
 chatContainer.scrollTop = chatContainer.scrollHeight;
+      // Save the bot reply to localStorage
+      saveMessageToHistory(botReply, 'bot');
 
+// Handle the bot reply after a delay
 setTimeout(() => {
-    chatContainer.removeChild(typingDiv);
+    chatContainer.removeChild(typingDiv); // Remove typing indicator
     const botMessageDiv = document.createElement('div');
     botMessageDiv.classList.add('flex', 'items-start', 'space-x-2');
     botMessageDiv.innerHTML = `
-    <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
-    <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;filter: drop-shadow(0 0 5px rgba (192, 0, 80, 0.945));">
-        <p>${botReply}</p>
-    </div>`;
+        <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); ">
+        <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
+            <p>${botReply}</p>
+        </div>
+    `;
     chatContainer.appendChild(botMessageDiv);
     chatContainer.scrollTop = chatContainer.scrollHeight;
-}, 2000);
-    }
+}, 1500); // Bot reply delay
+}
 });
-document.getElementById('closePopup').addEventListener('click', function () {
-            document.getElementById('imagePopup').style.display = 'none'; // Close the popup
-        });       
-document.getElementById('messageInput').addEventListener('input', function (e) {
-    const maxLength = 45;
+
+// Initialize chat history loading and set up periodic clearing of history
+document.addEventListener("DOMContentLoaded", function () {
+loadChatHistory();  // Load chat history once when the page is loaded
+clearChatHistoryPeriodically();  // Start periodic clearing of the chat history
+isPageLoad = false; // Set the flag to false after page load
+});
+
+// Clear chat history on profile image click
+document.getElementById('profilePicLarge').addEventListener('click', function () {
+// Clear the chat history in localStorage
+localStorage.removeItem('chatHistory');
+
+// Clear the chat container
+const chatContainer = document.getElementById('chatContainer');
+chatContainer.innerHTML = ''; // Clear the displayed messages
+});
+// Function to validate if the message is a valid arithmetic expression
+function isValidArithmeticExpression(message) {
+    const validExpressionRegex = /^[\d+\-*/().\s]+$/; // Only allow numbers, operators, and parentheses
+    return validExpressionRegex.test(message);
+}
+
+// Function to evaluate the expression safely
+function evaluateExpression(expression) {
+    try {
+        // We use eval safely by ensuring only numbers, operators, and parentheses are allowed
+        const result = eval(expression); // Evaluating the arithmetic expression
+        return `Ans vanthu: ${result}`;
+    } catch (e) {
+        return "Theriyala🙄";
+    }
+}document.getElementById('messageInput').addEventListener('input', function (e) {
+    const maxLength = 37;
     if (e.target.value.length > maxLength) {
-        alert(`Ivalo perusalaam type pannatha`);
+        showCustomPopup(`Ivalo perusalaam type pannatha🥱`);
         e.target.value = e.target.value.substring(0, maxLength); // Trim the input to max length
     }
 });
-
 </script>
 </body>
 </html>

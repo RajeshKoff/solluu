@@ -1,0 +1,353 @@
+<html>
+<head>
+    <title>Solluu</title>
+    <link rel="icon" href="logo.png">
+    <link rel="preload" href="b6.jpeg" as="image">
+    <link rel="preload" href="d.gif" as="image">
+    <link rel="preload" href="dpm.gif" as="image">
+    <link rel="preload" href="dp2.jpeg" as="image">
+    <link rel="preload" href="angry.gif" as="image">
+    <link rel="preload" href="bye.gif" as="image">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/4.0.1/wavesurfer.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('b1.jpeg');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            position: relative;
+        }
+        .blur-background {
+            filter: blur(2px); 
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+        .profile-container {
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .profile-pic {
+            width: 96px; 
+            height: 96px; 
+            border: 4px solid #ea0376;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+    
+        .profile-pic:hover {
+            transform: scale(1.05);
+        }
+    
+        .username {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #fff; 
+        }
+    
+        #profilePicLarge {
+            margin-top: -30px; 
+        }  
+    
+        #usernameLarge {
+            background: linear-gradient(to right, #ffffff, #ffffff); 
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; 
+        } 
+    
+        #mindVoiceIcon {
+            position: absolute; 
+            top: -18px; 
+            right: 0px; 
+            z-index: 10; 
+        }
+    
+        #footerImage {
+            position: absolute;
+            bottom: 20px; 
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 1; 
+            animation: fadeInFooter 1.5s ease-in forwards; 
+            width: 60px;
+        }
+    
+        .footer-buttons {
+            position: absolute;
+            bottom: 130px; 
+            left: 25%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: space-between;
+            width: 280px;
+            gap: 20px;  
+        }
+    
+        .footer-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffcae4 0%, #ff92bf 30%, #f7eaf0 80%, #b8316d 100%);
+            background-size: 400% 400%; 
+            filter: drop-shadow(0 0 10px rgba(255, 148, 193, 0.945));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            animation: gradientAnimation 5s ease infinite;
+        }
+    
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        .footer-button:hover {
+            transform: scale(1.1);  
+        }
+    
+        .footer-button:active {
+            transform: scale(1.2);  
+            background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%,  #f84da2 80%, #ffffff 100%);
+            transition: transform 0.1s ease-in-out;
+        }
+    
+        .footer-button:active {
+            transition: transform 0.3s ease-in-out;
+        }
+    
+        .footer-button i {
+            font-size: 28px; 
+            background: linear-gradient(135deg, #ffb1d3 0%, #f73f9b 30%, #89003e 100%);
+            -webkit-background-clip: text; 
+            background-clip: text; 
+            color: transparent; 
+            display: inline-block; 
+            transition: transform 0.2s ease 
+        }
+    
+        .footer-button i:hover {
+            transform: scale(1.1); 
+        }
+    
+        .footer-button.slash i {
+            text-decoration: line-through;
+        }
+    
+        #callCutButton {
+            width: 80px; 
+            height: 80px; 
+            font-size: 35px; 
+        }
+    
+        #timer {
+            font-size: 1.5rem;
+            color: white;
+            margin-top: 10px;
+            font-family: 'Pacifico', cursive;
+            filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));
+        }
+    
+        .button-container {
+            position: absolute;
+            top: 50%;
+            left: 56%;
+            transform: translate(-50%, -50%);
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            width: 80%;
+            height: 30%;
+            max-width: 900px;
+        }
+    
+        .button-container .button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            text-align: center;
+        }
+    
+        .button-container .button i {
+            font-size: 60px;
+            margin-bottom: 10px;
+        }
+    </style>   
+    <body class="text-white h-screen flex flex-col">
+        <img id="footerImage" src="rkr.png" alt="Footer Image" style="filter: drop-shadow(0 0 10px rgba(255, 148, 193, 1));">
+        <div class="button-container">
+            <div class="footer-button" id="muteButton">
+                <i class="fas fa-microphone-slash" id="micIcon"></i>
+            </div>
+            <div class="footer-button">
+                <i class="fas fa-keyboard"></i>
+            </div>
+            <div class="footer-button" id="volumeUpButton">
+                <i class="fas fa-pause"></i>
+            </div>
+            <div class="footer-button" id="userPlusButton">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="footer-button" id="videoCallButton">
+                <i class="fas fa-video"></i>
+            </div>
+            <div class="footer-button" id="commentButton">
+                <i class="fas fa-comment"></i>
+            </div>
+        </div>
+        <div class="flex items-center p-0">   
+            <img alt="Profile picture" id="profilePic" src="icon.png" style="margin-top: -25px; width:120px; filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
+            <div class="ml-4 flex-1"></div>
+        </div>
+    
+        <div class="flex flex-col items-center p-0 rounded-lg " style="z-index: 1001;">
+            <div class="relative">
+                <img alt="Profile picture" class="rounded-full w-20 h-20 border-4 border-pink-500 shadow-lg transition-transform duration-300 hover:scale-105" id="profilePicLarge" src="dpm.gif" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));" />
+                <span id="onlineButton" class="absolute bottom-12 right-0 w-5 h-5 rounded-full bg-gradient-to-r from-pink-900 to-pink-500 border-2 border-white flex items-center justify-center shadow-lg transition-colors duration-300" id="onlineLarge" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
+                    <i class="fas fa-heart text-white text-xs" style="margin-top: 1px;"></i>
+                </span>
+                <div id="mindVoiceIcon" class="absolute bottom-12 right-0 w-5 h-5 rounded-full bg-gradient-to-r from-pink-900 to-pink-500 border-2 border-white flex items-center justify-center hidden" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
+                    <img src="icon.png" alt="Mind Voice Icon" class="w-full h-full" />
+                </div>
+            </div>
+            <h2 class="text-2xl font-bold mt-1 text-white drop-shadow-lg transition-transform duration-300 hover:scale-105" id="usernameLarge" style="font-family: 'Dancing Script', cursive; filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); z-index: 10;">the_cutie_pie</h2>       
+            <div id="timer">0.00</div>
+        </div>
+        <div class="footer-buttons">
+            <div id="speakerButton">
+            </div>
+            <div class="footer-button" id="callCutButton">
+                <i class="fas fa-phone-alt" style="font-size: 30px;"></i> 
+            </div>
+        </div>   
+    <div class="flex flex-col p-4 space-y-4 overflow-y-auto flex-1 no-scrollbar" id="chatContainer" style="font-family: 'Pacifico', cursive;"></div>
+    <script>
+        let timerDisplay = document.getElementById('timer');
+        let timerValue = 0.00;
+        let timerInterval;
+        let currentAudio = null;
+        let isMuted = false;
+        let volumeLevel = 1;  
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timerValue += 0.01;
+                timerDisplay.textContent = timerValue.toFixed(2);
+            }, 1000);
+        }  
+        const callCutButton = document.getElementById('callCutButton');
+        callCutButton.addEventListener('click', () => {
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "Call Ended";
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            setTimeout(() => {
+                window.location.href = 'home.html';
+            }, 1000);
+        });
+        const audioFiles = [
+            'saavu.mp3',
+            'address.mp3',
+            'nakku.mp3'
+        ]; 
+        function playRandomAudio() {
+            const randomIndex = Math.floor(Math.random() * audioFiles.length);
+            const selectedAudio = new Audio(audioFiles[randomIndex]);
+            selectedAudio.play();
+            currentAudio = selectedAudio;
+    
+            selectedAudio.addEventListener('ended', () => {
+                clearInterval(timerInterval);
+                timerDisplay.textContent = "Call Ended";
+                setTimeout(() => {
+                    window.location.href = 'home.html';
+                }, 700);
+            });
+        } 
+        window.onload = function() {
+            startTimer();
+            playRandomAudio();
+        }; 
+        const muteButton = document.getElementById('muteButton');
+        const micIcon = document.getElementById('micIcon'); 
+        muteButton.addEventListener('click', () => {
+            if (currentAudio) {
+                if (isMuted) {
+                    currentAudio.muted = false;
+                    micIcon.classList.remove('fa-microphone');
+                    micIcon.classList.add('fa-microphone-slash');
+                    isMuted = false;
+                } else {
+                    currentAudio.muted = true;
+                    micIcon.classList.remove('fa-microphone-slash');
+                    micIcon.classList.add('fa-microphone');
+                    isMuted = true;
+                }
+            }
+        }); 
+        const volumeUpButton = document.getElementById('volumeUpButton');
+        volumeUpButton.addEventListener('click', () => {
+            if (currentAudio && volumeLevel < 1) {
+                volumeLevel += 0.1;
+                currentAudio.volume = volumeLevel;
+            }
+        }); 
+        const userPlusButton = document.getElementById('userPlusButton');
+        userPlusButton.addEventListener('click', () => {
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "conference call";
+    
+            if (currentAudio) {
+                currentAudio.pause();
+            } 
+            currentAudio = new Audio('address.mp3');
+            currentAudio.volume = volumeLevel;
+            currentAudio.play();
+            currentAudio.addEventListener('ended', () => {
+                clearInterval(timerInterval);
+                timerDisplay.textContent = "Call Ended";
+                setTimeout(() => {
+                    window.location.href = 'home.html';
+                }, 1000);
+            });
+        }); 
+        const videoCallButton = document.getElementById('videoCallButton');
+        videoCallButton.addEventListener('click', () => {
+            setTimeout(() => {
+                window.location.href = 'vc.html';
+            }, 500);
+        });    
+        const commentButton = document.getElementById('commentButton');
+        commentButton.addEventListener('click', () => {
+            setTimeout(() => {
+                window.location.href = 'home.html';
+            }, 500);
+        });
+    </script>    
+</body>
+</html>

@@ -1,0 +1,815 @@
+<html>
+<head>
+    <title>Solluu</title>
+    <link rel="preload" href="b1.jpeg" as="image">
+    <link rel="preload" href="dp.gif" as="image">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/4.0.1/wavesurfer.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url('b1.jpeg');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden; /* Prevent content from overflowing */
+  font-family: 'Pacifico', cursive; 
+}
+        .blur-background {
+            filter: blur(2px); 
+        }
+        .floating-word {
+    position: absolute;
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.7); /* Reduced opacity */
+    white-space: nowrap;
+    pointer-events: none;
+    animation: float 2s linear forwards;
+    font-family: 'Pacifico', cursive;
+    z-index: 1; /* Ensure they are behind other elements */
+    text-shadow: drop-shadow(0 0 10px rgba(255, 255, 255, 0.945)); /* Adjust color and spread */
+
+}
+        @keyframes float {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100vh); opacity: 0; }
+        }
+        @keyframes floatCenter {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); } /* Adjust the float height */
+        }
+        #centerGif {
+            position: fixed;
+            top: 37%;
+            left: 27%;
+            transform: translate(-50%, -50%);
+            z-index: 1; /* Ensure it appears above other elements */
+            width: 190px;
+            animation: floatCenter 3s ease-in-out infinite; /* Apply the floating animation */
+            filter: drop-shadow(0 0 40px rgba(255, 148, 193, 0.945)); /* Adjust color and spread */
+        }       
+        .message-cloud {
+    position: absolute;
+    background-image: url(''); /* Replace with your cloud image */
+    background-size: cover; /* Ensure the image covers the entire cloud */
+    background-color: #ffffff;
+    border-radius: 15px;
+        padding:10px 20px;
+        color: #ad004e;
+        font-family: 'Dancing Script', cursive;
+        font-weight: bold;
+        z-index: 2;
+        transform: translate(-50%, -100%);
+        transition: opacity 0.5s;
+        animation: pop-in 0.3s ease forwards; /* Keep only the pop-in animation */
+box-shadow:0 0 40px rgba(255, 148, 193, 0.945);
+}
+    @keyframes pop-in {
+        from {
+            transform: translate(-50%, -120%);
+            opacity: 0;
+        }
+        to {
+            transform: translate(-50%, -100%);
+            opacity: 1;
+        }
+    }
+
+    .arrow {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -10px;
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-top: 10px solid rgb(255, 255, 255);
+    }
+    .message-cloud::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 15px;
+        z-index: 1; /* Behind the message */
+        opacity: 0.5; /* Slight transparency */
+        filter: drop-shadow(0 0 30px rgba(255, 148, 193, 0.945)); /* Adjust color and spread */
+
+    }
+#footerImage {
+    position: absolute;
+    bottom: 20px; /* Adjust distance from the bottom as needed */
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally */
+    opacity: 1; /* Initially hidden */
+    width: 60px;
+}
+.hidden {
+            display: none;
+        }
+        .disclaimer-point {
+        display: flex; /* Align image and title horizontally */
+        align-items: center; /* Vertically center image and title */
+        margin-bottom: 7px;
+        cursor: pointer;
+    }
+    .disclaimer-img {
+        width: 30px;
+        height: 30px;
+        margin-right: 3px;
+        margin-left: 22px;
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.945)); /* Adjust color and spread */
+    }  .disclaimer-btn {
+            background: none;
+            border: none;
+            color: #ff87c3;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+            user-select: none;
+            margin-left: 5px;
+        }   .disclaimer-description{
+            color: #ffffff;
+            font-size: 15px;
+            text-align: center;
+
+        }  .button-container {
+    display: flex;              
+    justify-content: center;    
+    margin-top: 20px;     
+} 
+
+#truthDareCard {
+    position: fixed;
+    top: 52%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(10deg);
+    width: 80%;
+    z-index: 1000;
+    max-width: 500px;
+    padding: 20px;
+    color: white;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgb(255, 165, 203);
+    background: linear-gradient(135deg, #ffcae4 0%, #ff92bf 30%, #f7eaf0 80%, #b8316d 100%);
+    display: none;
+    animation: slideIn 0.5s forwards, rotateCard 0.5s forwards;
+    text-align: center;
+}
+#backgroundImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('bg2.gif');
+    border-radius: 15px;
+    background-size: cover;
+    background-position: center;
+    filter: hue-rotate(20deg); /* Apply hue rotation only to the image */
+    z-index: -1; /* Ensure it's behind the content */
+}
+#content {
+    top: 10px;
+    position: relative;
+    z-index: 1; /* Ensure it's above the background image */
+}
+        @keyframes slideIn {
+            0% {
+                transform: translate(100%, -50%) rotate(10deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+        }
+
+        @keyframes rotateCard {
+            0% { transform: translate(-50%, -50%) rotate(10deg); }
+            100% { transform: translate(-50%, -50%) rotate(0deg); }
+        }
+        
+        #dpGif {
+    width: 70px; /* Adjust the size of the DP GIF */
+    height: auto;
+    z-index: 3;
+    position: absolute;
+    top: -25px; /* Position it above the card */
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally */
+    margin-bottom: -10%; /* 10% of the bottom of the DP should be inside the card */
+    filter: drop-shadow(0 0 2px rgba(255, 148, 193, 0.945));
+}   
+
+.truth-button, .dare-button {
+    background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%,  #f84da2 50%, #470020 100%);
+    border: none;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            font-size: 18px;
+            padding: 12px 25px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+        .truth-button:hover, .dare-button:hover {
+            background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%,  #f84da2 50%, #470020 100%);
+            transform: scale(1.1);
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .truth-button {
+            background: none;
+            border: none;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #ffbad7 0%, #e50776 80%);
+            border-radius: 10px;
+        }
+        .dare-button {
+            background: none;
+            border: none;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #ffbad7 0%, #f11281 80%);
+            border-radius: 10px;
+        }
+        .small-gif {
+    width: 80px; /* Adjust width as necessary */
+    height: 80px; /* Adjust height as necessary */
+    margin: 0 auto; /* Optional: Center the gif */
+    display: block; /* Ensures it's block level and centered */
+    border-radius: 10px;
+}
+
+</style>
+</head>
+<body class="text-white h-screen flex flex-col" id="messageInput" >
+    <img id="footerImage" src="rkr.png" alt="Footer Image" style=" filter: drop-shadow(0 0 10px rgba(255, 148, 193, 1));">
+    <div id="floatingWords" class="absolute inset-0 pointer-events-none"></div>
+    <div class="flex items-center p-0">
+        <a href="home.html">
+        <img alt="Profile picture" id="profilePic" src="icon.png" style="margin-top: -25px; width:120px;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));"></a>
+        <div class="ml-4 flex-1"></div>
+        <div class="flex space-x-4">
+            <i id="infoIcon" class="fas fa-exclamation-circle text-white cursor-pointer" style="font-size: 24px; margin-bottom: 30px; margin-right: 10px; filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));"></i>
+        </div>
+    </div>
+    <img id="centerGif" src="dp.gif" alt="Center GIF" >
+          <div id="truthDareCard">
+            <div id="backgroundImage"></div>
+                           <div id="dpGif"> 
+                            <img id="dpGif" src="dp.gif" alt="Center GIF" >
+                </div>
+                <div id="content">
+                <p id="cardQuestion">This is a sample truth question.</p>
+                </div>
+                <div class="button-container">
+                    <button id="maatenBtn" class="truth-button">Maaten</button>
+                    <button id="pandrenBtn" class="dare-button">Pandren</button>
+                </div>
+            </div>
+        </div>       
+    <div id="infoModal" class="fixed inset-0 flex items-center justify-center  hidden" style="z-index: 1000;  overflow-y: auto;">
+        <div class="bg-white text-black p-6 rounded-lg shadow-lg max-w-sm" style="background: linear-gradient(135deg, #ffb1d3 0%, #e01279 30%, #82003a 80%, #e01279 100%)">           
+            <img src="disclaimer.png" style="width: 280px; display: block; margin: 0 auto;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); margin-bottom: -20px; margin-top: -30px;">
+        <div id="disclaimerPoints" class="mt-2" style="margin-bottom: 30px; font-family: 'Pacifico', cursive;">
+            <div class="disclaimer-point" id="point1">
+                <img src="point.png" alt="For Fun" class="disclaimer-img">
+                <span class="disclaimer-btn">Intended for Entertainment</span>
+                </div>
+                <p class="disclaimer-description hidden" id="desc1">
+                    This Truth or Dare game is solely for recreational purposes, offering light-hearted entertainment for all users.</p>                   
+                    <div class="disclaimer-point" id="point2">
+                    <img src="point.png" alt="For Fun" class="disclaimer-img">
+                    <span class="disclaimer-btn">Respectful Content</span>
+                    </div>
+                    <p class="disclaimer-description hidden" id="desc2">
+                    The truth questions and dare challenges are designed to be fun and harmless, with no intent to offend or hurt anyone.</p>                  
+                     <div class="disclaimer-point" id="point3">
+                        <img src="point.png" alt="For Fun" class="disclaimer-img">
+                        <span class="disclaimer-btn">Motivational Dares</span>
+                        </div>
+                        <p class="disclaimer-description hidden" id="desc3">
+                         The dare challenges encourage positive actions, personal growth, and self-improvement, motivating user to try things and stay positive.</p>
+                       <div class="disclaimer-point" id="point4">
+                          <img src="point.png" alt="For Fun" class="disclaimer-img">
+                          <span class="disclaimer-btn">Play Responsibly</span>
+                         </div>
+                         <p class="disclaimer-description hidden" id="desc4">
+                         The game is designed to uplift, motivate, and offer a fun experience, with playful audio clips that enhance the enjoyment while ensuring no discomfort.</p>            
+                        </div>
+ <div class="button-container">
+    <button id="closeModal" class="mt-2 px-5 py-2 bg-gray-300 rounded" style="background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%, #f13191 80%); color: #fff; border-radius: 10px;  font-family: 'Pacifico', cursive;">Mmm</button>
+</div>        </div>
+    </div>
+    <script>
+        document.getElementById('point1').addEventListener('click', function() {
+            document.getElementById('desc1').classList.toggle('hidden');
+        });   document.getElementById('point2').addEventListener('click', function() {
+            document.getElementById('desc2').classList.toggle('hidden');
+        });  document.getElementById('point3').addEventListener('click', function() {
+            document.getElementById('desc3').classList.toggle('hidden');
+        }); document.getElementById('point4').addEventListener('click', function() {
+            document.getElementById('desc4').classList.toggle('hidden');
+        });document.getElementById('closeModal').addEventListener('click', function() {
+            document.getElementById('infoModal').classList.add('hidden');
+            document.querySelectorAll('.disclaimer-description').forEach(function(description) {
+            description.classList.add('hidden');
+    });
+});
+    </script> 
+    <div class="flex flex-col items-center p-0 rounded-lg "></div>
+    <div class="flex flex-col p-4 space-y-4 overflow-y-auto flex-1 no-scrollbar" id="chatContainer" style="font-family: 'Pacifico', cursive;"></div>
+    <div class="flex items-center p-2"></div>
+    <audio id="notificationSound" src="msg.mp3" preload="auto"></audio>
+    <script>
+        const words = [
+    "Hi", "Hello", "Saptiya", "Enna pandra", "love you", "Cute",
+    "Poo di", "Poo da", "Number", "Okay", "Mmmm",
+    "Mmmm", "Online", "Solluu", "Love you too", "wow",
+    "seri", "Miss you", "Sorry", "Thanks", "Breakup",
+    "Blocked", "clg", "name", "sweet", "ayyo", "poolama", "Wait", "enna sapta", "Chlm", "love", "Solluu", "Offline", "Bye", "Solluu"
+];
+const floatingWordsContainer = document.getElementById('floatingWords');
+function createFloatingWord(word) {
+    const span = document.createElement('span');
+    span.innerText = word;
+    span.className = 'floating-word';
+    const startX = window.innerWidth / 2;
+    const startY = window.innerHeight / 2;
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = Math.random() * 600 + 100; // Adjusted distance
+    let endX = startX + distance * Math.cos(angle);
+    let endY = startY + distance * Math.sin(angle);
+    endX = Math.max(0, Math.min(endX, window.innerWidth - 50));  // Subtract 50 to keep the word fully visible
+    endY = Math.max(0, Math.min(endY, window.innerHeight - 50));  // Subtract 50 to keep the word fully visible
+    span.style.left = `${startX}px`;
+    span.style.top = `${startY}px`;
+    span.style.opacity = '1';
+    floatingWordsContainer.appendChild(span);
+    span.animate([{
+        transform: `translate(0, 0)`
+    }, {
+        transform: `translate(${endX - startX}px, ${endY - startY}px)`,
+        opacity: 0
+    }], {
+        duration: 2000,
+        easing: 'linear',
+        fill: 'forwards'
+    });
+    setTimeout(() => {
+        span.remove();
+    }, 2000);
+}
+setInterval(() => {
+    const word = words[Math.floor(Math.random() * words.length)];
+    createFloatingWord(word);
+}, 700); // Adjusted interval to 1 second
+    </script>
+    <script>
+        document.getElementById('infoIcon').addEventListener('click', function () {
+            document.getElementById('infoModal').classList.remove('hidden'); // Show modal
+        });
+
+        document.getElementById('closeModal').addEventListener('click', function () {
+            document.getElementById('infoModal').classList.add('hidden'); // Hide modal
+        });
+   </script>
+   <script>
+
+const messages = ["Truth😁", "Dare🤩"]; // Add Poothum to the message options
+const notificationSound = document.getElementById('notificationSound');
+const truthQuestions = [
+    "Yaaraiyathu love pandriya😁",
+    "Yaaraiyathu kiss pannirukiya😄",
+    "Innum cartoons laa paapiya😌",
+    "Unakum avalukum Kalyanam aaguma😂",
+    "yarkittaiyathu I Love You nu sollirukiya😁",
+    "Unna yaarthu love pandraangala😄"
+    
+];
+const dareChallenges = [
+    "Pooi olunga Padi🤨❤️",
+    "Amma ku help pannu❤️",
+    "Sirida romba naal aachi😂🎉",
+    "Correct Time ku Sapudu🤨",
+    "Correct Time ku Innaiku Thunganum🤨",
+    "Yethukaagavum yaarukavum Feel Pannatha❤️",
+    "First Sapudu Apparam Vela Paaru❤️",
+    "Kannadi paaru❤️",
+    "Oru nalla smile kuduthu start pannu😊💖",
+    "Oru New Skill Develop Pannu👍💡",
+    "Family odu time spend pannu👨‍👩‍👧‍👦❤️",
+    "Positive a think pannu, life la oru twist varum🧠✨",
+    "Oru charity ku panam donate pannu💰🙏",
+    "Un dream ah achive pannu, take a step forward💫🎯",
+    "Daily exercise ku time spend pannu💪🏃‍♀️",
+    "New recipe try pannu👩‍🍳🍴",
+    "Good vibes create pannu mukkiyama spread pannu😊🌈",
+    "Positivity spread pannu Namba💬💖",
+    "Stress free ah thirumba life enjoy pannu😌🌟",
+    "Oru nalla book padikka start pannu📚✨",
+    "Oru new language padi📖🌍",
+    "Morning walk ku poyidu👟🌅",
+    "Ethathu Draw pannu🎨❤️",
+    "Life ku oru nalla plan set pannu📅🎯",
+    "Oru healthy drink try pannu🍹💪",
+    "Goals set panni full effort podu🚀💥",
+    "Oru hour meditation try pannu🧘‍♀️💖",
+    "Oru surprise gift kuduthu yaariaythu happy aaku🎁💖",
+    "Social media detox pannu📵✨",
+    "Oru fun game play pannu friends odu🎮💥",
+    "Oru positive podcast oru hour listen pannu🎧🎙️",
+    "Personal growth la oru step forward pannu📈💡",
+    "weekend ku oru trip plan pannu🌳🚗",
+    "Unnoda oru small achievement ah celebrate pannu🥳🎉",
+    "Gratitude list edukka start pannu📜🙏",
+    "Deep breathing ku time spend pannu🌬️😌",
+    "Oru motivational video paaru,Unaku thevapadum📹💥",
+    "Self care ku time pannu🌸💆‍♀️",
+    "Love yourself, puriyutha💖🕊️",
+    "Inspiration ah ethathu  quotes read pannu📖💡",
+    "Oru innovative idea implement pannu💡🚀",
+    "Dream big, oru big goal set pannu🌠💫",
+    "Oru yoga session try pannu, stress free ah🧘‍♀️✨",
+    "First pooi kuli😕",
+    "Phone ah charge pannu🔋",
+    "Oru dance step practice pannu🕺💃",
+    "Unnoda short story ezhudha try pannu✍️📖",
+    "Healthy snacks ethathu sapudu🍏🍴",
+    "Pooi tea illana coffee kudi☕💫",
+    "Every day pray pannu🙏💖",
+    "Outdoor adventure plan pannu🏞️🛶",
+    "Oru new hobby try pannu🎨🎸",
+    "Paatu paadi relax pannu🎶🎤",
+    "Mindfulness practice pannu daily🌸💖",
+    "Oru creative vision board create pannu🖼️🎯",
+    "Oru nalla friend kitta time spend pannu👯‍♀️💖",
+    "Oru day trip ku plan pannu, enjoy every minute🚗🌞"
+   
+];
+
+
+const truthAmaAudio = [
+    "vekkam.mp3", "ohkiss.mp3", "pudikum.mp3","eppidiaagum.mp3","athuku3.mp3","summa.mp3"
+];
+
+const truthIllaAudio = [
+    "vidu.mp3", "athuku2.mp3", "life.mp3", "eppidiaagum.mp3","dummy.mp3","dummy2.mp3"
+];
+
+let currentMessage = ''; // Track current message state (Truth or Dare)
+
+function createMessageCloud() {
+    // Remove previous message cloud if exists
+    const existingMessageCloud = document.querySelector('.message-cloud');
+    if (existingMessageCloud) {
+        existingMessageCloud.remove();
+    }
+
+    const messageContainer = document.createElement('div');
+    messageContainer.className = 'message-cloud';
+
+    // Randomly choose Truth or Dare and store it in currentMessage
+    currentMessage = messages[Math.floor(Math.random() * messages.length)];
+    messageContainer.innerText = currentMessage; // Set the message as either Truth or Dare
+
+    notificationSound.currentTime = 0; // Reset sound to start
+    notificationSound.play().catch(error => {
+        console.error('Error playing sound:', error);
+    });
+
+    const centerGif = document.getElementById('centerGif');
+    const rect = centerGif.getBoundingClientRect();
+    messageContainer.style.left = `${rect.left + rect.width / 2}px`;
+    messageContainer.style.top = `${rect.top}px`;
+
+    const arrow = document.createElement('div');
+    arrow.className = 'arrow';
+    messageContainer.appendChild(arrow);
+    document.body.appendChild(messageContainer);
+
+    // Initially, allow clicks on the cloud
+    messageContainer.style.pointerEvents = 'auto';
+
+    // Disable further clicks on the message cloud once it is shown
+    messageContainer.style.pointerEvents = 'none';
+
+    // Allow message cloud to be clicked to proceed
+    messageContainer.addEventListener('click', () => {
+        handleClickOnMessageCloud(messageContainer);
+    });
+}
+
+// Handle click on the message cloud
+function handleClickOnMessageCloud(messageCloud) {
+    const card = document.getElementById('truthDareCard');
+    card.style.display = 'block';
+    const centerGif = document.getElementById('centerGif');
+    centerGif.style.display = 'none';
+    const floatingWords = document.getElementById('floatingWords');
+    floatingWords.style.display = 'none';
+
+    // Clear previous buttons if they exist
+    const existingButtons = card.querySelectorAll('.truth-button, .dare-button');
+    existingButtons.forEach(button => button.remove());
+
+    // Dynamically set card content based on the current message (Truth/Dare)
+    
+     if (currentMessage === 'Truth😁') {
+        handleTruthCard(card);
+    } else if (currentMessage === 'Dare🤩') {
+        handleDareCard(card);
+    }
+
+    // Hide the message cloud after the card is shown
+    messageCloud.style.display = 'none';
+}
+
+function handleTruthCard(card) {
+    const truthIndex = Math.floor(Math.random() * truthQuestions.length);
+    document.getElementById('cardQuestion').innerText = truthQuestions[truthIndex];
+
+    // Get the corresponding Ama and Illa audio files based on the selected question
+    const amaAudioFile = new Audio(truthAmaAudio[truthIndex]);
+    const illaAudioFile = new Audio(truthIllaAudio[truthIndex]);
+
+    // Unique responses for each truth question (Ama and Illa button clicks)
+    const amaResponses = [
+        "Ama va😁❤️super uh", // For question 1
+        "Oh hoo!😄", // For question 2
+        "Super uh🤩", // For question 3
+        "Eppidi nadakum😂", // For question 4
+        "Nambara maari illaiye😂", // For question 5
+        "Appidiya😂" // For question 6
+
+    ];
+
+    const illaResponses = [
+        "Seri vidu ellam varum😁", // For question 1
+        "Eppidi nadakum😂", // For question 2
+        "😕", // For question 3
+        "Athaane paathen😂", // For question 4
+        "Dummy Bawa😂", // For question 5
+        "Theriyumey😂" // For question 6
+     
+    ];
+
+    // Add Truth buttons (Ama and Illa)
+    const amaButton = document.createElement('button');
+    amaButton.innerText = 'Ama';
+    amaButton.classList.add('truth-button');
+
+    const illaButton = document.createElement('button');
+    illaButton.innerText = 'Illa';
+    illaButton.classList.add('truth-button');
+
+    card.appendChild(amaButton);
+    card.appendChild(illaButton);
+
+    // Attach event listeners to the buttons
+    amaButton.addEventListener('click', () => {
+        // Play the Ama response audio and display a unique response for this question
+        processTruthResponse(amaResponses[truthIndex], amaAudioFile, amaButton, illaButton);
+    });
+
+    illaButton.addEventListener('click', () => {
+        // Play the Illa response audio and display a unique response for this question
+        processTruthResponse(illaResponses[truthIndex], illaAudioFile, illaButton, amaButton);
+    });
+}
+
+function processTruthResponse(messageText, audioFile, buttonToDisable, otherButton) {
+    const messageCloud = document.querySelector('.message-cloud');
+    messageCloud.innerText = messageText;
+
+    // Create and append an arrow to the message cloud
+    const arrow = createArrow();
+    messageCloud.appendChild(arrow);
+
+    // Play the corresponding audio file (Ama or Illa)
+    audioFile.play();
+
+    // Once audio finishes playing, hide the card and show other elements
+    audioFile.onended = () => {
+        setTimeout(() => {
+            // Hide the truth card and show centerGif and floatingWords again
+            const card = document.getElementById('truthDareCard');
+            card.style.display = 'none';
+            const centerGif = document.getElementById('centerGif');
+            centerGif.style.display = 'block';
+            const floatingWords = document.getElementById('floatingWords');
+            floatingWords.style.display = 'block';
+
+            createMessageCloud(); // Recreate the message cloud after response
+        }, 1000); // Delay to ensure everything finishes playing
+    };
+
+    // Disable both buttons after an action is taken
+    buttonToDisable.disabled = true;
+    otherButton.disabled = true;
+}
+let maatenClickCount = 0; // Counter to track Maaten button clicks
+function handleDareCard(card) {
+    const dareIndex = Math.floor(Math.random() * dareChallenges.length);
+    document.getElementById('cardQuestion').innerText = dareChallenges[dareIndex];
+
+    // Create Dare buttons (Pandren and Maaten)
+    const pandrenButton = document.createElement('button');
+    pandrenButton.innerText = 'Pandren';
+    pandrenButton.classList.add('dare-button');
+
+    const maatenButton = document.createElement('button');
+    maatenButton.innerText = 'Maaten';
+    maatenButton.classList.add('dare-button');
+
+    // Append buttons to the card
+    card.appendChild(pandrenButton);
+    card.appendChild(maatenButton);
+
+    let smallGif; // Declare smallGif outside to ensure we can access it later
+
+    // Handle the Maaten button clicks
+    maatenButton.addEventListener('click', function maatenClickHandler() {
+        maatenClickCount++;
+        if (maatenClickCount === 1) {
+            // First click: Show "Enakaga pannamaatiya" message
+            processDareResponse('Enakaga pannamaatiya😕', maatenButton, pandrenButton, true);
+        } else if (maatenClickCount === 2) {
+            // Second click: Show "Mairu pandra" message, hide both buttons and show Pandren button
+            processDareResponse('Mooditu pandra🤨', maatenButton, pandrenButton, false);
+
+            // Play the "Mairu pandra" audio
+            const mairuPandraAudio = new Audio('maaten.m4a');
+            mairuPandraAudio.play();
+
+            // After the audio finishes, show the centerGif, floatingWords, and messageCloud
+            mairuPandraAudio.onended = () => {
+                // Show centerGif and floatingWords
+                const centerGif = document.getElementById('centerGif');
+                const floatingWords = document.getElementById('floatingWords');
+                centerGif.style.display = 'block';
+                floatingWords.style.display = 'block';
+
+                // Show the message cloud again
+                const messageCloud = document.querySelector('.message-cloud');
+                messageCloud.style.display = 'block';
+                const card = document.getElementById('truthDareCard');
+                card.style.display = 'none';
+                if (smallGif) {
+                    smallGif.style.display = 'none'; // Hide smallGif
+                }
+                // Recreate the message cloud if needed (if you want to reset or change it)
+                createMessageCloud();
+            };
+
+            // Hide both Maaten and Pandren buttons but keep the card size fixed
+            maatenButton.style.display = 'none'; // Hide the Maaten button, but keep its space
+            pandrenButton.style.display = 'none'; // Hide the Pandren button, but keep its space
+            // Remove the small gif from the card if it exists
+            if (smallGif) {
+                smallGif.style.display = 'none'; // Hide smallGif if it exists
+            }
+            // Create and insert the small gif to occupy the space of the hidden buttons
+            smallGif = document.createElement('img');
+            smallGif.src = 'maaten.gif'; // Replace with the actual gif path
+            smallGif.classList.add('small-gif'); // Optional: add styling to control the gif size and position
+            card.appendChild(smallGif);
+
+            // Attach the event listener for the Pandren button here after making it visible
+            pandrenButton.addEventListener('click', () => {
+                processDareResponse('Good Boy', 'saavu.mp3', pandrenButton, maatenButton, false, true);
+            });
+        }
+    });
+
+    // Initially add the Pandren button listener (before it is shown after second Maaten click)
+    pandrenButton.addEventListener('click', () => {
+        processDareResponse('Good Boy', 'saavu.mp3', pandrenButton, maatenButton, false, true);
+    });
+
+    // Ensure buttons are visible (if there were any hiding issues)
+    pandrenButton.style.display = 'inline-block';
+    maatenButton.style.display = 'inline-block';
+
+    // Reset Maaten click count when card is shown again
+    card.addEventListener('animationend', () => {
+        maatenClickCount = 0;  // Reset the click count when card is shown again
+    });
+}
+
+
+// Function to handle the response for Dare button click
+function processDareResponse(messageText, audioFile, buttonToDisable, otherButton, isFirstClick, isPandrenClick = false) {
+    const messageCloud = document.querySelector('.message-cloud');
+    messageCloud.innerText = messageText;
+
+    // Create and append arrow
+    const arrow = createArrow();
+    messageCloud.appendChild(arrow);
+
+    if (audioFile) {
+        const dareAudio = new Audio(audioFile);
+        dareAudio.play();
+
+        dareAudio.onended = () => {
+            setTimeout(() => {
+                // After the audio ends
+                if (isFirstClick) {
+                    // On first click of Maaten button, hide Maaten and show Pandren
+                    buttonToDisable.style.visibility = 'hidden'; // Hide the Maaten button
+                    otherButton.style.visibility = 'visible'; // Show the Pandren button
+                }
+
+                if (isPandrenClick) {
+                    // On Pandren click, show "Good Boy" and hide the card and message cloud
+                    messageCloud.innerText = 'Good Boy'; // Change message to "Good Boy"
+                    // After the message "Good Boy", hide the card and message cloud
+                    const card = document.getElementById('truthDareCard');
+                    card.style.display = 'none';
+                    messageCloud.style.display = 'none';
+                
+                    const centerGif = document.getElementById('centerGif');
+                    centerGif.style.display = 'block';
+
+                    const floatingWords = document.getElementById('floatingWords');
+                    floatingWords.style.display = 'block';
+
+                    createMessageCloud(); // Recreate the message cloud
+                }
+            }, 1000); // Delay to ensure the audio finishes before hiding elements
+        };
+    }
+
+    // Disable both buttons after an action is taken
+    buttonToDisable.disabled = true;
+    otherButton.disabled = true;
+}
+
+// Function to create an arrow and append it to the message cloud
+function createArrow() {
+    const arrow = document.createElement('div');
+    arrow.classList.add('arrow');
+    return arrow;
+}
+
+// Initialize the first message cloud after a short delay
+setTimeout(() => {
+    createMessageCloud();
+}, 1400);
+
+
+// Handle the click event on the centerGif element
+document.getElementById('centerGif').addEventListener('click', () => {
+   // If the current message is Poothum, redirect to home.html
+ 
+        const card = document.getElementById('truthDareCard');
+        card.style.display = 'block'; // Show the card
+        const centerGif = document.getElementById('centerGif');
+        centerGif.style.display = 'none'; // Hide the centerGif
+        const floatingWords = document.getElementById('floatingWords');
+        floatingWords.style.display = 'none'; // Hide floating words
+
+        // Clear any existing buttons
+        const existingButtons = card.querySelectorAll('.truth-button, .dare-button');
+        existingButtons.forEach(button => button.remove());
+
+        // Dynamically set the card content based on the current message (Truth or Dare)
+        if (currentMessage === 'Truth😁') {
+            handleTruthCard(card);
+        } else if (currentMessage === 'Dare🤩') {
+            handleDareCard(card);
+        
+    }
+});
+
+</script>
+</body>
+</html>

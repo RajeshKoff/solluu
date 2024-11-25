@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Solluu</title>
+    <link rel="icon" href="logo.png">
+    <link rel="preload" href="b1.jpeg" as="image">
+    <link rel="preload" href="dp.gif" as="image">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/4.0.1/wavesurfer.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+    <style>
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url('b1.jpeg');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden; /* Prevent content from overflowing */
+}
+        .blur-background {
+            filter: blur(2px); 
+        }
+        .video-call-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: none; /* Initially hidden */
+        }
+        .video-player {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+        .user-video-frame {
+            position: absolute;
+            bottom: 530px;
+            right: 15px;
+            width: 48vw;
+            height: auto;
+            border: 4px solid rgb(255, 255, 255);
+            border-radius: 10px;
+            filter: drop-shadow(0 0 10px rgba(255, 148, 193, 0.945)); /* Adjust color and spread */
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        .floating-word {
+    position: absolute;
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.7); /* Reduced opacity */
+    white-space: nowrap;
+    pointer-events: none;
+    animation: float 2s linear forwards;
+    font-family: 'Pacifico', cursive;
+    z-index: 0; /* Ensure they are behind other elements */
+    text-shadow: #fff;
+}
+        @keyframes float {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100vh); opacity: 0; }
+        }
+        @keyframes floatCenter {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); } /* Adjust the float height */
+        }
+        #centerGif {
+            position: fixed;
+            top: 37%;
+            left: 27%;
+            transform: translate(-50%, -50%);
+            z-index: 1; /* Ensure it appears above other elements */
+            width: 190px;
+            animation: floatCenter 3s ease-in-out infinite; /* Apply the floating animation */
+            filter: drop-shadow(0 0 40px rgba(255, 148, 193, 0.945)); /* Adjust color and spread */
+        }
+        .message-cloud {
+    position: absolute;
+    background-color: #ffffff;
+    border-radius: 15px;
+        padding:10px 20px;
+        color: #ad004e;
+        font-family: 'Dancing Script', cursive;
+        font-weight: bold;
+        z-index: 2;
+        transform: translate(-50%, -100%);
+        transition: opacity 0.5s;
+        animation: pop-in 0.3s ease forwards; /* Keep only the pop-in animation */
+box-shadow:0 0 40px rgba(255, 148, 193, 0.945);
+}
+
+    @keyframes pop-in {
+        from {
+            transform: translate(-50%, -120%);
+            opacity: 0;
+        }
+        to {
+            transform: translate(-50%, -100%);
+            opacity: 1;
+        }
+    }
+
+    .arrow {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -10px;
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-top: 10px solid rgba(255, 255, 255, 0.9);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .message-cloud::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 15px;
+        z-index: 1; /* Behind the message */
+        opacity: 1; /* Slight transparency */
+        filter: drop-shadow(0 0 30px rgba(255, 148, 193, 0.945)); /* Adjust color and spread */
+
+    }
+/* Wrapper for the End Call button (GIF) */
+.end-call-wrapper {
+    position: absolute;
+    top: 635px; /* Position it where you want */
+    right: 105px;
+    width: 180px; /* Width of the wrapper, same as the GIF */
+    height: 180px; /* Height of the wrapper */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001; /* Ensures it appears above the video */
+    filter: drop-shadow(0 0 30px rgba(255, 148, 193, 0.945)); /* Adjust color and spread */
+}
+
+/* White circle behind the GIF */
+.end-call-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 10; /* Position it inside the wrapper */
+    left: 10; /* Position it inside the wrapper */
+    width: 40px; /* Slightly larger than the GIF */
+    height: 49px; /* Slightly larger than the GIF */
+    border-radius: 50%; /* Circle shape */
+    background-color: rgb(255, 255, 255); /* White color for the circle */
+    z-index: -1; /* Places it behind the GIF */
+    filter: drop-shadow(0 0 10px rgba(255, 148, 193, 0.945)); /* Adjust color and spread */
+
+}
+
+  </style>
+   <style>
+    .hidden {
+        display: none;
+    }
+    .disclaimer-point {
+    display: flex; /* Align image and title horizontally */
+    align-items: center; /* Vertically center image and title */
+    margin-bottom: 7px;
+    cursor: pointer;
+}
+.disclaimer-img {
+    width: 30px;
+    height: 30px;
+    margin-right: 3px;
+    margin-left: 22px;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.945)); /* Adjust color and spread */
+}
+
+    .disclaimer-btn {
+        background: none;
+        border: none;
+        color: #ff87c3;
+        cursor: none;
+        text-align: center;
+        font-size: 16px;
+        user-select: none;
+        margin-left: 5px;
+        outline: none;
+        
+
+    }
+    
+    .disclaimer-description{
+        color: #ffffff;
+        font-size: 15px;
+        text-align: center;
+
+    }
+    .button-container {
+display: flex;               /* Use flexbox */
+justify-content: center;     /* Center horizontally */
+margin-top: 20px;            /* Add spacing above the button if needed */
+} 
+    /* Footer Image Styles */
+    #footerImage {
+    position: absolute;
+    bottom: 20px; /* Adjust distance from the bottom as needed */
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally */
+    opacity: 1; /* Initially hidden */
+    animation: fadeInFooter 1.5s ease-in forwards; /* Fade-in effect */
+    width: 60px;
+}
+
+</style>
+</head>
+<body class="text-white h-screen flex flex-col" id="messageInput" >
+    <img id="footerImage" src="rkr.png" alt="Footer Image" style=" filter: drop-shadow(0 0 10px rgba(255, 148, 193, 1));">
+    <div id="floatingWords" class="absolute inset-0 pointer-events-none"></div>
+    <div class="flex items-center p-0" >
+        <a href="home.html"  style=" z-index: 1001">
+        <img alt="Profile picture" id="profilePic" src="icon.png" style="margin-top: -25px; width:120px;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));"></a>
+        <div class="ml-4 flex-1"></div>
+        <div class="flex space-x-4">
+            <i id="infoIcon" class="fas fa-exclamation-circle fa-light text-white cursor-pointer" 
+            style="font-size: 24px; cursor: none; margin-bottom: 30px; margin-right: 10px; filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));"></i>
+                 </div>
+    </div>
+    <img id="centerGif" src="dp.gif" alt="Center GIF" />
+    <div id="infoModal" class="fixed inset-0 flex items-center justify-center  hidden" style="z-index: 1000;  overflow-y: auto;">
+        <div class="bg-white text-black p-6 rounded-lg shadow-lg max-w-sm" style="background: linear-gradient(135deg, #ffb1d3 0%, #e01279 30%, #82003a 80%, #e01279 100%)">     
+            <img src="disclaimer.png" style="width: 280px; display: block; margin: 0 auto;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); margin-bottom: -20px; margin-top: -30px;">
+              <div id="disclaimerPoints" class="mt-2" style="font-family: 'Pacifico', cursive;">
+                <div class="disclaimer-point" id="point1">
+                    <img src="point.png" alt="Video Call" class="disclaimer-img">
+                    <span class="disclaimer-btn">Entertainment Purpose Only</span>
+                </div>
+                <p class="disclaimer-description hidden" id="desc1">
+                 This app is designed solely for entertainment purposes. All audio interactions,are intended to provide fun.</p>                   
+                <div class="disclaimer-point" id="point2">
+                    <img src="point.png" alt="Fun Videos" class="disclaimer-img">
+                    <span class="disclaimer-btn">No Real Communication</span>
+                </div>
+                <p class="disclaimer-description hidden" id="desc2">
+                This app does not support actual phone calls or real-time communication. All audio is pre-recorded and intended for playful interaction only.
+                </p> 
+                <div class="disclaimer-point" id="point3">
+                    <img src="point.png" alt="Famous Reels" class="disclaimer-img">
+                    <span class="disclaimer-btn">Respect for All Individuals</span>
+                </div>
+                <p class="disclaimer-description hidden" id="desc3">
+                I deeply respect all individuals, especially women. The use of the female voice is meant to bring humor, not to demean or target anyone.
+                </p>
+                <div class="disclaimer-point" id="point4">
+                    <img src="point.png" alt="Entertainment Only" class="disclaimer-img">
+                    <span class="disclaimer-btn">Respectful Fun</span>
+                </div>
+                <p class="disclaimer-description hidden" id="desc4">
+                    Any content that may be misinterpreted is meant in good spirit and should not be seen as disrespectful.
+                </p>            
+            </div>
+ <div class="button-container">
+    <button id="closeModal" class="mt-2 px-5 py-2 bg-gray-300 rounded" style="background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%, #f13191 80%); color: #fff; border-radius: 10px;  font-family: 'Pacifico', cursive;">Mmm</button>
+</div> 
+        </div>
+    </div>
+    <div class="flex flex-col items-center p-0 rounded-lg "></div>
+    <div class="flex flex-col p-4 space-y-4 overflow-y-auto flex-1 no-scrollbar" id="chatContainer" style="font-family: 'Pacifico', cursive;"></div>
+    <div class="flex items-center p-2"></div>
+    <audio id="notificationSound" src="msg.mp3" preload="auto"></audio>        
+    </div>
+<script>
+    document.getElementById('centerGif').addEventListener('click', function () {
+    notificationSound.pause();
+    notificationSound.currentTime = 0;
+});       
+        document.getElementById('infoIcon').onclick = function() {
+            document.getElementById('infoModal').classList.toggle('hidden');
+        }
+
+        document.getElementById('closeInfoModal').onclick = function() {
+            document.getElementById('infoModal').classList.add('hidden');
+        }
+    backgroundVideo.volume = 1.0;  
+      </script>
+             <script>
+                document.getElementById('point1').addEventListener('click', function() {
+                    document.getElementById('desc1').classList.toggle('hidden');
+                });
+                document.getElementById('point2').addEventListener('click', function() {
+                    document.getElementById('desc2').classList.toggle('hidden');
+                });
+                document.getElementById('point3').addEventListener('click', function() {
+                    document.getElementById('desc3').classList.toggle('hidden');
+                });
+                document.getElementById('point4').addEventListener('click', function() {
+                    document.getElementById('desc4').classList.toggle('hidden');
+                });
+            document.getElementById('closeModal').addEventListener('click', function() {
+            document.getElementById('infoModal').classList.add('hidden');
+                document.querySelectorAll('.disclaimer-description').forEach(function(description) {
+                description.classList.add('hidden');
+            });
+        });   
+            </script>
+      <script>
+        document.getElementById('centerGif').addEventListener('click', function() {         
+        });
+        const words = [
+    "Hi", "Hello", "Saptiya", "Enna pandra", "love you", "Cute",
+    "Poo di", "Poo da", "Number", "Okay", "Mmmm",
+    "Mmmm", "Online", "Solluu", "Love you too", "wow",
+    "seri", "Miss you", "Sorry", "Thanks", "Breakup",
+    "Blocked", "clg", "name", "sweet", "ayyo", "poolama", "Wait", "enna sapta", "Chlm", "love", "Solluu", "Offline", "Bye", "Solluu"
+];
+const floatingWordsContainer = document.getElementById('floatingWords');
+
+function createFloatingWord(word) {
+    const span = document.createElement('span');
+    span.innerText = word;
+    span.className = 'floating-word';
+    const startX = window.innerWidth / 2;
+    const startY = window.innerHeight / 2;
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = Math.random() * 600 + 100; // Adjusted distance
+    let endX = startX + distance * Math.cos(angle);
+    let endY = startY + distance * Math.sin(angle);
+    endX = Math.max(0, Math.min(endX, window.innerWidth - 50));  // Subtract 50 to keep the word fully visible
+    endY = Math.max(0, Math.min(endY, window.innerHeight - 50));  // Subtract 50 to keep the word fully visible
+    span.style.left = `${startX}px`;
+    span.style.top = `${startY}px`;
+    span.style.opacity = '1';
+    floatingWordsContainer.appendChild(span);
+    span.animate([{
+        transform: `translate(0, 0)`
+    }, {
+        transform: `translate(${endX - startX}px, ${endY - startY}px)`,
+        opacity: 0
+    }], {
+        duration: 2000,
+        easing: 'linear',
+        fill: 'forwards'
+    });
+    setTimeout(() => {
+        span.remove();
+    }, 2000);
+}
+setInterval(() => {
+    const word = words[Math.floor(Math.random() * words.length)];
+    createFloatingWord(word);
+}, 700);
+        </script>       
+    <script>
+const messages = [
+    "Hello🥰♡︎",
+    "Attend pannu♡︎",
+    "Call edu da♡︎",
+    "Dei venna🤨♡︎",
+    "Edukuraananu paaru🤨♡︎",
+    "irukiya🥱♡︎"
+];
+let showMessageClouds = true;
+let messageIndex = 0; 
+document.getElementById('centerGif').addEventListener('click', function() {
+    showMessageClouds = false;
+    window.location.href = 'call1.html'; 
+    notificationSound.pause();
+    notificationSound.currentTime = 0; 
+});
+function createMessageCloud() {
+    if (!showMessageClouds) return; 
+    const messageContainer = document.createElement('div');
+    messageContainer.className = 'message-cloud';
+    messageContainer.innerText = messages[messageIndex]; 
+    notificationSound.currentTime = 0; 
+    notificationSound.play().catch(error => {
+        console.error('Error playing sound:', error);
+    });
+    const centerGif = document.getElementById('centerGif');
+    const rect = centerGif.getBoundingClientRect();
+    messageContainer.style.left = `${rect.left + rect.width / 2}px`;
+    messageContainer.style.top = `${rect.top}px`;
+    const arrow = document.createElement('div');
+    arrow.className = 'arrow';
+    document.body.appendChild(messageContainer);
+    messageContainer.appendChild(arrow);
+    setTimeout(() => {
+        messageContainer.style.opacity = '0';
+        setTimeout(() => {
+            messageContainer.remove();
+        }, 500); 
+    }, 3000); 
+    messageIndex++;
+    if (messageIndex >= messages.length) {
+        messageIndex = 0;
+    }
+}
+setTimeout(() => {
+    createMessageCloud();
+    setInterval(createMessageCloud, 4000);
+}, 1500);
+    </script>
+</body>
+</html>

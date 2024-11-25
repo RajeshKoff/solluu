@@ -1,0 +1,455 @@
+<html>
+<head>
+    <title>Solluu</title>
+    <link rel="icon" href="logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/4.0.1/wavesurfer.min.js"></script>
+
+    <style>
+        body {
+            background: url('b6.jpeg');
+            background-size: cover;
+            transition: filter 0.3s ease; /* Smooth transition for blur effect */
+
+        }
+        .blur-background {
+            filter: blur(2px); /* Adjust blur intensity */
+        }
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+        }
+        .typing-indicator span {
+            display: block;
+            width: 8px;
+            height: 8px;
+            margin: 0 2px;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0;
+            animation: typing 0.9s infinite;
+        }
+        .typing-indicator span:nth-child(1) { animation-delay: 0s; }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.3s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.6s; }
+        @keyframes typing {
+            0%, 60%, 100% { opacity: 0; }
+            30% { opacity: 1; }
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .message {
+            background: linear-gradient(135deg, #ffb1d3 0%, #f73f9b 30%, #89003e 100%);
+            padding: 10px;
+            border-radius: 15px;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .message.user {
+            background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%,  #f84da2 80%, #ffffff 100%);
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            border-radius: 10px;       
+        }
+        .popup img {
+            width: 600px;
+            border-radius: 10px;
+        }
+                /* Heart animation */
+        .heart {
+            position: absolute;
+
+            animation: float 2s forwards;
+        }
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-200px);
+                opacity: 0;
+            }
+        }
+.profile-container {
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+.profile-pic {
+    width: 96px; /* 24 * 4 */
+    height: 96px; /* 24 * 4 */
+    border: 4px solid #ea0376; /* Pink border */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease; /* Smooth scaling */
+}
+
+.profile-pic:hover {
+    transform: scale(1.05); /* Scale up on hover */
+}
+
+/* Username Styles */
+.username {
+    font-size: 1.5rem; /* 2xl */
+    font-weight: 600; /* Semi-bold */
+    color: #fff; /* White color */
+}
+#profilePicLarge {
+    margin-top: -30px; /* Adjust this value to move it up further */
+}  
+#usernameLarge {
+    background: linear-gradient(to right, #ffffff, #ffffff); /* Gradient background */
+    -webkit-background-clip: text; /* Clip background to text */
+    -webkit-text-fill-color: transparent; /* Make text color transparent */
+} 
+</style>
+   <script>
+        const messageInput = document.getElementById('messageInput');
+
+        messageInput.addEventListener('focus', function() {
+            document.body.classList.add('blur-background'); // Add the blur effect when focused
+        });
+
+        messageInput.addEventListener('blur', function() {
+            document.body.classList.remove('blur-background'); // Remove the blur effect when not focused
+        });
+    </script>
+
+</head>
+<body class="text-white h-screen flex flex-col">
+    <div class="flex items-center p-0">
+        <a href="index.html">
+        <img alt="Profile picture" id="profilePic" src="icon.png" style="margin-top: -25px; width:120px;"></a>
+        <div class="ml-4 flex-1"></div>
+        <div class="flex space-x-4">
+            <i id="infoIcon" class="fas fa-info-circle text-white cursor-pointer" style="font-size: 24px; margin-bottom: 30px; margin-right: 10px;"></i>
+        </div>
+    </div>
+    <div id="infoModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white text-black p-6 rounded-lg shadow-lg max-w-sm" style="background: linear-gradient(135deg, #ffb1d3 0%, #e01279 30%, #82003a 80%, #e01279 100%)">
+            <img src="popup.png" style="width: 280px; display: block; margin: 0 auto;">
+            <h3 class="mt-2 text-center" style="color: #fff; margin-bottom: 10px;">Created by:
+                <a href="https://www.instagram.com/rajesh_k_rishi/" style="color: #ff87c3;"><b>Rajesh K Rishi</b></a>
+            </h3>
+            <h3 class="mt-2 text-center" style="color: #fff; margin-bottom: 10px;">The app is still under development!</h3>
+            <input type="file" id="bgImageInput" accept="image/*" class="mt-4" style="display: none;" />
+            <button id="closeModal" class="mt-2 px-5 py-2 bg-gray-300 rounded" style="background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%,  #f13191 80%); color: #fff; border-radius: 10px; margin-left: 110px;">OK</button>
+        </div>
+    </div>
+    <div class="flex flex-col items-center p-0 rounded-lg ">
+        <div class="relative">
+            <a href="index.html">
+            <img alt="Profile picture" class="rounded-full w-20 h-20 border-4 border-pink-500 shadow-lg transition-transform duration-300 hover:scale-105" id="profilePicLarge" src="dp2.jpeg" /></a>
+            <span id="onlineButton" class="absolute bottom-12 right-0 w-5 h-5 rounded-full bg-gradient-to-r from-pink-900 to-pink-500 border-2 border-white flex items-center justify-center shadow-lg transition-colors duration-300" id="onlineLarge">
+                <i class="fas fa-heart text-white text-xs" style="margin-top: 1px;"></i>
+            </span>
+        </div>
+        <h2 class="text-2xl font-bold mt-1 text-white drop-shadow-lg transition-transform duration-300 hover:scale-105" id="usernameLarge" style="font-family: 'Dancing Script', cursive;">the_cutie_pie </h2>
+    </div>
+    <div class="flex flex-col p-4 space-y-4 overflow-y-auto flex-1 no-scrollbar" id="chatContainer" style="font-family: 'Pacifico', cursive;" ></div>
+    <div class="flex items-center p-2">
+        <input class="flex-1 p-2 rounded-full" id="messageInput" placeholder="Solluu..." type="text" style="color: #c01f72;outline: none; font-family:'Pacifico', cursive; border-radius: 10px;"> <i class="fas fa-paper-plane send-icon" id="sendButton"></i>
+    </div>
+    <div id="imagePopup" class="popup " >
+        <img src="sms.gif" alt="Image Response" style="width: 300px;">
+        <button id="closePopup" class="mt-2 px-4 py-2 " style="color: #c01f72;"></button>
+    </div>
+    <div id="breakupPopup" class="popup" style="display: none;">
+        <img src="blocked.gif" alt="Breakup Response" style="width: 300px;">
+        <button id="closeBreakupPopup" class="mt-2 px-4 py-2" style="color: #c01f72;"></button>
+    </div>
+    <div id="audioPlayerContainer" class="flex items-center hidden">
+        <audio id="audioPlayer" controls>
+            <source id="audioSource" src="winner.ogg" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <script>
+                document.getElementById('messageInput').addEventListener('input', function () {
+            createHeartAnimation();
+        });
+
+        function createHeartAnimation() {
+            const heart = document.createElement('img');
+    heart.src = 'icon.png'; // Replace with the path to your heart image
+    heart.className = 'heart'; // Optional: keep the class for styling
+    heart.style.position = 'absolute';
+    heart.style.width = '50px'; // Set the size as needed
+    heart.style.height = '50px'; // Set the size as needed
+    document.body.appendChild(heart);
+    const inputField = document.getElementById('messageInput');
+    const rect = inputField.getBoundingClientRect();
+        const randomX = Math.random() * window.innerWidth;
+    heart.style.left = `${randomX}px`; // Random horizontal position
+    heart.style.top = `${rect.top + window.scrollY - 20}px`; // Position it just above the input
+   const floatDistance = Math.random() * 50 + 30; // Random distance to float upwards
+    const floatDuration = Math.random() * 1000 + 1000; // Random duration between 1s and 2s
+    const angle = Math.random() * 360; // Random angle between 0 and 360
+    const distance = Math.random() * 50 + 30; // Random distance to float
+            // Remove heart after animation
+            heart.addEventListener('animationend', () => {
+                heart.remove();
+            });
+        }
+
+        document.getElementById('infoIcon').addEventListener('click', function () {
+        document.getElementById('infoModal').classList.remove('hidden'); // Show modal
+    });
+    
+    document.getElementById('closeModal').addEventListener('click', function () {
+        document.getElementById('infoModal').classList.add('hidden'); // Hide modal
+    });
+        document.getElementById('changeBgButton').addEventListener('click', function () {
+            document.getElementById('bgImageInput').click(); // Trigger file input
+        });
+        document.getElementById('bgImageInput').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    document.body.style.backgroundImage = `url('${event.target.result}')`;
+                    document.body.style.backgroundSize = 'cover';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+        
+      </script>
+<script>   
+    let loveYouCount = 0; // Counter for "I love you" messages
+let isBreakupActive = false; // Flag to control bot replies
+let hasSaidGoodbye = false; // Flag to track if "appa vantaanga bye" has been sent
+
+// Check if there's any saved chat history
+window.onload = function() {
+    const savedMessages = JSON.parse(localStorage.getItem('chatHistory'));
+    if (savedMessages) {
+        const chatContainer = document.getElementById('chatContainer');
+        savedMessages.forEach(message => {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add(message.isUser ? 'flex justify-end' : 'flex items-start', 'space-x-2');
+            messageDiv.innerHTML = `
+                <img alt="Profile picture" class="rounded-full w-10 h-10" src="dp2.jpeg"/>
+                <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
+                    <p>${message.text}</p>
+                </div>
+            `;
+            chatContainer.appendChild(messageDiv);
+        });
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+};
+
+// Save messages to localStorage
+function saveChatHistory(message, isUser = true) {
+    const savedMessages = JSON.parse(localStorage.getItem('chatHistory')) || [];
+    savedMessages.push({ text: message, isUser });
+    localStorage.setItem('chatHistory', JSON.stringify(savedMessages));
+}
+
+// Prevent page refresh and handle ProfilePicLarge click to refresh
+document.getElementById('profilePicLarge').addEventListener('click', function() {
+    // Refresh the page when the profile picture is clicked
+    localStorage.removeItem('chatHistory'); // Clear chat history from localStorage if refreshing
+    location.reload(); // Refresh the page
+});
+
+
+document.getElementById('messageInput').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        const message = e.target.value.trim();
+        const chatContainer = document.getElementById('chatContainer');
+        if (message.includes('voice')) {
+            e.target.value = '';
+            setTimeout(() => {
+                const audioPlayerDiv = document.createElement('div');
+                audioPlayerDiv.classList.add('flex', 'items-start', 'space-x-2');
+                audioPlayerDiv.innerHTML = `
+                    <img alt="Profile picture" class="rounded-full w-10 h-10" src="dp2.jpeg"/>
+                    <div class="message max-w-xs">
+                        <audio controls>
+                            <source src="winner.ogg" type="audio/mpeg">
+                            Your browser does not support the audio tag.
+                        </audio>
+                    </div>`;
+                chatContainer.appendChild(audioPlayerDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 3000); // Simulate audio processing time
+        }
+            if (isBreakupActive) {
+            e.target.value = ''; // Clear input
+            return; // Exit the function if breakup is active
+        }
+        const userMessageDiv = document.createElement('div');
+        userMessageDiv.classList.add('flex', 'justify-end');
+        userMessageDiv.innerHTML = `<div class="message user max-w-xs" style="font-family: 'Pacifico', cursive;"><p>${message}</p></div>`;
+        chatContainer.appendChild(userMessageDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+        e.target.value = ''; // Clear input
+        let botReply = '';
+        const lowerCaseMessage = message.toLowerCase();
+          
+        if (hasSaidGoodbye) {
+    messageCountAfterGoodbye++;
+    if (messageCountAfterGoodbye === 3) {
+        setTimeout(() => {
+            document.getElementById('onlineButton').style.display = 'block'; // Show the image popup
+            document.getElementById('imagePopup').style.display = 'block'; // Show SMS popup
+        }, 7000); // 7000 milliseconds = 7 seconds
+    }
+    e.target.value = ''; // Clear input
+    return; // Exit the function
+}
+        if (lowerCaseMessage.match(/i love you/i)) {
+            loveYouCount++; // Increment the count for "I love you"
+            if (loveYouCount === 2) {
+                botReply = 'en appa oththuka maatrada, lets breakup💔';
+                isBreakupActive = true; // Stop further replies
+                setTimeout(() => {
+                    document.getElementById('breakupPopup').style.display = 'block'; // Show the breakup popup image
+                }, 5000);
+            } else {
+                botReply = 'love you too😘'; // Replace with your meme image URL
+            }
+        }else if (lowerCaseMessage.match(/hi/i)) {
+            botReply = 'Hello🙋🏻‍♀️';
+        }else if (lowerCaseMessage.match(/photo/i)) {
+            botReply = `
+               <img src="photo.png" alt="Here’s your photo!" style="width: 100%; border-radius: 15px;">
+                 <p>Eppidi iruken🥰</p>
+            `;
+        }else if (lowerCaseMessage.match(/hey/i)) {
+            botReply = 'Hello🙋🏻‍♀️';
+        }else if (lowerCaseMessage.match(/busy/i)) {
+            botReply = 'illa da,sollu';
+        }else if (lowerCaseMessage.match(/number/i)) {
+            botReply = '9004470167';
+        }else if (lowerCaseMessage.match(/bye/i)) {
+            botReply = 'Byee👋';
+            hasSaidGoodbye = true; // Set the flag to true
+            document.getElementById('onlineButton').style.display = 'none'; // Hide the online button
+        } else if (lowerCaseMessage === 'okay') {
+            botReply = 'Ok😊';
+        } else if (lowerCaseMessage.match(/un appa yaaru|Un appa yaaru|Un appa yaru|un appa yaru|appa|Un appa name enna|appa ah|appa va|Appa va|Appa ah|who made you?|un appa name enna|Un appa per enna|Un appa name enna|Un appa per enna|un appa name yenna|Un appa per yenna|Un appa name yenna|Un appa name enna|appa ah|appa va|Appa va|Appa ah|who made you?|who created you?|created by?|whose your creater?|developer|developer name|Developer name|developer|developed by/i)) {
+            botReply = 'Rajesh K Rishi';
+        }else if (lowerCaseMessage.match(/nice|wow|awww|semma|azhaga iruka|romba azhaga iruka|beautiful|pretty|uyire|haiyo|kolriye|paah|pah|cute|cutie pie|cutey|angel|devatha|azhagi/i)) {
+            botReply = '🙈tq';
+        }else if (lowerCaseMessage.match(/name/i)) {            
+            botReply = 'en peru Rejinamotvani🥰';
+                }else if (lowerCaseMessage.match(/per/i)) {            
+            botReply = 'en peru Rejinamotvani🥰';
+                }else if (lowerCaseMessage.match(/pandra/i)) { 
+                botReply = 'unta thaan chat pandren😅';
+                }else if (lowerCaseMessage.match(/panra/i)) { 
+                botReply = 'unta thaan chat pandren😅';
+                }else if (lowerCaseMessage.match(/ooru/i)) { 
+                botReply = 'Trichy❤️';
+                }else if (lowerCaseMessage.match(/area/i)) { 
+                botReply = 'Trichy thaan ';
+                }else if (lowerCaseMessage.match(/place/i)) { 
+                botReply = 'Trichy❤️';
+                }else if (lowerCaseMessage.match(/saptiya/i)) {
+                 botReply = 'Sapten, nee saptiya';
+                }else if (lowerCaseMessage.match(/love ethum/i)) {
+                 botReply = 'pannalanu idea iruku😅🥰'; 
+                } else if (lowerCaseMessage.match(/love pandriya/i)) {
+                 botReply = 'pannalanu idea iruku😅🥰'; 
+                }else if (lowerCaseMessage.match(/love pannuviya/i)) {
+                 botReply = 'pannalamey🙈';
+                }else if (lowerCaseMessage.match(/love pannalama/i)) {
+                 botReply = 'pannalamey🙈';
+                }else if (lowerCaseMessage.match(/love pannalaama/i)) {
+                 botReply = 'pannalamey🙈';
+                }else if (lowerCaseMessage.match(/eppidi iruka/i)) {
+                 botReply = 'nalla iruken,neenga😊';
+                }else if (lowerCaseMessage.match(/eppidi irukinga/i)) {
+                 botReply = 'nalla iruken,neenga😊';
+                }else if (lowerCaseMessage.match(/how are you/i)) {
+                 botReply = 'nalla iruken,neenga😊';
+                }else if (lowerCaseMessage.match(/hru?/i)) {
+                 botReply = 'nalla iruken,neenga😊';
+                }else if (lowerCaseMessage.match(/school/i)) {
+                 botReply = 'JJ college,neenga';
+                }else if (lowerCaseMessage.match(/college/i)) {
+                 botReply = 'JJ college,neenga';
+                }else if (lowerCaseMessage.match(/clg/i)) {
+                 botReply = 'JJ college,neenga';
+                }else if (lowerCaseMessage.match(/scl/i)) {
+                 botReply = 'JJ college,neenga';
+                }else if (lowerCaseMessage.match(/fan/i)) {
+                 botReply = 'Thalapathy❤️';
+                }else if (lowerCaseMessage.match(/hero/i)) {
+                 botReply = 'Thalapathy❤️';
+                }else if (lowerCaseMessage.match(/enna sapta|Enna sapta|Enna saptinga|enna saptinga|enna di sapta|Enna di sapta|Enna ma sapta|enna ma sapta|enna pa sapta|Enna pa sapta|ennanga saptinga/i)) {
+                    botReply = 'Biryani😋'; // Replace with your meme image URL
+                } else if (lowerCaseMessage.match(/biryani|Biryani|biriyani|Biriyani|dosa|Dosa|idly|Idly|sapadu|Sapadu/i)) {
+                    botReply = 'Okay😊'; // Replace with your meme image URL
+                } else if (lowerCaseMessage.match(/sapadala|sapadanum|naa sapadala|Na sapadala|sapdala|illa|Illa|Naa sapadala|illa sapadala|Illa sapadala|innum sapadala|Innum sapadala|innum illa|Innum illa/i)) {
+                    botReply = 'sapadalaiya🥺,pooi sapudu🤨'; // Replace with your meme image URL
+                }else {
+            const randomResponses = [ "seri", "ok", "okay","Mmm", "appa vantaanga bye","Mmm", ];
+            botReply = randomResponses[Math.floor(Math.random() * randomResponses.length)];
+            if (botReply === "appa vantaanga bye") {
+                hasSaidGoodbye = true; // Set the flag to true
+                document.getElementById('onlineButton').style.display = 'none'; // Hide the online button
+                setTimeout(() => {
+            document.getElementById('onlineButton').style.display = 'none'; // Show the image popup
+            document.getElementById('imagePopup').style.display = 'block'; // Show SMS popup
+        }, 7000);
+            }
+        }
+const typingDiv = document.createElement('div');
+typingDiv.classList.add('flex', 'items-start', 'space-x-2');
+typingDiv.innerHTML = `
+    <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40"/>
+    <div class="message max-w-xs">
+        <p>Typing</p>
+        <div class="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>`;
+chatContainer.appendChild(typingDiv);
+chatContainer.scrollTop = chatContainer.scrollHeight;
+
+setTimeout(() => {
+    chatContainer.removeChild(typingDiv);
+    const botMessageDiv = document.createElement('div');
+    botMessageDiv.classList.add('flex', 'items-start', 'space-x-2');
+    botMessageDiv.innerHTML = `
+    <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40"/>
+    <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
+        <p>${botReply}</p>
+    </div>`;
+    chatContainer.appendChild(botMessageDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    saveChatHistory(botReply, false); // Save bot message in localStorage
+}, 2000);
+    }
+});
+document.getElementById('closePopup').addEventListener('click', function () {
+            document.getElementById('imagePopup').style.display = 'none'; // Close the popup
+        });       
+document.getElementById('messageInput').addEventListener('input', function (e) {
+    const maxLength = 45;
+    if (e.target.value.length > maxLength) {
+        alert(`Ivalo perusalaam type pannatha`);
+        e.target.value = e.target.value.substring(0, maxLength); // Trim the input to max length
+    }
+});
+</script>
+</body>
+</html>
