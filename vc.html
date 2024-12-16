@@ -252,6 +252,11 @@ margin-top: 20px;            /* Add spacing above the button if needed */
             width: 280px;
             gap: 20px;  /* Adjust space between buttons */
         }
+        * {
+        user-select: none;
+  outline: none; /* Disable the focus outline for all elements */
+  -webkit-tap-highlight-color: transparent; /* Disable tap highlight on mobile */
+}
 </style>
 </head>
 <body class="text-white h-screen flex flex-col" id="messageInput" >

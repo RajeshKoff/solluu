@@ -85,7 +85,11 @@ box-shadow:0 0 40px rgba(255, 148, 193, 0.945);
             opacity: 1;
         }
     }
-
+    * {
+        user-select: none;
+  outline: none; /* Disable the focus outline for all elements */
+  -webkit-tap-highlight-color: transparent; /* Disable tap highlight on mobile */
+}
     .arrow {
         position: absolute;
         top: 100%;

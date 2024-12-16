@@ -280,7 +280,11 @@ body {
     margin-top: 20px;            /* Add spacing above the button if needed */
 } 
 
-
+* {
+        user-select: none;
+  outline: none; /* Disable the focus outline for all elements */
+  -webkit-tap-highlight-color: transparent; /* Disable tap highlight on mobile */
+}
 </style>
 
 
@@ -645,6 +649,7 @@ function playAudioWithMindVoice(audioSrc) {
         // Add an event listener to the close button to close the popup
         document.getElementById('closePopup').addEventListener('click', closeCustomPopup);
     </script> 
+    
 <script>   
 let loveYouCount = 0; // Counter for "I love you" messages
 let isBreakupActive = false; // Flag to control bot replies
@@ -657,6 +662,8 @@ let isGameResponseSent = false; // Flag to track if the game response is already
 
 const badWords = ["sex", "fuck", "ass", "asshole", "clit", "vagina", "virgin", "nude","amanama", "bra", "bikini", "jatti", "panties","amanama","avu", "uru","boobs", "punda", "sunni","Thevidiya", "dhevidiya", "*", "otha", "Ootha", "*tha","mairu","maira","matter", "hair", "kunji", "koothi", "kuthi", "koodhi","kudhi", "oluka", "pundaiya", "kanji", "oothu", "uthu","sala", "saala", "vai", "potta", "pochi", "pochchi","mava", "mavale", "siluku", "silk", "olukka","umburiya","umbu","oombu","kundi","poodu","podu"];
 const forbiddenWords = ["what","how", "why", "where", "who", "doing", "obs", "will"]; // Words you want to detect
+
+
 document.getElementById('sendButton').addEventListener('click', function () {
     const messageInput = document.getElementById('messageInput');
     const event = new KeyboardEvent('keypress', { key: 'Enter' });
@@ -695,6 +702,7 @@ function saveMessageToHistory(message, sender) {
     chatHistory.push(newMessage);
     localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
 }
+
 document.getElementById('messageInput').addEventListener('keypress', function (e) {
 
     if (e.key === 'Enter') {
@@ -894,6 +902,29 @@ setTimeout(() => {
         }, 2000); // 2000 milliseconds = 2 seconds
     }
 }
+else if (lowerCaseMessage.match(/game/i)) {
+    botReply = `
+        Entha game velaiyadalaam,click pannu:
+        <br>
+        <ol>
+            <li><a href="game.html" target="_blank" class="game-link">1. Burj Khalifa</a></li>
+            <li><a href="game5.html" target="_blank" class="game-link">2. Achamilla Oodu</a></li>
+            <li><a href="game3.html" target="_blank" class="game-link">3. AquaQuest</a></li>
+            <li><a href="game4.html" target="_blank" class="game-link">4. Blast</a></li>
+        </ol>
+    `;
+   
+}
+
+else if (lowerCaseMessage.match(/^Burj Khalifa|bk$/)) {
+    window.location.href = 'game.html';  // Redirect to game1
+} else if (lowerCaseMessage.match(/^Achamilla Oodu|ao$/)) {
+    window.location.href = 'game5.html';  // Redirect to game2
+} else if (lowerCaseMessage.match(/^AquaQuest|aq$/)) {
+    window.location.href = 'game3.html';  // Redirect to game3
+} else if (lowerCaseMessage.match(/^Blast$/)) {
+    window.location.href = 'game4.html';  // Redirect to game4
+} 
 
 else if (lowerCaseMessage.match(/hi/i)) {
     const responses = [

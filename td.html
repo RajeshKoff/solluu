@@ -48,8 +48,8 @@ body {
         }
         #centerGif {
             position: fixed;
-            top: 37%;
-            left: 27%;
+            top: 34%;
+            left: 25%;
             transform: translate(-50%, -50%);
             z-index: 1; /* Ensure it appears above other elements */
             width: 190px;
@@ -267,7 +267,11 @@ box-shadow:0 0 40px rgba(255, 148, 193, 0.945);
     display: block; /* Ensures it's block level and centered */
     border-radius: 10px;
 }
-
+* {
+        user-select: none;
+  outline: none; /* Disable the focus outline for all elements */
+  -webkit-tap-highlight-color: transparent; /* Disable tap highlight on mobile */
+}
 </style>
 </head>
 <body class="text-white h-screen flex flex-col" id="messageInput" >

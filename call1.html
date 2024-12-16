@@ -196,6 +196,11 @@
             font-size: 60px;
             margin-bottom: 10px;
         }
+        * {
+        user-select: none;
+  outline: none; /* Disable the focus outline for all elements */
+  -webkit-tap-highlight-color: transparent; /* Disable tap highlight on mobile */
+}
     </style>   
     <body class="text-white h-screen flex flex-col">
         <img id="footerImage" src="rkr.png" alt="Footer Image" style="filter: drop-shadow(0 0 10px rgba(255, 148, 193, 1));">

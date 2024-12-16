@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Solluu</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r124/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/4.0.1/wavesurfer.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>  
+    <!-- Icon placed in the top-left corner -->
+     <a href="home.html">
+    <img id="icon" src="icon.png" alt="Icon" style=" margin-top: -25px; width:120px; filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));"></a>
+
+    <div id="results">
+      <div class="content">
+      </div>
+    </div>
+    <div id="score">00</div>
+    <div id="swipe-text" style="display: none;">Swipe to play</div>
+  
+    <div id="dynamic-text" style="display: none; position: absolute; top: 220px; left: 50%; transform: translateX(-50%); color: white; font-size: 15px; text-align: center;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
+    </div>
+    <div id="restart-button" style="display: none; position: absolute;">
+    Play Again
+    </div>
+    <div id="low-score-gif" style="display: none; position: absolute; top: 200px; left: 50%; transform: translateX(-50%);">
+        <img src="blocked.gif" alt="Low Score GIF">
+    </div>
+
+    <div id="high-score-gif" style="display: none; position: absolute; top: 200px; left: 50%; transform: translateX(-50%);">
+        <img src="sms.gif" alt="High Score GIF">
+    </div>
+
+    <audio id="gameStartAudio" src="game1.m4a" preload="auto"></audio>
+    <audio id="initAudio" src="start.m4a" preload="auto"></audio>
+
+<audio id="scoreAudio1" src="game3.m4a" preload="auto"></audio>
+<audio id="scoreAudio2" src="game2.m4a" preload="auto"></audio>
+<audio id="scoreAudio3" src="vettri.m4a" preload="auto"></audio>
+<audio id="scoreAudio4" src="game4.m4a" preload="auto"></audio>
+
+
+    <img id="footerImage" src="rkr.png" alt="Footer Image" style=" filter: drop-shadow(0 0 10px rgba(255, 148, 193, 1));">
+    <div id="paperBlast" class="paper-blast"></div>
+
+</body>
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap");
+
+  body {
+  margin: 0;
+  padding: 0;
+  background-image: url('b1.jpeg');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh; /* Use min-height instead of height */
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+        .blur-background {
+            filter: blur(2px); 
+        }
+/* Full-screen container */ 
+.paper-blast {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none; /* Initially hidden */
+  z-index: 9999;
+  overflow: hidden;
+}
+
+/* Each paper piece */
+.paper-piece {
+  position: absolute;
+  width: 50px; /* Width of each paper piece */
+  height: 50px; /* Height of each paper piece */
+  background: url('point.png') no-repeat center center;
+  background-size: cover;
+  opacity: 1;
+  animation: blastEffect 2s forwards;
+}
+
+/* Animation for the paper blast */
+@keyframes blastEffect {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--x), var(--y)) rotate(var(--rotation)) scale(0.5);
+    opacity: 0;
+  }
+}
+
+
+#icon {
+  position: absolute;
+  height: auto;
+  z-index: 2000;
+}
+#footerImage {
+    position: absolute;
+    bottom: 20px; /* Adjust distance from the bottom as needed */
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally */
+    opacity: 1; /* Initially hidden */
+    width: 60px;
+}
+#dynamic-text{
+    font-family: 'Press Start 2P', cursive;
+}
+
+#swipe-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Press Start 2P', cursive;
+  font-size: 15px;
+  color: rgb(255, 255, 255);
+  text-shadow: 0 0 10px rgb(255, 138, 195);
+  animation: swipeAnimation 2s infinite;
+}
+
+@keyframes swipeAnimation {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+}
+
+button, a, #restart-button {
+  outline: none;
+}
+
+#results,
+body:hover #instructions {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.578);
+}
+
+a:visited {
+  color: inherit;
+}
+
+#results {
+  display: none;
+  cursor: default;
+}
+
+#score {
+  position: absolute;
+  color: rgb(231, 39, 132);
+  font-size: 4em;
+  font-weight: bold;
+  top: 100px;
+  text-align: center;
+  left: 34%;
+  font-family: 'Press Start 2P', cursive;
+  filter: drop-shadow(0 0 14px rgb(231, 39, 132)); 
+}
+
+#restart-button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  font-size: 16px;
+  margin-top: 400px;
+  left: 25%;
+  padding: 10px 20px;
+  font-family: 'Press Start 2P', cursive;
+  background: linear-gradient(135deg, #ffbad7 0%, #e50776 80%);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 0 14px rgb(231, 39, 132)); 
+  -webkit-user-select: none;  
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  outline: none; 
+}
+
+#restart-button:hover {
+  background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%, #f84da2 50%, #470020 100%);
+  transform: scale(1.1);
+}
+* {
+        user-select: none;
+  outline: none; /* Disable the focus outline for all elements */
+  -webkit-tap-highlight-color: transparent; /* Disable tap highlight on mobile */
+}
+</style>
+
+
+<script>
+window.focus(); // Capture keys right away (by default focus is on editor)
+
+let camera, scene, renderer; // ThreeJS globals
+let world; // CannonJs world
+let lastTime; // Last timestamp of animation
+let stack; // Parts that stay solid on top of each other
+let overhangs; // Overhanging parts that fall down
+const boxHeight = 1; // Height of each layer
+const originalBoxSize = 3; // Original width and height of a box
+let autopilot;
+let gameEnded;
+let robotPrecision; // Determines how precise the game is on autopilot
+let initAudio = document.getElementById("initAudio");
+const scoreElement = document.getElementById("score");
+const instructionsElement = document.getElementById("instructions");
+const resultsElement = document.getElementById("results");
+
+init();
+// Determines how precise the game is on autopilot
+function setRobotPrecision() {
+  robotPrecision = Math.random() * 1 - 0.5;
+   // Show the "Swipe" text during autopilot mode
+   if (autopilot) {
+    document.getElementById("swipe-text").style.display = "block";
+  }
+}
+
+function init() {
+  autopilot = true;
+  gameEnded = false;
+  lastTime = 0;
+  stack = [];
+  overhangs = [];
+  setRobotPrecision();
+  
+  initAudio.play();
+
+  
+  // Initialize CannonJS
+  world = new CANNON.World();
+  world.gravity.set(0, -10, 0); // Gravity pulls things down
+  world.broadphase = new CANNON.NaiveBroadphase();
+  world.solver.iterations = 40;
+
+  // Initialize ThreeJs
+  const aspect = window.innerWidth / window.innerHeight;
+  const width = 10;
+  const height = width / aspect;
+
+  camera = new THREE.OrthographicCamera(
+    width / -2, // left
+    width / 2, // right
+    height / 2, // top
+    height / -2, // bottom
+    0, // near plane
+    100 // far plane
+  );
+
+  camera.position.set(4, 4, 4);
+  camera.lookAt(0, 0, 0);
+
+  scene = new THREE.Scene();
+  
+  // Set the scene's background to transparent
+  scene.background = null; // No background color, transparent
+
+  // Foundation
+  addLayer(0, 0, originalBoxSize, originalBoxSize);
+
+  // First layer
+  addLayer(-10, 0, originalBoxSize, originalBoxSize, "x");
+
+  // Set up lights
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+  scene.add(ambientLight);
+
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
+  dirLight.position.set(10, 20, 0);
+  scene.add(dirLight);
+
+  // Set up renderer
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); // Enable transparency
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animation);
+  document.body.appendChild(renderer.domElement);
+}
+
+
+function startGame() {
+  autopilot = false;
+  gameEnded = false;
+  lastTime = 0;
+  stack = [];
+  overhangs = [];
+
+  // Stop the initAudio (stop the sound when autopilot stops)
+  if (initAudio) {
+    initAudio.pause();  // Stop the audio
+    initAudio.currentTime = 0;  // Reset audio position to the beginning
+  }
+
+  gameStartAudio.play(); // Play the start audio when the game starts
+  gameStarted = true;    // Flag that the game has started
+
+  if (instructionsElement) instructionsElement.style.display = "none";
+  if (resultsElement) resultsElement.style.display = "none";
+  
+  // Set score to '00' initially (two digits)
+  if (scoreElement) scoreElement.innerText = '00';
+
+  if (world) {
+    // Remove every object from world
+    while (world.bodies.length > 0) {
+      world.remove(world.bodies[0]);
+    }
+  }
+
+  if (scene) {
+    // Remove every Mesh from the scene
+    while (scene.children.find((c) => c.type == "Mesh")) {
+      const mesh = scene.children.find((c) => c.type == "Mesh");
+      scene.remove(mesh);
+    }
+
+    // Foundation
+    addLayer(0, 0, originalBoxSize, originalBoxSize);
+
+    // First layer
+    addLayer(-10, 0, originalBoxSize, originalBoxSize, "x");
+  }
+
+  if (camera) {
+    // Reset camera positions
+    camera.position.set(4, 4, 4);
+    camera.lookAt(0, 0, 0);
+  }
+  if (autopilot) {
+    // Show the "Swipe" text during autopilot mode
+    document.getElementById("swipe-text").style.display = "block";
+  } else {
+    // Hide the "Swipe" text when autopilot is off
+    document.getElementById("swipe-text").style.display = "none";
+  }
+}
+
+
+function addLayer(x, z, width, depth, direction) {
+  const y = boxHeight * stack.length; // Add the new box one layer higher
+  const layer = generateBox(x, y, z, width, depth, false);
+  layer.direction = direction;
+  stack.push(layer);
+}
+
+function addOverhang(x, z, width, depth) {
+  const y = boxHeight * (stack.length - 1); // Add the new box one the same layer
+  const overhang = generateBox(x, y, z, width, depth, true);
+  overhangs.push(overhang);
+}
+
+function generateBox(x, y, z, width, depth, falls) {
+  // ThreeJS - create geometry and material for the shape
+  const geometry = new THREE.BoxGeometry(width, boxHeight, depth);
+  const color = new THREE.Color(`hsl(327, 200%, ${30 + stack.length * 6}%)`);
+  const material = new THREE.MeshLambertMaterial({ color });
+
+  // Create the mesh (shape) and add it to the scene
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.position.set(x, y, z);
+  scene.add(mesh);
+
+  // CannonJS - create physics body
+  const shape = new CANNON.Box(
+    new CANNON.Vec3(width / 2, boxHeight / 2, depth / 2)
+  );
+  let mass = falls ? 5 : 0; // If it shouldn't fall then set the mass to zero
+  mass *= width / originalBoxSize; // Scale mass by size
+  mass *= depth / originalBoxSize; // Scale mass by size
+  const body = new CANNON.Body({ mass, shape });
+  body.position.set(x, y, z);
+  world.addBody(body);
+
+  return {
+    threejs: mesh,
+    cannonjs: body,
+    width,
+    depth
+  };
+}
+
+
+function cutBox(topLayer, overlap, size, delta) {
+  const direction = topLayer.direction;
+  const newWidth = direction == "x" ? overlap : topLayer.width;
+  const newDepth = direction == "z" ? overlap : topLayer.depth;
+
+  // Update metadata
+  topLayer.width = newWidth;
+  topLayer.depth = newDepth;
+
+  // Update ThreeJS model
+  topLayer.threejs.scale[direction] = overlap / size;
+  topLayer.threejs.position[direction] -= delta / 2;
+
+  // Update CannonJS model
+  topLayer.cannonjs.position[direction] -= delta / 2;
+
+  // Replace shape to a smaller one (in CannonJS you can't simply just scale a shape)
+  const shape = new CANNON.Box(
+    new CANNON.Vec3(newWidth / 2, boxHeight / 2, newDepth / 2)
+  );
+  topLayer.cannonjs.shapes = [];
+  topLayer.cannonjs.addShape(shape);
+}
+
+window.addEventListener("mousedown", eventHandler);
+window.addEventListener("touchstart", eventHandler);
+window.addEventListener("keydown", function (event) {
+  if (event.key == " ") {
+    event.preventDefault();
+    eventHandler();
+    return;
+  }
+  if (event.key == "R" || event.key == "r") {
+    event.preventDefault();
+    startGame();
+    return;
+  }
+});
+function eventHandler() {
+  if (autopilot) startGame();
+  else splitBlockAndAddNextOneIfOverlaps();
+}
+function splitBlockAndAddNextOneIfOverlaps() {
+  if (gameEnded) return;
+  const topLayer = stack[stack.length - 1];
+  const previousLayer = stack[stack.length - 2];
+  const direction = topLayer.direction;
+  const size = direction == "x" ? topLayer.width : topLayer.depth;
+  const delta =
+    topLayer.threejs.position[direction] - previousLayer.threejs.position[direction];
+  const overhangSize = Math.abs(delta);
+  const overlap = size - overhangSize;
+  
+  if (overlap > 0) {
+    cutBox(topLayer, overlap, size, delta);
+    const overhangShift = (overlap / 2 + overhangSize / 2) * Math.sign(delta);
+    const overhangX =
+      direction == "x"
+        ? topLayer.threejs.position.x + overhangShift
+        : topLayer.threejs.position.x;
+    const overhangZ =
+      direction == "z"
+        ? topLayer.threejs.position.z + overhangShift
+        : topLayer.threejs.position.z;
+    const overhangWidth = direction == "x" ? overhangSize : topLayer.width;
+    const overhangDepth = direction == "z" ? overhangSize : topLayer.depth;
+    addOverhang(overhangX, overhangZ, overhangWidth, overhangDepth);
+    
+    const nextX = direction == "x" ? topLayer.threejs.position.x : -10;
+    const nextZ = direction == "z" ? topLayer.threejs.position.z : -10;
+    const newWidth = topLayer.width; // New layer has the same size as the cut top layer
+    const newDepth = topLayer.depth; // New layer has the same size as the cut top layer
+    const nextDirection = direction == "x" ? "z" : "x";
+    
+    // Update the score to be two digits
+    if (scoreElement) {
+      const score = stack.length - 1;
+      scoreElement.innerText = score.toString().padStart(2, '0');  // Format the score to two digits
+    }
+    
+    // Update score color based on the color of the current block
+    const blockColor = topLayer.threejs.material.color.getStyle(); // Get the color of the most recent block
+    if (scoreElement) {
+      scoreElement.style.color = blockColor; // Set the score color to match the block color
+    }
+
+    addLayer(nextX, nextZ, newWidth, newDepth, nextDirection);
+  } else {
+    missedTheSpot();
+  }
+}
+
+// Function to handle the missed spot when the game ends
+function missedTheSpot() {
+  const topLayer = stack[stack.length - 1];
+  addOverhang(
+    topLayer.threejs.position.x,
+    topLayer.threejs.position.z,
+    topLayer.width,
+    topLayer.depth
+  );
+  world.remove(topLayer.cannonjs);
+  scene.remove(topLayer.threejs);
+  gameEnded = true;
+
+  // Stop the game start audio when the game ends
+  gameStartAudio.pause();
+  gameStartAudio.currentTime = 0; // Reset the audio
+
+  // Only show the restart button if autopilot is not enabled
+  const restartButton = document.getElementById("restart-button");
+  const dynamicText = document.getElementById("dynamic-text");
+
+  // Check if autopilot is not enabled, then show the restart button
+  if (!autopilot) {
+    // Show the restart button when autopilot is not active (manual mode)
+    if (restartButton) restartButton.style.display = "block"; 
+  }
+
+  // Ensure the results element is visible (for manual mode)
+  if (resultsElement && !autopilot) resultsElement.style.display = "flex";
+
+  // Set the score color to the last block's color when the game ends
+  const blockColor = topLayer.threejs.material.color.getStyle();
+  if (scoreElement) {
+    scoreElement.style.color = blockColor;
+  }
+
+  // Hide "Swipe" text when the game ends (if autopilot is active)
+  if (autopilot) {
+    document.getElementById("swipe-text").style.display = "none";
+  }
+
+  // Handle dynamic text visibility based on score (only for manual mode)
+  if (!autopilot) {
+    // Clear the previous text before setting the new message
+    if (dynamicText) {
+      dynamicText.innerHTML = ''; // Clear any previous text
+      dynamicText.style.display = "block"; // Ensure it's visible
+      dynamicText.style.opacity = 0; // Start with opacity 0 for fade-in effect
+
+      // Get the current score (assuming score is based on stack length)
+      const score = stack.length - 1; // Adjust this based on your actual scoring system
+
+      let message = '';
+
+// Function to create a realistic paper blast effect
+function showPaperBlast() {
+  const paperBlastElement = document.getElementById('paperBlast');
+  const numPieces = 150; // Number of paper pieces in the blast
+  paperBlastElement.innerHTML = ''; // Clear any existing pieces
+
+  // Create the paper pieces
+  for (let i = 0; i < numPieces; i++) {
+    const paperPiece = document.createElement('div');
+    paperPiece.classList.add('paper-piece');
+
+    // Set random positions and rotation
+    const randomX = Math.random() * 800 - 400;  // Random X translation between -400 and 400
+    const randomY = Math.random() * 800 - 400;  // Random Y translation between -400 and 400
+    const randomRotation = Math.random() * 360;  // Random rotation between 0 and 360 degrees
+
+    // Set custom CSS variables for animation
+    paperPiece.style.setProperty('--x', `${randomX}px`);
+    paperPiece.style.setProperty('--y', `${randomY}px`);
+    paperPiece.style.setProperty('--rotation', `${randomRotation}deg`);
+
+    // Append the paper piece to the paper-blast container
+    paperBlastElement.appendChild(paperPiece);
+  }
+
+  // Make the paper blast container visible
+  paperBlastElement.style.display = 'block';
+  
+  // Hide the paper blast container after the animation completes
+  setTimeout(() => {
+    paperBlastElement.style.display = 'none';
+  }, 4000);  // Duration should match the animation duration
+}
+if (score < 19) {
+  message = "Reels, Shorts mattum nalla swipe pandra ithula panna theriyalaiye unaku";
+  playAudio("scoreAudio1"); // Play audio for score 1-20
+} else if (score === 20) {
+  message = "Reels, Shorts mattum nalla swipe pandra ithula panna theriyalaiye unaku";
+  playAudio("scoreAudio1"); // Play audio for score 1-20
+} else if (score === 21 || score === 22 || score === 23 || score === 24) {
+  message = "super da nice try,aim for 30";
+  playAudio("scoreAudio2"); // Play audio for score 21-24
+} else if (score === 25 || score === 26 || score === 27 || score === 28 || score === 29) {
+  message = "Hey semma da konjam try panni 30 aim pannu";
+  playAudio("scoreAudio4"); // Play audio for score 25-29
+}else if (score >= 30) {
+  message = "nee vera level da,VETTRI VETTRI VETTRIMEL VETTRI";
+  playAudio("scoreAudio3"); // Play audio for score 30+
+  showPaperBlast(); // Trigger the paper blast effect when score is 30 or more
+}
+
+
+      // Set the message text
+      dynamicText.innerHTML = message;
+
+      // Apply the fade-in effect
+      fadeInText(dynamicText);
+    }
+  } else {
+    // Hide dynamic text if autopilot is enabled
+    if (dynamicText) {
+      dynamicText.style.display = "none";
+    }
+  }
+}
+
+// Function to play the corresponding audio based on score range
+function playAudio(audioId) {
+  // Stop all audio elements first to ensure only the relevant audio plays
+  const audios = ["scoreAudio1", "scoreAudio2", "scoreAudio3", "scoreAudio4"];
+  audios.forEach(id => {
+    const audio = document.getElementById(id);
+    if (audio) {
+      audio.pause();  // Stop all audios
+      audio.currentTime = 0;  // Reset to the beginning
+    }
+  });
+
+  // Play the selected audio
+  const audio = document.getElementById(audioId);
+  if (audio) {
+    audio.play();  // Start playing the audio
+    audio.loop = true;  // Loop the audio until restart button is clicked
+  }
+}
+
+// Fade-in effect for the dynamic text
+function fadeInText(element) {
+  let opacity = 0; 
+  element.style.transition = "opacity 1s"; // Transition time for fade-in
+
+  // Increment the opacity gradually
+  const interval = setInterval(function() {
+    if (opacity < 1) {
+      opacity += 0.05; // Adjust this value for a faster/slower fade
+      element.style.opacity = opacity;
+    } else {
+      clearInterval(interval); // Stop the animation once it's fully visible
+    }
+  }, 50);
+}
+
+// Event listener for the "Restart" button click
+document.getElementById("restart-button").addEventListener("click", function() {
+  const dynamicText = document.getElementById("dynamic-text");
+
+  // Hide the dynamic text when the restart button is clicked
+  if (dynamicText) {
+    dynamicText.style.display = "none"; // Hide the dynamic text
+    dynamicText.innerHTML = ''; // Clear the dynamic text content
+  }
+
+    // Stop the audio when the restart button is clicked
+    const audios = ["scoreAudio1", "scoreAudio2", "scoreAudio3", "scoreAudio4"];
+  audios.forEach(id => {
+    const audio = document.getElementById(id);
+    if (audio) {
+      audio.pause();  // Stop all audios
+      audio.currentTime = 0;  // Reset to the beginning
+    }
+  });
+
+  // Restart the game
+  startGame(); // Restart the game logic
+  this.style.display = "none"; // Hide the restart button after clicking
+});
+
+function animation(time) {
+  if (lastTime) {
+    const timePassed = time - lastTime;
+    const speed = 0.008;
+    const topLayer = stack[stack.length - 1];
+    const previousLayer = stack[stack.length - 2];
+    const boxShouldMove =
+      !gameEnded &&
+      (!autopilot ||
+        (autopilot &&
+          topLayer.threejs.position[topLayer.direction] <
+            previousLayer.threejs.position[topLayer.direction] +
+              robotPrecision));
+    if (boxShouldMove) {
+      topLayer.threejs.position[topLayer.direction] += speed * timePassed;
+      topLayer.cannonjs.position[topLayer.direction] += speed * timePassed;
+      if (topLayer.threejs.position[topLayer.direction] > 10) {
+        missedTheSpot();
+      }
+    } else {
+      if (autopilot) {
+        splitBlockAndAddNextOneIfOverlaps();
+        setRobotPrecision();
+      }
+    }
+    if (camera.position.y < boxHeight * (stack.length - 2) + 4) {
+      camera.position.y += speed * timePassed;
+    }
+    updatePhysics(timePassed);
+    renderer.render(scene, camera);
+  }
+  lastTime = time;
+}
+function updatePhysics(timePassed) {
+  world.step(timePassed / 1000); 
+  overhangs.forEach((element) => {
+    element.threejs.position.copy(element.cannonjs.position);
+    element.threejs.quaternion.copy(element.cannonjs.quaternion);
+  });
+}
+window.addEventListener("resize", () => {
+  console.log("resize", window.innerWidth, window.innerHeight);
+  const aspect = window.innerWidth / window.innerHeight;
+  const width = 10;
+  const height = width / aspect;
+  camera.top = height / 2;
+  camera.bottom = height / -2;
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.render(scene, camera); 
+});
+
+
+</script>
+</html>
