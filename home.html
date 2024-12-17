@@ -1458,5 +1458,105 @@ function evaluateExpression(expression) {
     }
 });
 </script>
+<script>
+    // Initialize the alarm times
+const alarmTimes = [
+    { hour: 8, minute: 0, message: "Good morning", identifier: "morning" },
+    { hour: 12, minute: 0, message: "Good afternoon", identifier: "afternoon" },
+    { hour: 21, minute: 0, message: "Good night", identifier: "night" }
+];
+
+// Function to check if the current time matches any alarm time
+function checkForAlarms() {
+    const now = new Date();
+    alarmTimes.forEach(alarm => {
+        if (now.getHours() === alarm.hour && now.getMinutes() === alarm.minute) {
+            triggerAlarm(alarm.message, alarm.identifier);
+        }
+    });
+}
+
+// Function to trigger the alarm
+function triggerAlarm(message, identifier) {
+    const currentDate = new Date().toLocaleDateString();
+    const storedDate = localStorage.getItem('lastBotReplyDate');
+
+    if (storedDate !== currentDate) {
+        // Trigger the alarm sound (assuming you have an 'alarm.mp3' file)
+        const alarmSound = new Audio('nakku.mp3');
+        alarmSound.play();
+        setTimeout(() => alarmSound.pause(), 5000); // Play alarm for 5 seconds
+
+        // Display the bot reply message
+        displayBotMessage(message);
+
+        // Save the date and message to localStorage to prevent repeating
+        localStorage.setItem('lastBotReplyDate', currentDate);
+        localStorage.setItem('lastBotReplyMessage', message);
+    }
+}
+
+// Function to display the bot message
+function displayBotMessage(message) {
+    const chatContainer = document.getElementById('chatContainer');
+    const botMessageDiv = document.createElement('div');
+    botMessageDiv.classList.add('flex', 'items-start', 'space-x-2');
+    botMessageDiv.innerHTML = `
+        <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); ">
+        <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
+            <p>${message}</p>
+        </div>
+    `;
+    chatContainer.appendChild(botMessageDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    
+    // Save the bot reply to localStorage
+}
+
+// Function to save the bot message to localStorage
+function saveMessageToHistory(message, sender) {
+    let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+    const newMessage = {
+        sender: sender,
+        message: message,
+        timestamp: new Date().toISOString()
+    };
+
+    chatHistory.push(newMessage);
+    localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+}
+
+// Function to check if it's time to display the alarm and bot message
+setInterval(checkForAlarms, 60000); // Check every minute if the alarm should trigger
+
+// Load chat history on page load
+document.addEventListener("DOMContentLoaded", function () {
+    loadChatHistory();
+});
+
+// Function to load chat history
+function loadChatHistory() {
+    const chatContainer = document.getElementById('chatContainer');
+    const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+    chatHistory.forEach(message => {
+        const messageDiv = document.createElement('div');
+        if (message.sender === 'user') {
+            messageDiv.classList.add('flex', 'justify-end');
+            messageDiv.innerHTML = `<div class="message user max-w-xs" style="font-family: 'Pacifico', cursive;"><p>${message.message}</p></div>`;
+        } else if (message.sender === 'bot') {
+            messageDiv.classList.add('flex', 'items-start', 'space-x-2');
+            messageDiv.innerHTML = `
+                <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); ">
+                <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
+                    <p>${message.message}</p>
+                </div>
+            `;
+        }
+        chatContainer.appendChild(messageDiv);
+    });
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+</script>
 </body>
 </html>
