@@ -424,7 +424,7 @@ function moveButterfly() {
         </div>
     </div>
 <!-- Custom Popup Modal -->
-<div id="customPopup" class="bg-white text-black p-6 rounded-lg shadow-lg max-w-sm hidden" style="background: linear-gradient(135deg, #ffb1d3 0%, #e01279 30%, #82003a 80%, #e01279 100%); position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
+<div id="customPopup" class="bg-white text-black p-6 rounded-lg shadow-lg max-w-sm hidden" style="background: linear-gradient(135deg, #ffb1d3 0%, #e01279 30%, #82003a 80%, #e01279 100%); position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;font-family: 'Pacifico', cursive;">
     <h3 id="popupMessage" class="mt-2 text-center" style="color: #fff; margin-bottom: 10px;"></h3> <!-- This is where the message will go -->
     <div class="button-container">
         <button id="closePopup" class="mt-2 px-5 py-2 bg-gray-300 rounded" style="background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%, #f13191 80%); color: #fff; border-radius: 10px; font-family: 'Pacifico', cursive;">Mmm</button>
@@ -451,13 +451,14 @@ function moveButterfly() {
 
 
     <div class="flex flex-col p-4 space-y-4 overflow-y-auto flex-1 no-scrollbar" id="chatContainer" style="font-family: 'Pacifico', cursive;" ></div>
-    <div class="flex items-center p-2">
-        <button id="micButton" class="ml-0 p-2 rounded-full bg-pink-500 text-white"><i class="fas fa-microphone"></i></button>
-
+    <div class="flex items-center p-2"><a href="vc.html">
+        <button id="micButton" class="ml-0 p-1 rounded-full bg-pink-500 text-white">
+            <i class="fas fa-video video-call-icon text-white" style="margin-left: 3px;"></i>
+        </button></a>
         <input class="flex-1 p-2 pl-4 pr-8 rounded-full" id="messageInput" placeholder="Solluu..." type="text" style="color: #c01f72;outline: none; font-family:'Pacifico', cursive; border-radius: 10px; margin-right: -20px;filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.945));  background-image: url('bg2.gif');filter: hue-rotate(10deg);background-size: cover; box-shadow: 0 0 20px rgba(255, 148, 193, 0.945);">
         <i class="fas fa-paper-plane send-icon cursor-pointer text-1xl absolute right-4  hover:text-pink-600" id="sendButton"></i>         
-        <label for="imageUpload" class="cursor-pointer" id="upload"><a href="vc.html">
-            <i class="fas fa-video video-call-icon text-white" style="font-size: 15px; margin-left: 6px; margin-top: 13px;"></i>
+        <label for="imageUpload" class="cursor-pointer" id="upload">
+            <i class="fas fa-gamepad text-white" style="font-size: 15px; margin-left: 6px; margin-top: 13px;"></i>
         </label>
     </div>
     <div id="imagePopup" class="popup" >
@@ -520,66 +521,7 @@ function playAudioWithMindVoice(audioSrc) {
 
 </script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-               const messageInput = document.getElementById('messageInput');
-               const micButton = document.getElementById('micButton');
-               const sendButton = document.getElementById('sendButton'); // The send button reference
-               // Function to send message
-             const sendMessage = () => {
-               const message = messageInput.value;
-               if (message.trim() !== "") {
-               console.log("Message sent:", message);
-               messageInput.value = ''; // Clear the input after sending
-               }
-               };
 
-   
-               // Event listener for mic button click
-      micButton.addEventListener('click', () => {
-       if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      const recognition = new SpeechRecognition();
-      recognition.lang = 'en-US'; // Set language
-      recognition.interimResults = false; // Get final results only
-
-      recognition.onstart = () => {
-        console.log('Voice recognition started. Speak into the microphone.');
-      };
-
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        console.log('Recognized:', transcript);
-
-        // Set the transcript to the input field, but without the word "send"
-        if (transcript.toLowerCase().includes("send")) {
-          // Remove the word "send" from the input field before sending
-          messageInput.value = messageInput.value.replace(/send$/i, '').trim();
-          console.log('Send command detected. Message will be sent without "send"');
-          sendButton.click(); // Trigger the send button click event
-        } else if (transcript.includes("clear")) {
-          messageInput.value = ''; // Clear the input field
-          console.log('Clear command detected. Input field cleared.');
-        } else {
-          messageInput.value = transcript; // Fill the input with the recognized text
-        } 
-      };
-
-      recognition.onerror = (event) => {
-        console.error('Error occurred in recognition: ' + event.error);
-      };
-
-      recognition.onend = () => {
-        console.log('Voice recognition ended.');
-      };
-
-      recognition.start(); // Start the speech recognition
-    } else {
-      alert('Speech recognition not supported in this browser.');
-    }
-  });
-});
-   </script>
      
 
     <script>
@@ -626,6 +568,8 @@ function playAudioWithMindVoice(audioSrc) {
         }
         updateProgressBar(80);
     });
+
+
     </script>
     
     <script>
@@ -658,14 +602,38 @@ let canSendMessage = true; // Flag to control sending messages
 let respondedNoAppa = false;
 let responseIndex = 0;
 let isGameResponseSent = false; // Flag to track if the game response is already sent
+let isPranked = false;  // Flag to track if prank reply has been given
+let lastClickTime = 0; // Track the last click time
 
 
-const badWords = ["sex", "fuck", "ass", "asshole", "clit", "vagina", "virgin", "nude","amanama", "bra", "bikini", "jatti", "panties","amanama","avu", "uru","boobs", "punda", "sunni","Thevidiya", "dhevidiya", "*", "otha", "Ootha", "*tha","mairu","maira","matter", "hair", "kunji", "koothi", "kuthi", "koodhi","kudhi", "oluka", "pundaiya", "kanji", "oothu", "uthu","sala", "saala", "vai", "potta", "pochi", "pochchi","mava", "mavale", "siluku", "silk", "olukka","umburiya","umbu","oombu","kundi","poodu","podu"];
+
+
+const badWords = ["sex", "fuck", "ass", "asshole","hole","pink","unaku pink ah irukuma","unaku black ah irukuma","periods","clit", "vagina", "virgin", "nude","amanama", "bra", "bikini", "jatti", "panties","amanama","avu", "uru","boobs", "punda", "sunni","Thevidiya", "dhevidiya", "*", "otha", "Ootha", "*tha","mairu","maira","matter", "hair", "kunji", "koothi", "kuthi", "koodhi","kudhi", "oluka", "pundaiya", "kanji", "oothu", "uthu","sala", "saala", "vai", "potta", "pochi", "pochchi","mava", "mavale", "siluku", "silk", "olukka","umburiya","umbu","oombu","kundi","poodu","podu"];
 const forbiddenWords = ["what","how", "why", "where", "who", "doing", "obs", "will"]; // Words you want to detect
 
 
 document.getElementById('sendButton').addEventListener('click', function () {
     const messageInput = document.getElementById('messageInput');
+    const event = new KeyboardEvent('keypress', { key: 'Enter' });
+    messageInput.dispatchEvent(event);
+});
+document.querySelector('.fas.fa-gamepad').addEventListener('click', function () {
+    const currentTime = new Date().getTime(); // Get the current time
+
+    // Check if the last click was within 4 seconds
+    if (currentTime - lastClickTime < 4000) {
+        // If less than 4 seconds have passed, ignore the click
+        return;
+    }
+
+    // Set the last click time to the current time
+    lastClickTime = currentTime;
+
+    // Simulate typing a message containing "game" when the gamepad icon is clicked
+    const messageInput = document.getElementById('messageInput');
+    messageInput.value = 'games'; // Set the message to "game"
+    
+    // Trigger the 'Enter' key press to simulate sending the message
     const event = new KeyboardEvent('keypress', { key: 'Enter' });
     messageInput.dispatchEvent(event);
 });
@@ -724,14 +692,17 @@ document.getElementById('messageInput').addEventListener('keypress', function (e
             return; // Prevent sending a single character message
         }
 
-        // Check if message consists of repeated characters
-        const repeatedCharRegex = /^([a-zA-Z])\1+$/; // Regex to check if the message consists of a single repeated character
-        if (repeatedCharRegex.test(message)) {
-            showCustomPopup("En orey letter ah type pandra😐");
-            e.target.value = ''; // Clear the input
-            return; // Prevent sending repeated characters
-        }       // Save the user's message to chat history only if it's valid
-        saveMessageToHistory(message, 'user');
+       // Check if the message consists of exactly two repeated characters
+const repeatedCharRegex = /^([a-zA-Z])\1{1}$/; // Regex to check for exactly two repeated characters
+if (repeatedCharRegex.test(message)) {
+    showCustomPopup("En orey letter ah type pandra😐");
+    e.target.value = ''; // Clear the input
+    return; // Prevent sending repeated characters
+} 
+
+// Save the user's message to chat history only if it's valid
+saveMessageToHistory(message, 'user');
+
                 const containsBadWord = badWords.some(badWord => message.includes(badWord));
         if (containsBadWord) {
             setTimeout(() => {
@@ -815,11 +786,45 @@ if (message.includes('voice')) {
         }
     }, 3000); // Simulate audio processing time   
 } 
+// A list of common words (this can be expanded or replaced with a proper dictionary check)
+const commonWords = ['please', 'hello', 'thank', 'how', 'are', 'you', 'good', 'morning', 'evening', 'love', 'friend', 'help', 'sure'];
+
 function isRandomMessage(message) {
-    // Regular expression to match messages that contain a mix of random characters
-    // This can be adjusted to catch more cases depending on the type of nonsense messages you expect
-    return /^[a-zA-Z]{5,}$/i.test(message) && !/[aeiou]{3,}/i.test(message);
+    // Normalize the message (convert to lowercase and remove non-alphabet characters)
+    const normalizedMessage = message.replace(/[^a-zA-Z]/g, '').toLowerCase();
+
+    // If the message is a common word, return false (we don't want to flag regular words)
+    if (commonWords.includes(normalizedMessage)) {
+        return false; // It's a valid word, not random
+    }
+
+    // If the message has fewer than 4 characters, it's likely not random
+    if (normalizedMessage.length < 4) return true; // Short words are more likely to be gibberish
+
+    // Check for random-like patterns:
+    // Condition 1: The message should have a very low number of vowels (indicating possible gibberish).
+    const vowelCount = (normalizedMessage.match(/[aeiou]/g) || []).length;
+    const hasFewVowels = vowelCount < 2; // If there are less than 2 vowels, consider it more random.
+
+    // Condition 2: The message is a string of random letters (not a recognizable word).
+    const isNotStructured = /^[a-z]+$/.test(normalizedMessage);  // Check if it's made of alphabetic characters only.
+    if (hasFewVowels && isNotStructured) {
+        return true; // Looks like random gibberish
+    }
+
+    // Condition 3: Check for patterns of repeated or adjacent characters (this indicates randomness).
+    if (/([a-z])\1{2,}/.test(normalizedMessage)) {
+        return true; // Repeated characters like "aaa", "bbb", "ccc"
+    }
+
+    // Condition 4: If the word is longer and doesn't match typical patterns, we can still flag it.
+    if (normalizedMessage.length > 4 && !/[aeiou]{2,}/.test(normalizedMessage)) {
+        return true; // No vowel pairs in longer words might indicate gibberish.
+    }
+
+    return false; // If it passed all conditions, it's a valid word or common structure.
 }
+
 
 if (isBreakupActive) {
             e.target.value = ''; // Clear input
@@ -902,7 +907,7 @@ setTimeout(() => {
         }, 2000); // 2000 milliseconds = 2 seconds
     }
 }
-else if (lowerCaseMessage.match(/game/i)) {
+else if (lowerCaseMessage.match(/games|game/i)) {
     botReply = `
         Entha game velaiyadalaam,click pannu:
         <br>
@@ -913,9 +918,7 @@ else if (lowerCaseMessage.match(/game/i)) {
             <li><a href="game4.html" target="_blank" class="game-link">4. Blast</a></li>
         </ol>
     `;
-   
 }
-
 else if (lowerCaseMessage.match(/^Burj Khalifa|bk$/)) {
     window.location.href = 'game.html';  // Redirect to game1
 } else if (lowerCaseMessage.match(/^Achamilla Oodu|ao$/)) {
@@ -926,7 +929,113 @@ else if (lowerCaseMessage.match(/^Burj Khalifa|bk$/)) {
     window.location.href = 'game4.html';  // Redirect to game4
 } 
 
-else if (lowerCaseMessage.match(/hi/i)) {
+else if (lowerCaseMessage.match(/fav color|fav colour|pudicha colour|colour|color/i)) {
+    // Create a full-screen black overlay
+    const blackOverlay = document.createElement('div');
+    blackOverlay.style.position = 'fixed';
+    blackOverlay.style.top = '0';
+    blackOverlay.style.left = '0';
+    blackOverlay.style.width = '100%';
+    blackOverlay.style.height = '100%';
+    blackOverlay.style.backgroundColor = 'black';
+    blackOverlay.style.zIndex = '9999';  // Ensure it's on top
+    blackOverlay.style.opacity = '100';  // Optional: Adds slight transparency
+
+    // Append the overlay to the body
+    document.body.appendChild(blackOverlay);
+
+    // Wait for 3 seconds before showing the bot's reply
+    setTimeout(() => {
+        // Remove the black overlay
+        document.body.removeChild(blackOverlay);
+
+        // Send the bot's reply after the overlay disappears
+        botReply = "black color, bayanthutiya😂";
+
+        // Show the bot's reply in the chat
+        const typingDiv = document.createElement('div');
+        typingDiv.classList.add('flex', 'items-start', 'space-x-2');
+        typingDiv.innerHTML = ` 
+            <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
+            <div class="message max-w-xs">
+                <p>Typing</p>
+                <div class="typing-indicator" style="margin-top:5px;">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>`;
+        chatContainer.appendChild(typingDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        // Save the bot reply to localStorage
+        saveMessageToHistory(botReply, 'bot');
+
+        // Handle the bot reply after a delay
+        setTimeout(() => {
+            chatContainer.removeChild(typingDiv); // Remove typing indicator
+            const botMessageDiv = document.createElement('div');
+            botMessageDiv.classList.add('flex', 'items-start', 'space-x-2');
+            botMessageDiv.innerHTML = ` 
+                <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
+                <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
+                    <p>${botReply}</p>
+                </div>`;
+            chatContainer.appendChild(botMessageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }, 1500); // Bot reply delay
+
+        // Set the prank flag to true
+        isPranked = true;
+
+    }, 3000); // Wait 3 seconds before showing the bot reply
+
+    // Clear the input field
+    document.getElementById('messageInput').value = '';
+}
+
+// Check for any further messages after the prank response
+else if (isPranked) {
+    // Respond with "😄" after prank reply, regardless of the input
+    botReply = "😄";
+
+    // Show the bot's reply in the chat
+    const typingDiv = document.createElement('div');
+    typingDiv.classList.add('flex', 'items-start', 'space-x-2');
+    typingDiv.innerHTML = ` 
+        <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
+        <div class="message max-w-xs">
+            <p>Typing</p>
+            <div class="typing-indicator" style="margin-top:5px;">
+                <span></span><span></span><span></span>
+            </div>
+        </div>`;
+    chatContainer.appendChild(typingDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    // Save the bot reply to localStorage
+    saveMessageToHistory(botReply, 'bot');
+
+    // Handle the bot reply after a delay
+    setTimeout(() => {
+        chatContainer.removeChild(typingDiv); // Remove typing indicator
+        const botMessageDiv = document.createElement('div');
+        botMessageDiv.classList.add('flex', 'items-start', 'space-x-2');
+        botMessageDiv.innerHTML = ` 
+            <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
+            <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
+                <p>${botReply}</p>
+            </div>`;
+        chatContainer.appendChild(botMessageDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }, 1500); // Bot reply delay
+
+    // Reset the prank flag after the "😄" response
+    isPranked = false;
+
+    // Clear the input field after sending the "😄" response
+    document.getElementById('messageInput').value = '';
+}
+
+else if (lowerCaseMessage.match(/hi|hy|hello|hey/i)) {
     const responses = [
         'hi🙋🏻‍♀️',
         'Hii😊'
@@ -1052,19 +1161,13 @@ else if (lowerCaseMessage.match(/photo|pic|image|img/i)) {
                          ];
                  botReply = responses[Math.floor(Math.random() * responses.length)];
                 }
-else if (lowerCaseMessage.match(/oi/i)) {
-    botReply = 'Oh Hoi😅';
+                else if (lowerCaseMessage === "oi") {
+                    botReply = 'Oh Hoi😅';
 } 
 else if (lowerCaseMessage.match(/number/i)) {
         botReply = '9004470167 ok ah';
     }
-else if (lowerCaseMessage.match(/hey/i)) {
-            const responses = [
-                         'hi🙋🏻‍♀️',
-                         'Hii😊'
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }else if (lowerCaseMessage.match(/busy/i)) {
+else if (lowerCaseMessage.match(/busy/i)) {
             botReply = 'illa da,sollu';
         }else if (lowerCaseMessage.match(/bye/i)) {
             botReply = 'Byee👋';
@@ -1092,8 +1195,7 @@ else if (lowerCaseMessage.match(/hey/i)) {
         };
 
     }, 2000); // Initial delay before bot says "appa vantaanga bye"
-}
- 
+} 
 
 else if (lowerCaseMessage === 'okay') {
             botReply = 'Ok😊';
@@ -1102,8 +1204,8 @@ else if (lowerCaseMessage === 'okay') {
         }else if (lowerCaseMessage.match(/nice|wow|awww|semma|azhaga iruka|romba azhaga iruka|beautiful|pretty|uyire|haiyo|kolriye|paah|pah|cute|cutie pie|cutey|angel|devatha|azhagi/i)) {
             botReply = '🙈tq';
         }
-        else if (lowerCaseMessage.match(/amma name|amma per|mom name|mother name/i)) {
-    botReply = 'Aira💗';
+        else if (lowerCaseMessage.match(/amma name|amma per|mom name|mother name|aishu/i)) {
+    botReply = 'Appa kitta ketuko';
 }
 else if (lowerCaseMessage.match(/initial/i)) {
     botReply = 'AR💗';
@@ -1441,10 +1543,8 @@ function isValidArithmeticExpression(message) {
     return validExpressionRegex.test(message);
 }
 
-// Function to evaluate the expression safely
 function evaluateExpression(expression) {
     try {
-        // We use eval safely by ensuring only numbers, operators, and parentheses are allowed
         const result = eval(expression); // Evaluating the arithmetic expression
         return `Ans vanthu: ${result}`;
     } catch (e) {
