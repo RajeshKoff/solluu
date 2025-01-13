@@ -276,9 +276,7 @@
             }, 1000);
         });
         const audioFiles = [
-            'saavu.mp3',
-            'address.mp3',
-            'nakku.mp3'
+            'call1.mp3'
         ]; 
         function playRandomAudio() {
             const randomIndex = Math.floor(Math.random() * audioFiles.length);
@@ -330,7 +328,7 @@
             if (currentAudio) {
                 currentAudio.pause();
             } 
-            currentAudio = new Audio('address.mp3');
+            currentAudio = new Audio('call2.mp3');
             currentAudio.volume = volumeLevel;
             currentAudio.play();
             currentAudio.addEventListener('ended', () => {
