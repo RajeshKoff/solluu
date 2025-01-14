@@ -244,7 +244,7 @@ margin-top: 20px;            /* Add spacing above the button if needed */
         }
         #footer-buttons {
             position: absolute;
-            bottom: 130px; /* Positioned above rkr.png */
+            bottom: 100px; /* Positioned above rkr.png */
             left: 75%;
             transform: translateX(-50%);
             display: flex;
@@ -257,6 +257,10 @@ margin-top: 20px;            /* Add spacing above the button if needed */
   outline: none; /* Disable the focus outline for all elements */
   -webkit-tap-highlight-color: transparent; /* Disable tap highlight on mobile */
 }
+#icon{
+    z-index: 2000; /* High z-index to ensure it's above all elements */
+    position: absolute; /* Ensure it's positioned above everything */
+}
 </style>
 </head>
 <body class="text-white h-screen flex flex-col" id="messageInput" >
@@ -264,8 +268,8 @@ margin-top: 20px;            /* Add spacing above the button if needed */
     <div id="floatingWords" class="absolute inset-0 pointer-events-none"></div>
     <div class="flex items-center p-0" >
         <a href="home.html">
-        <img alt="Profile picture" id="profilePic" src="icon.png" style="margin-top: -25px;z-index: 1001; width:120px;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));"></a>
-        <div class="ml-4 flex-1"></div>
+            <img id="icon" src="icon.png" alt="Icon" style="position: absolute; top: 0; left: 0; margin-top: -25px; width: 120px; filter: drop-shadow(0 0 5px rgba(255, 212, 228, 0.945));"></a>
+            <div class="ml-4 flex-1"></div>
         <div class="flex space-x-4">
             <i id="infoIcon" class="fas fa-exclamation-circle fa-light text-white cursor-pointer" 
             style="font-size: 24px; cursor: none; margin-bottom: 30px; margin-right: 10px; filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));"></i>
