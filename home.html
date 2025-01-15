@@ -1263,6 +1263,7 @@ else if (lowerCaseMessage.match(/photo|pic|image|img/i)) {
                          ];
                  botReply = responses[Math.floor(Math.random() * responses.length)];
                 }
+                
                 else if (lowerCaseMessage.match(/arivu illa|arivu iruka/i)) { 
                         const responses = [
                             'enaku iruku unaku iruka😠',
@@ -1824,13 +1825,51 @@ else if (message.toLowerCase().match(/truth or dare|truth|dare/i) && !isGameResp
                     botReply = 'yen??'; // Replace with your meme image URL
                 }else if (lowerCaseMessage.match(/pasi illa|pasikala|pasikalla|pasikanum/i)) {
                     botReply = 'pooi sapudu🤨'; // Replace with your meme image URL
-                }else if (lowerCaseMessage.match(/okay|ok|k|kk/i)) {
+                }
+                else if (lowerCaseMessage.match(/apparam|aprm|apram/i)) { 
+                        const responses = [
+                            'onnum illa🙂',
+                        'vilupuram🙃'
+                         
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
+                else if (lowerCaseMessage.match(/joke ah|joke|comedy ah|comedy|kalaai|kalaiki/i)) { 
+                        const responses = [
+                            '😂',
+                            'eee'               
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
+                // Check for messages about being an AI or robot
+              else if (lowerCaseMessage.match(/nee ai ah|robot ah|nee robo ah/i)) {
+              botReply = 'Dei naa ponnuda😆';  // Respond with "dei naa ponnuda"
+              }
+              else if (lowerCaseMessage.match(/nadakum|nadakuma|nadakumla|nadaku/i)) {
+              botReply = 'nadakumda❤️';
+              setTimeout(() => {         
+             const profilePic = document.getElementById('profilePicLarge');
+             profilePic.src = 'dpm.gif';
+             playAudioWithMindVoice('nadakum.mp3');
+             }, 2000); // 2000 milliseconds = 2 seconds delay
+             }
+             else if (lowerCaseMessage.match(/kedaikum|kedaikuma|kidaikumla|kedaiku|kidaiku|kedaiki|kidaiki/i)) {
+              botReply = 'yellam kedaikumda❤️';
+              setTimeout(() => {         
+             const profilePic = document.getElementById('profilePicLarge');
+             profilePic.src = 'dpm.gif';
+             playAudioWithMindVoice('kedaikum.mp3');
+             }, 2000); // 2000 milliseconds = 2 seconds delay
+             }
+
+                else if (lowerCaseMessage.match(/okay|ok|k|kk/i)) {
             botReply = 'Ok😊';
         }
                 else if (isRandomMessage(lowerCaseMessage)) {
     botReply = "illa puriyala😏";
     setTimeout(() => {
-        // Play an audio file associated with the "kai nadungutha" reply
+        const profilePic = document.getElementById('profilePicLarge');
+        profilePic.src = 'dpm.gif';
         playAudioWithMindVoice('illapuriyala.mp3'); // Ensure you have this audio file available
     }, 1000); // 1000 milliseconds = 1 second delay
 }
