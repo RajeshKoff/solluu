@@ -749,7 +749,7 @@ document.getElementById('messageInput').addEventListener('keypress', function (e
 
        if (message.length === 1) {
             // Check if the single character is NOT one of 'k', 'm', 's', or 'y'
-            if (!['k', 'm', 's', 'y','d'].includes(message.toLowerCase())) {
+            if (!['k', 'm', 's', 'y'].includes(message.toLowerCase())) {
                 // Show the popup for any letter other than 'k', 'm', 's', 'y'
                 showCustomPopup("En oru letter type pandra🤨");
                 e.target.value = ''; // Clear the input
@@ -848,7 +848,7 @@ if (message.includes('voice')) {
     }, 3000); // Simulate audio processing time   
 } 
 // A list of common words (this can be expanded or replaced with a proper dictionary check)
-const commonWords = ['please', 'hello', 'thank', 'how', 'are', 'you', 'good', 'morning', 'happy','evening', 'love', 'friend', 'help', 'sure','mmm','kk','mm','ss','yy','y','k','jj','ff','www','s','ama','apparam','m','hehe','eee','happy ah','ah','eh','oh','hehe','haha','chlm','luv','pookie','baby','cringe','games','call','phone'];
+const commonWords = ['please', 'hello', 'thank', 'how', 'are', 'you', 'good', 'morning', 'happy','evening', 'love', 'friend', 'help', 'sure','mmm','kk','mm','ss','yy','y','k','jj','ff','www','s','ama','apparam','m','hehe','eee','happy ah','ah','eh','oh','hehe','haha','chlm','luv','pookie','baby','cringe'];
 
 function isRandomMessage(message) {
     // Normalize the message (convert to lowercase and remove non-alphabet characters)
@@ -902,7 +902,22 @@ function isRandomMessage(message) {
 
     return false; // If it passed all conditions, it's a valid word or common structure.
 }
+// Function to get the current time of the day
+function getCurrentTimeOfDay() {
+    const currentHour = new Date().getHours(); // Get current hour (0-23)
+    
+    if (currentHour >= 0 && currentHour < 12) {
+        return 'morning'; // 12 AM to 11:59 AM
+    } else if (currentHour >= 12 && currentHour < 17) {
+        return 'afternoon'; // 12 PM to 4:59 PM
+    } else if (currentHour >= 17 && currentHour < 20) { 
+        return 'evening'; // 5 PM to 7:59 PM
+    } else {
+        return 'night'; // 8 PM to 11:59 PM
+    }
+}
 
+const currentTimeOfDay = getCurrentTimeOfDay(); // Determine the current time of day
 
 if (isBreakupActive) {
             e.target.value = ''; // Clear input
@@ -1383,24 +1398,9 @@ else if (lowerCaseMessage.match(/happy pongal|happy diwali|happy new year|merry 
                          ];
                  botReply = responses[Math.floor(Math.random() * responses.length)];
                 }
-// Function to get the current time of the day
-function getCurrentTimeOfDay() {
-    const currentHour = new Date().getHours(); // Get current hour (0-23)
-    
-    if (currentHour >= 0 && currentHour < 12) {
-        return 'morning'; // 12 AM to 11:59 AM
-    } else if (currentHour >= 12 && currentHour < 17) {
-        return 'afternoon'; // 12 PM to 4:59 PM
-    } else if (currentHour >= 17 && currentHour < 20) { 
-        return 'evening'; // 5 PM to 7:59 PM
-    } else {
-        return 'night'; // 8 PM to 11:59 PM
-    }
-}
 
-const currentTimeOfDay = getCurrentTimeOfDay(); // Determine the current time of day
 // First check for phone number requests
-if (lowerCaseMessage.match(/number|phone number/i)) {
+else if (lowerCaseMessage.match(/number|phone number/i)) {
     botReply = '0091446461'; // Bot reply with phone number
     setTimeout(() => {
         const profilePic = document.getElementById('profilePicLarge');
