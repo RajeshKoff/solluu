@@ -1291,13 +1291,6 @@ else if (lowerCaseMessage.match(/photo|pic|image|img/i)) {
                 }
                 else if (lowerCaseMessage === "oi") {
                     botReply = 'Oh Hoi😅';
-}else if (lowerCaseMessage.match(/number|phone number/i)) {
-    botReply = '0091446461';
-    setTimeout(() => {
-        const profilePic = document.getElementById('profilePicLarge');
-        profilePic.src = 'dpm.gif';
-        playAudioWithMindVoice('number.mp3');
-    }, 1300); // 2000 milliseconds = 2 seconds delay
 }
 
 else if (lowerCaseMessage.match(/busy/i)) {
@@ -1406,9 +1399,17 @@ function getCurrentTimeOfDay() {
 }
 
 const currentTimeOfDay = getCurrentTimeOfDay(); // Determine the current time of day
-
-// Check for "Good Morning" type messages
-if (lowerCaseMessage.match(/good morning|gud mrg|kaalai vanakam|goodu morning|goodu mrg/i)) {
+// First check for phone number requests
+if (lowerCaseMessage.match(/number|phone number/i)) {
+    botReply = '0091446461'; // Bot reply with phone number
+    setTimeout(() => {
+        const profilePic = document.getElementById('profilePicLarge');
+        profilePic.src = 'dpm.gif'; // Change the profile picture to a new gif
+        playAudioWithMindVoice('number.mp3'); // Play the "number" audio
+    }, 1300); // 1300 milliseconds = 1.3 seconds delay
+}
+// Then, check for time-of-day based greetings like Good Morning, Good Night, etc.
+else if (lowerCaseMessage.match(/good morning|gud mrg|kaalai vanakam|goodu morning|goodu mrg/i)) {
     if (currentTimeOfDay === 'morning') {
         const responses = [
             'Good morning❤️',
@@ -1417,7 +1418,7 @@ if (lowerCaseMessage.match(/good morning|gud mrg|kaalai vanakam|goodu morning|go
         ];
         botReply = responses[Math.floor(Math.random() * responses.length)];
     } else if (currentTimeOfDay === 'afternoon') {
-        botReply = 'Moothevi ithu kaalaila😂'; // It's actually morning, but it's afternoo
+        botReply = 'Moothevi ithu kaalaila😂'; // It's actually morning, but it's afternoon
         setTimeout(() => {
             const profilePic = document.getElementById('profilePicLarge');
             profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
@@ -1535,28 +1536,30 @@ else if (lowerCaseMessage.match(/good night|gud nyt|Gn|gnsm|goodu night|iravu va
         }, 1300); // 1300 milliseconds = 1.3 seconds delay
     }
 }
-else if (lowerCaseMessage.match(/apparam|aprm/i)) { 
-                        const responses = [
-                            'onnum illa🙃',
-                        'vilupuram🙂'                     
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/pudikalaiya|pidikalaiya|pidikala|pudikala/i)) { 
-                        const responses = [
-                            'yen appidi ninaikura🙃',
-                        'yen appidi solra🙂'                     
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
 
-                else if (lowerCaseMessage.match(/evening|evng|maalai|afternoon|mrng|night|morning|nyt/i)) { 
-                        const responses = [
-                            'mmm🙃',
-                        'mm🙃'                     
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 else if (lowerCaseMessage.match(/name|per/i)) {
     botReply = 'Haha Hasini🥰';
