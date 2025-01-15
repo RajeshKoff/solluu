@@ -749,7 +749,7 @@ document.getElementById('messageInput').addEventListener('keypress', function (e
 
        if (message.length === 1) {
             // Check if the single character is NOT one of 'k', 'm', 's', or 'y'
-            if (!['k', 'm', 's', 'y'].includes(message.toLowerCase())) {
+            if (!['k', 'm', 's', 'y','d'].includes(message.toLowerCase())) {
                 // Show the popup for any letter other than 'k', 'm', 's', 'y'
                 showCustomPopup("En oru letter type pandra🤨");
                 e.target.value = ''; // Clear the input
@@ -848,7 +848,7 @@ if (message.includes('voice')) {
     }, 3000); // Simulate audio processing time   
 } 
 // A list of common words (this can be expanded or replaced with a proper dictionary check)
-const commonWords = ['please', 'hello', 'thank', 'how', 'are', 'you', 'good', 'morning', 'happy','evening', 'love', 'friend', 'help', 'sure','mmm','kk','mm','ss','yy','y','k','jj','ff','www','s','ama','apparam','m','hehe','eee','happy ah','ah','eh','oh','hehe','haha','chlm','luv','pookie','baby','cringe'];
+const commonWords = ['please', 'hello', 'thank', 'how', 'are', 'you', 'good', 'morning', 'happy','evening', 'love', 'friend', 'help', 'sure','mmm','kk','mm','ss','yy','y','k','jj','ff','www','s','ama','apparam','m','hehe','eee','happy ah','ah','eh','oh','hehe','haha','chlm','luv','pookie','baby','cringe','games'];
 
 function isRandomMessage(message) {
     // Normalize the message (convert to lowercase and remove non-alphabet characters)
