@@ -604,7 +604,8 @@ let responseIndex = 0;
 let isGameResponseSent = false; // Flag to track if the game response is already sent
 let isPranked = false;  // Flag to track if prank reply has been given
 let lastClickTime = 0; // Track the last click time
-
+let triggeredSaptiBlock = false;
+let isTyping = false;  // New flag to track if bot is typing
 
 
 
@@ -670,6 +671,30 @@ function saveMessageToHistory(message, sender) {
     chatHistory.push(newMessage);
     localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
 }
+// Define allowed repeated character pairs (like 'kk', 'ss', 'jj', etc.)
+const allowedRepeatedPairs = ['kk', 'kkk', 'mmm', 'ff', 'ss', 'jj', 'mm', 'aa', 'ww', 'oo', 'www'];
+
+// Regex to check if the message contains repeated identical characters (e.g., 'nnn', 'lll', 'aaa', etc.)
+const repeatedCharRegex = /([a-zA-Z])\1+/; // This matches two or more consecutive identical characters
+
+// Function to check if the message contains repeated characters that should trigger a popup
+function checkMessageForRepeatedChars(message) {
+    // If message contains repeated characters
+    if (repeatedCharRegex.test(message)) {
+        // Check if the repeated characters match one of the allowed repeated pairs
+        if (!allowedRepeatedPairs.some(pair => message.includes(pair))) {
+            // Check if the repeated characters are not surrounded by other characters
+            // This prevents triggering for words like "happy" or "good"
+            const repeatedChars = message.match(repeatedCharRegex)[0]; // Get the repeated character sequence
+            if (repeatedChars.length === message.length) {
+                // If the entire message is just repeated characters (e.g., "aaa", "nnnn"), show the popup
+                showCustomPopup("En orey letter ah type pandra😐");
+                return true; // Message should not be sent
+            }
+        }
+    }
+    return false; // Message is allowed
+}
 
 document.getElementById('messageInput').addEventListener('keypress', function (e) {
 
@@ -684,22 +709,58 @@ document.getElementById('messageInput').addEventListener('keypress', function (e
                 playAudioWithMindVoice('a.mp3'); // Play audio for empty message
                 return; // Exit if the message is empty
             }
+            
+            
+ // Check if message contains only emojis
+ const emojiOnlyRegex = /^[\p{Emoji}\u200B]+$/gu; // Matches only emojis and invisible characters (e.g., zero-width space)
         
-            // Check if message is a single character
-    if (message.length === 1) {
-            showCustomPopup("En oru letter type pandra🤨");
-            e.target.value = ''; // Clear the input
-            return; // Prevent sending a single character message
+        if (emojiOnlyRegex.test(message)) {
+            // If the message is only emojis, the bot will respond with a random emoji
+            const emojiResponses = ["🙃", "🙂", "☺️"];
+            const randomEmoji = emojiResponses[Math.floor(Math.random() * emojiResponses.length)];
+            botReply = randomEmoji;  // Bot reply as random emoji
+
+            // Save the user's message to chat history
+            saveMessageToHistory(message, 'user');
+            saveMessageToHistory(botReply, 'bot');
+
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.classList.add('flex', 'justify-end');
+            userMessageDiv.innerHTML = `<div class="message user max-w-xs" style="font-family: 'Pacifico', cursive;"><p>${message}</p></div>`;
+            chatContainer.appendChild(userMessageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Show bot reply after a short delay
+            setTimeout(() => {
+                const botMessageDiv = document.createElement('div');
+                botMessageDiv.classList.add('flex', 'items-start', 'space-x-2');
+                botMessageDiv.innerHTML = `
+                    <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); ">
+                    <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
+                        <p>${botReply}</p>
+                    </div>
+                `;
+                chatContainer.appendChild(botMessageDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 1500); // Bot reply delay
+            e.target.value = ''; // Clear input after sending emoji-only message
+            return; // Prevent further processing for emoji-only messages
         }
 
-       // Check if the message consists of exactly two repeated characters
-const repeatedCharRegex = /^([a-zA-Z])\1{1}$/; // Regex to check for exactly two repeated characters
-if (repeatedCharRegex.test(message)) {
-    showCustomPopup("En orey letter ah type pandra😐");
-    e.target.value = ''; // Clear the input
-    return; // Prevent sending repeated characters
-} 
-
+       if (message.length === 1) {
+            // Check if the single character is NOT one of 'k', 'm', 's', or 'y'
+            if (!['k', 'm', 's', 'y'].includes(message.toLowerCase())) {
+                // Show the popup for any letter other than 'k', 'm', 's', 'y'
+                showCustomPopup("En oru letter type pandra🤨");
+                e.target.value = ''; // Clear the input
+                return; // Prevent sending the message
+            }
+        }
+       // Check for repeated characters in the message (and allow only the ones that are in allowed pairs)
+       if (checkMessageForRepeatedChars(message)) {
+            e.target.value = ''; // Clear the input if the message is invalid
+            return; // Prevent sending the message
+        }   
 // Save the user's message to chat history only if it's valid
 saveMessageToHistory(message, 'user');
 
@@ -787,7 +848,7 @@ if (message.includes('voice')) {
     }, 3000); // Simulate audio processing time   
 } 
 // A list of common words (this can be expanded or replaced with a proper dictionary check)
-const commonWords = ['please', 'hello', 'thank', 'how', 'are', 'you', 'good', 'morning', 'evening', 'love', 'friend', 'help', 'sure'];
+const commonWords = ['please', 'hello', 'thank', 'how', 'are', 'you', 'good', 'morning', 'happy','evening', 'love', 'friend', 'help', 'sure','mmm','kk','mm','ss','yy','y','k','jj','ff','www','s','ama','apparam','m','hehe','eee','happy ah','ah','eh','oh','hehe','haha','chlm','luv','pookie','baby','cringe'];
 
 function isRandomMessage(message) {
     // Normalize the message (convert to lowercase and remove non-alphabet characters)
@@ -796,6 +857,23 @@ function isRandomMessage(message) {
     // If the message is a common word, return false (we don't want to flag regular words)
     if (commonWords.includes(normalizedMessage)) {
         return false; // It's a valid word, not random
+    }
+
+    // Check if the message contains only emojis (no letters or digits)
+    const emojiRegex = /[\p{Emoji}]/gu;  // Unicode property escape for emojis
+    if (emojiRegex.test(message)) {
+        return true; // It's a message made of emojis
+    }
+
+    // Define a regex pattern to match emoticons (e.g. (❁´◡`❁), (●'◡'●), etc.)
+    const emoticonRegex = /([^\w\s])\1{2,}/gu;
+
+    // If the message matches any of these patterns, return true (random message)
+    const restrictedSymbolsRegex = /(?:❁´◡`❁|●'◡'●|╰\(\*°▽°\*\)╯|\^\/\/\/\^|:-?D|:[O\.O~_~\+\_+\^\.^]|S\( •̀ ω •́ \)\✧|´?▽`ʃ♡ƪ|\(\/≧▽≦\))/g;
+
+    // If the message contains restricted symbols, return true (random message)
+    if (restrictedSymbolsRegex.test(message)) {
+        return true; // These are considered random or invalid messages
     }
 
     // If the message has fewer than 4 characters, it's likely not random
@@ -929,7 +1007,11 @@ else if (lowerCaseMessage.match(/^Burj Khalifa|bk$/)) {
     window.location.href = 'game4.html';  // Redirect to game4
 } 
 
+
 else if (lowerCaseMessage.match(/fav color|fav colour|pudicha colour|colour|color/i)) {
+    // Prevent multiple prank triggers
+    if (isPranked || isTyping) return;
+
     // Create a full-screen black overlay
     const blackOverlay = document.createElement('div');
     blackOverlay.style.position = 'fixed';
@@ -969,6 +1051,9 @@ else if (lowerCaseMessage.match(/fav color|fav colour|pudicha colour|colour|colo
         // Save the bot reply to localStorage
         saveMessageToHistory(botReply, 'bot');
 
+        // Set isTyping to true to prevent sending multiple typing animations
+        isTyping = true;
+
         // Handle the bot reply after a delay
         setTimeout(() => {
             chatContainer.removeChild(typingDiv); // Remove typing indicator
@@ -983,57 +1068,63 @@ else if (lowerCaseMessage.match(/fav color|fav colour|pudicha colour|colour|colo
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }, 1500); // Bot reply delay
 
-        // Set the prank flag to true
+        // Set the prank flag to true to prevent it from being triggered again
         isPranked = true;
 
+        // Clear the input field
+        document.getElementById('messageInput').value = '';
     }, 3000); // Wait 3 seconds before showing the bot reply
-
-    // Clear the input field
-    document.getElementById('messageInput').value = '';
 }
 
 // Check for any further messages after the prank response
-else if (isPranked) {
-    // Respond with "😄" after prank reply, regardless of the input
-    botReply = "😄";
+else if (isPranked && !isTyping) {
+    // Prevent the "😄" response from being triggered if bot is still typing
+    if (document.getElementById('messageInput').value === '') {
+        botReply = "😄";
 
-    // Show the bot's reply in the chat
-    const typingDiv = document.createElement('div');
-    typingDiv.classList.add('flex', 'items-start', 'space-x-2');
-    typingDiv.innerHTML = ` 
-        <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
-        <div class="message max-w-xs">
-            <p>Typing</p>
-            <div class="typing-indicator" style="margin-top:5px;">
-                <span></span><span></span><span></span>
-            </div>
-        </div>`;
-    chatContainer.appendChild(typingDiv);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-
-    // Save the bot reply to localStorage
-    saveMessageToHistory(botReply, 'bot');
-
-    // Handle the bot reply after a delay
-    setTimeout(() => {
-        chatContainer.removeChild(typingDiv); // Remove typing indicator
-        const botMessageDiv = document.createElement('div');
-        botMessageDiv.classList.add('flex', 'items-start', 'space-x-2');
-        botMessageDiv.innerHTML = ` 
+        // Show the bot's reply in the chat
+        const typingDiv = document.createElement('div');
+        typingDiv.classList.add('flex', 'items-start', 'space-x-2');
+        typingDiv.innerHTML = ` 
             <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
-            <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
-                <p>${botReply}</p>
+            <div class="message max-w-xs">
+                <p>Typing</p>
+                <div class="typing-indicator" style="margin-top:5px;">
+                    <span></span><span></span><span></span>
+                </div>
             </div>`;
-        chatContainer.appendChild(botMessageDiv);
+        chatContainer.appendChild(typingDiv);
         chatContainer.scrollTop = chatContainer.scrollHeight;
-    }, 1500); // Bot reply delay
 
-    // Reset the prank flag after the "😄" response
-    isPranked = false;
+        // Save the bot reply to localStorage
+        saveMessageToHistory(botReply, 'bot');
 
-    // Clear the input field after sending the "😄" response
-    document.getElementById('messageInput').value = '';
+        // Set isTyping to true again to avoid multiple "😄" responses
+        isTyping = true;
+
+        // Handle the bot reply after a delay
+        setTimeout(() => {
+            chatContainer.removeChild(typingDiv); // Remove typing indicator
+            const botMessageDiv = document.createElement('div');
+            botMessageDiv.classList.add('flex', 'items-start', 'space-x-2');
+            botMessageDiv.innerHTML = ` 
+                <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
+                <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
+                    <p>${botReply}</p>
+                </div>`;
+            chatContainer.appendChild(botMessageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Reset the prank flag and typing flag after the "😄" response
+            isPranked = false;
+            isTyping = false;
+        }, 1500); // Bot reply delay
+
+        // Clear the input field after sending the "😄" response
+        document.getElementById('messageInput').value = '';
+    }
 }
+
 
 else if (lowerCaseMessage.match(/hi|hy|hello|hey/i)) {
     const responses = [
@@ -1074,7 +1165,7 @@ else if (lowerCaseMessage.match(/hi|hy|hello|hey/i)) {
     <img src="photo2.jpg"  style="width: 100%; border-radius: 15px; filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">`;
 } 
 
-else if (lowerCaseMessage.match(/call|phone/i)) {
+else if (lowerCaseMessage.match(/call/i)) {
     if (respondedNoAppa) {
         // Define the ordered responses
         const orderedResponses = [
@@ -1089,9 +1180,7 @@ else if (lowerCaseMessage.match(/call|phone/i)) {
         // Increment the index and reset it if it exceeds the length of the array
         responseIndex = (responseIndex + 1) % orderedResponses.length;
     } 
-    else if (lowerCaseMessage.match(/phone number/i)) {
-        botReply = '9004470167 ok ah';
-    } 
+
 else {
         // Define possible responses for "call"
         const callResponses = [
@@ -1134,7 +1223,7 @@ else if (lowerCaseMessage.match(/photo|pic|image|img/i)) {
     const photos = [
         'photo2.jpg',
         'photo3.png',
-        'photo1.png'
+        'photo.png'
     ];
 
     const messages = [
@@ -1151,24 +1240,71 @@ else if (lowerCaseMessage.match(/photo|pic|image|img/i)) {
         <p>${randomMessage}</p>
     `;
 }
-
-
-                    else if (lowerCaseMessage.match(/panra|pandra|enna doing/i)) { 
+                else if (lowerCaseMessage.match(/loosu|pakki|muttal|paithiyam|mental/i)) { 
                         const responses = [
-                            'summa thaan iruken🙃',
-                        'unta thaan chat pandren😅'
+                            'nee thaanda😠',
+                        'nee thaan da loosu palye😠'
+                         
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
+                else if (lowerCaseMessage.match(/arivu illa|arivu iruka/i)) { 
+                        const responses = [
+                            'enaku iruku unaku iruka😠',
+                        'dei avalothaan😠'
+                         
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
+                else if (lowerCaseMessage.match(/irunga bhai/i)) { 
+                        const responses = [
+                            '😄😄',
+                        'seri bhai😄'
+                         
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
+                else if (lowerCaseMessage.match(/single ah|or commited/i)) { 
+                        const responses = [
+                            'Single thaan🙂nee',
+                        'single thaan😌nee'
+                         
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
+                else if (lowerCaseMessage.match(/naanum single|na single|mee to/i)) { 
+                        const responses = [
+                            'Appo okay🙈',
+                        'okay okay🥰'
+                         
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
+
+                else if (lowerCaseMessage.match(/na illa|naalaam illa|naanthaan|naa illa|naailla/i)) { 
+                        const responses = [
+                            'ok ok',
+                        'okay'
                          
                          ];
                  botReply = responses[Math.floor(Math.random() * responses.length)];
                 }
                 else if (lowerCaseMessage === "oi") {
                     botReply = 'Oh Hoi😅';
-} 
-else if (lowerCaseMessage.match(/number/i)) {
-        botReply = '9004470167 ok ah';
-    }
+}else if (lowerCaseMessage.match(/number|phone number/i)) {
+    botReply = '0091446461';
+    setTimeout(() => {
+        const profilePic = document.getElementById('profilePicLarge');
+        profilePic.src = 'dpm.gif';
+        playAudioWithMindVoice('number.mp3');
+    }, 1300); // 2000 milliseconds = 2 seconds delay
+}
+
 else if (lowerCaseMessage.match(/busy/i)) {
             botReply = 'illa da,sollu';
+        }
+        else if (lowerCaseMessage.match(/na busy/i)) {
+            botReply = 'okay🙂';
         }else if (lowerCaseMessage.match(/bye/i)) {
             botReply = 'Byee👋';
             hasSaidGoodbye = true; // Set the flag to true
@@ -1196,10 +1332,7 @@ else if (lowerCaseMessage.match(/busy/i)) {
 
     }, 2000); // Initial delay before bot says "appa vantaanga bye"
 } 
-
-else if (lowerCaseMessage === 'okay') {
-            botReply = 'Ok😊';
-        } else if (lowerCaseMessage.match(/un appa yaaru|Un appa yaaru|Un appa yaru|un appa yaru|appa|Un appa name enna|appa ah|appa va|Appa va|Appa ah|who made you?|un appa name enna|Un appa per enna|Un appa name enna|Un appa per enna|un appa name yenna|Un appa per yenna|Un appa name yenna|Un appa name enna|appa ah|appa va|Appa va|Appa ah|who made you?|who created you?|created by?|whose your creater?|developer|developer name|Developer name|developer|developed by|father/i)) {
+ else if (lowerCaseMessage.match(/un appa yaaru|Un appa yaru|Un appa name enna|who made you?|Un appa per enna|Un appa name enna|Un appa per enna|un appa name yenna|Un appa per yenna|Un appa name yenna|Un appa name enna|who made you?|who created you?|created by?|whose your creater?|developer|developer name|Developer name|developer|developed by|father/i)) {
             botReply = 'Rajesh K Rishi💗';
         }else if (lowerCaseMessage.match(/nice|wow|awww|semma|azhaga iruka|romba azhaga iruka|beautiful|pretty|uyire|haiyo|kolriye|paah|pah|cute|cutie pie|cutey|angel|devatha|azhagi/i)) {
             botReply = '🙈tq';
@@ -1209,7 +1342,223 @@ else if (lowerCaseMessage === 'okay') {
 }
 else if (lowerCaseMessage.match(/initial/i)) {
     botReply = 'AR💗';
-}else if (lowerCaseMessage.match(/name|per/i)) {
+}
+else if (lowerCaseMessage.match(/papa/i)) {
+    botReply = 'papa va🥰';
+}else if (lowerCaseMessage.match(/podi|poodi|poo di/i)) {
+    botReply = 'pooda🤨';
+}
+else if (lowerCaseMessage.match(/cute|wow|super|enjoy|paarah|paara|vera lvl|veralevel|vera level uh/i)) {
+    botReply = '🥰🥰';
+}
+else if (lowerCaseMessage === 'mama sollu') {
+    botReply = 'chii pooda🙈';
+}
+else if (lowerCaseMessage === 'mama nu sollu') {
+    botReply = 'chii pooda🙈';
+}
+else if (lowerCaseMessage === 'mama nu kupudu') {
+    botReply = 'chii pooda🙈';
+}
+else if (lowerCaseMessage.match(/marry me/i)) {
+    botReply = 'eppo🙈';
+}
+else if (lowerCaseMessage.match(/marry me/i)) {
+    botReply = 'eppo🙈';
+}
+else if (lowerCaseMessage.match(/panra|pandra/i)) { 
+                        const responses = [
+                            'summa thaan iruken🙃',
+                        'unta thaan chat pandren😅'
+                         
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
+                else if (lowerCaseMessage.match(/happy birthday|hbd|best wishes|piranthanaal|poranthanaal|happy burthday|pirantha naal vazhthukal|pirantha naal|poranthu|piranthu/i)) { 
+                        const responses = [
+                            'thank you❤️',
+                        'Tqsm🥰❤️'
+                         
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
+else if (lowerCaseMessage.match(/happy pongal|happy diwali|happy new year|merry christmas|happy holi/i)) {
+    const responses = [
+                            'Same to you🥰',
+                        'Same to you da🥰🥰'
+                         
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
+// Function to get the current time of the day
+function getCurrentTimeOfDay() {
+    const currentHour = new Date().getHours(); // Get current hour (0-23)
+    
+    if (currentHour >= 0 && currentHour < 12) {
+        return 'morning'; // 12 AM to 11:59 AM
+    } else if (currentHour >= 12 && currentHour < 17) {
+        return 'afternoon'; // 12 PM to 4:59 PM
+    } else if (currentHour >= 17 && currentHour < 20) { 
+        return 'evening'; // 5 PM to 7:59 PM
+    } else {
+        return 'night'; // 8 PM to 11:59 PM
+    }
+}
+
+const currentTimeOfDay = getCurrentTimeOfDay(); // Determine the current time of day
+
+// Check for "Good Morning" type messages
+if (lowerCaseMessage.match(/good morning|gud mrg|kaalai vanakam|goodu morning|goodu mrg/i)) {
+    if (currentTimeOfDay === 'morning') {
+        const responses = [
+            'Good morning❤️',
+            'Happy morning da🥰',
+            'gud mrg da🤗'
+        ];
+        botReply = responses[Math.floor(Math.random() * responses.length)];
+    } else if (currentTimeOfDay === 'afternoon') {
+        botReply = 'Moothevi ithu kaalaila😂'; // It's actually morning, but it's afternoo
+        setTimeout(() => {
+            const profilePic = document.getElementById('profilePicLarge');
+            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
+            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
+        }, 1300); // 1300 milliseconds = 1.3 seconds delay
+    } else if (currentTimeOfDay === 'evening') {
+        botReply = 'Moothevi ithu evening😂'; // It's actually morning, but it's evening
+        setTimeout(() => {
+            const profilePic = document.getElementById('profilePicLarge');
+            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
+            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
+        }, 1300); // 1300 milliseconds = 1.3 seconds delay
+    } else {
+        botReply = 'Moothevi correct ah sollu😂'; // It's actually morning, but it's night
+        setTimeout(() => {
+            const profilePic = document.getElementById('profilePicLarge');
+            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
+            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
+        }, 1300); // 1300 milliseconds = 1.3 seconds delay
+    }
+}
+
+// Check for "Good Afternoon" type messages
+else if (lowerCaseMessage.match(/good afternoon|gud aftn|mathiya vanakkam|goodu afternoon|goodu aftn|madhiya vanakkam|happy morning/i)) {
+    if (currentTimeOfDay === 'afternoon') {
+        const responses = [
+            'Good Afternoon❤️',
+            'gud aftn da🥰'
+        ];
+        botReply = responses[Math.floor(Math.random() * responses.length)];
+    } else if (currentTimeOfDay === 'morning') {
+        botReply = 'Moothevi ithu kaalaila😂'; // It's actually afternoon, but it's morning
+        setTimeout(() => {
+            const profilePic = document.getElementById('profilePicLarge');
+            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
+            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
+        }, 1300); // 1300 milliseconds = 1.3 seconds delay
+    } else if (currentTimeOfDay === 'evening') {
+        botReply = 'Moothevi ithu evening😂'; // It's actually afternoon, but it's evening
+        setTimeout(() => {
+            const profilePic = document.getElementById('profilePicLarge');
+            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
+            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
+        }, 1300); // 1300 milliseconds = 1.3 seconds delay
+    } else {
+        botReply = 'Moothevi correct ah sollu😂'; // It's actually afternoon, but it's night
+        setTimeout(() => {
+            const profilePic = document.getElementById('profilePicLarge');
+            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
+            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
+        }, 1300); // 1300 milliseconds = 1.3 seconds delay
+    }
+}
+
+// Check for "Good Evening" type messages
+else if (lowerCaseMessage.match(/good evening|gud evng|maalai vanakam|goodu evening|goodu evng|maalai vanakkam/i)) {
+    if (currentTimeOfDay === 'evening') {
+        const responses = [
+            'Good evening da❤️',
+            'gud evng da🥰'
+        ];
+        botReply = responses[Math.floor(Math.random() * responses.length)];
+    } else if (currentTimeOfDay === 'morning') {
+        botReply = 'Moothevi ithu kaalaila😂'; // It's actually evening, but it's morning
+        setTimeout(() => {
+            const profilePic = document.getElementById('profilePicLarge');
+            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
+            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
+        }, 1300); // 1300 milliseconds = 1.3 seconds delay
+    } else if (currentTimeOfDay === 'afternoon') {
+        botReply = 'Moothevi ithu kaalaila😂'; // It's actually evening, but it's afternoon
+        setTimeout(() => {
+            const profilePic = document.getElementById('profilePicLarge');
+            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
+            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
+        }, 1300); // 1300 milliseconds = 1.3 seconds delay
+    } else {
+        botReply = 'Moothevi correct ah sollu😂'; // It's actually evening, but it's night
+        setTimeout(() => {
+            const profilePic = document.getElementById('profilePicLarge');
+            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
+            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
+        }, 1300); // 1300 milliseconds = 1.3 seconds delay
+    }
+}
+
+// Check for "Good Night" type messages
+else if (lowerCaseMessage.match(/good night|gud nyt|Gn|gnsm|goodu night|iravu vanakkam|good night sweet dreams|gn sleep well/i)) {
+    if (currentTimeOfDay === 'night') {
+        const responses = [
+            'Gnsm❤️',
+            'gud night da😴'
+        ];
+        botReply = responses[Math.floor(Math.random() * responses.length)];
+    } else if (currentTimeOfDay === 'morning') {
+        botReply = 'Moothevi ithu kaalaila😂'; // It's actually night, but it's morning
+        setTimeout(() => {
+            const profilePic = document.getElementById('profilePicLarge');
+            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
+            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
+        }, 1300); // 1300 milliseconds = 1.3 seconds delay
+    } else if (currentTimeOfDay === 'afternoon') {
+        botReply = 'Moothevi ithu kaalaila😂'; // It's actually night, but it's afternoon
+        setTimeout(() => {
+            const profilePic = document.getElementById('profilePicLarge');
+            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
+            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
+        }, 1300); // 1300 milliseconds = 1.3 seconds delay
+    } else {
+        botReply = 'Moothevi correct ah sollu😂'; // It's actually night, but it's night
+        setTimeout(() => {
+            const profilePic = document.getElementById('profilePicLarge');
+            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
+            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
+        }, 1300); // 1300 milliseconds = 1.3 seconds delay
+    }
+}
+else if (lowerCaseMessage.match(/apparam|aprm/i)) { 
+                        const responses = [
+                            'onnum illa🙃',
+                        'vilupuram🙂'                     
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
+                else if (lowerCaseMessage.match(/pudikalaiya|pidikalaiya|pidikala|pudikala/i)) { 
+                        const responses = [
+                            'yen appidi ninaikura🙃',
+                        'yen appidi solra🙂'                     
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
+
+                else if (lowerCaseMessage.match(/evening|evng|maalai|afternoon|mrng|night|morning|nyt/i)) { 
+                        const responses = [
+                            'mmm🙃',
+                        'mm🙃'                     
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
+
+else if (lowerCaseMessage.match(/name|per/i)) {
     botReply = 'Haha Hasini🥰';
     setTimeout(() => {
         const profilePic = document.getElementById('profilePicLarge');
@@ -1217,7 +1566,7 @@ else if (lowerCaseMessage.match(/initial/i)) {
         playAudioWithMindVoice('hasini.mp3');
     }, 2000); // 2000 milliseconds = 2 seconds delay
 }
-else if (message.toLowerCase().match(/game|truth or dare|truth/i) && !isGameResponseSent) {
+else if (message.toLowerCase().match(/truth or dare|truth|dare/i) && !isGameResponseSent) {
     isGameResponseSent = true; // Set the flag to true to prevent duplicate replies
     
     // Show the bot reply
@@ -1268,12 +1617,14 @@ else if (message.toLowerCase().match(/game|truth or dare|truth/i) && !isGameResp
                 else if (lowerCaseMessage.match(/nice name/i)) { 
                 botReply = 'Thanks🥰';
                 }
-
+                else if (lowerCaseMessage.match(/happy/i)) { 
+                botReply = '🥰';
+                }
                 else if (lowerCaseMessage.match(/nalla iruku/i)) { 
                 botReply = 'Thanks🥰';
                 }
-                else if (lowerCaseMessage.match(/sapten/i)) { 
-                botReply = 'okay,god boy😊';
+                else if (lowerCaseMessage.match(/sapten|saptachi|saptuten/i)) { 
+                botReply = 'okay,good boi😊';
                 }
                 else if (lowerCaseMessage.match(/enga poolam|enga poogalaam|poogalaam|engaiyathu poolaama|pogalama/i)) { 
                 botReply = 'movie🤔';
@@ -1283,11 +1634,21 @@ else if (message.toLowerCase().match(/game|truth or dare|truth/i) && !isGameResp
                 }
                 else if (lowerCaseMessage.match(/enga iruka|engadi iruka|enga di iruka|where|engatha iruka|ippo enga iruka|veetulaiya iruka|veetlaiya iruka/i)) { 
                    const responses = [
-                   'veetula thaan',
-                  'veliya iruken, apparam pesuren,kochikatha bye👋🏻' // Keep the original response
+                   'veetula thaan🙃',
+                  'veetula thaan da🥴' // Keep the original response
                  ];
                  botReply = responses[Math.floor(Math.random() * responses.length)];
                 botReply = botReply.replace(/, /g, '<br>');
+                    // Check if the "Sapti Block" condition is triggered
+    if (triggeredSaptiBlock) {
+        // Show the popup message and prevent sending the reply
+        showCustomPopup("Ippo thaaneda keta🤨");
+        triggeredSaptiBlock = false; // Reset the block state
+        e.target.value = ''; // Clear the input field
+        return; // Exit the function and don't send the message
+    } else {
+        triggeredSaptiBlock = true; // Set the flag that the block has been triggered
+    }
                 }
                 else if (lowerCaseMessage.match(/address|adress/i)) { 
                     botReply = 'Osama Bin Laden, Indugus malai, kabul nagar, Afghanistan, care of  Mullah Omar';
@@ -1320,7 +1681,7 @@ else if (message.toLowerCase().match(/game|truth or dare|truth/i) && !isGameResp
                     playAudioWithMindVoice('saavu.mp3');
                    }, 2000);
         }
-        else if (lowerCaseMessage.match(/sapudu|take care|paathuko|paathukalaam|pathu|paathu|feel pannatha|iruken|ooti|miss you|unna paakanum|unta pesanum|olunga|good girl/i)) {
+        else if (lowerCaseMessage.match(/sapudu|take care|paathuko|paathukalaam|pathu|paathu|feel pannatha|ooti|miss you|unna paakanum|unta pesanum|good girl/i)) {
              const responses = [
               '😏',
               'Seri🙄',
@@ -1352,10 +1713,10 @@ else if (message.toLowerCase().match(/game|truth or dare|truth/i) && !isGameResp
                 }else if (lowerCaseMessage.match(/place/i)) { 
                 botReply = 'Trichy❤️';
                 }
-                else if (lowerCaseMessage.match(/vara/i)) { 
+                else if (lowerCaseMessage.match(/varava|varata|varalama|varalaama|vartuma|vantha|vanthu/i)) { 
                 botReply = 'Adi vaanguva😅';
                 
-                }else if (lowerCaseMessage.match(/saptiya|sapta|sapti/i)) {
+                }else if (lowerCaseMessage.match(/saptiya|saptacha|sapti/i)) {
                     const responses = [
                         'illa pasikala, nee',
                         'Illa vanthu ooturiya',
@@ -1363,30 +1724,50 @@ else if (message.toLowerCase().match(/game|truth or dare|truth/i) && !isGameResp
                          'Sapten, nee'
                          ];
                  botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
+                 if (triggeredSaptiBlock) {
+                showCustomPopup("Ippo thaaneda keta🤨");
+                triggeredSaptiBlock = false; 
+                e.target.value = ''; // Clear the input
+                return; // Exit the function  
+                } else {
+                triggeredSaptiBlock = true; 
+                }}
                 else if (lowerCaseMessage.match(/eppidi iruka|iruka|iruki|how|how are you|hru/i)) {
-                    const responses = [
-                        'Nalla iruken,neenga',
-                        'fine,U',
-                        'Nalla iruken😊,neenga'
-                 ];
+    const responses = [
+        'Nalla iruken,neenga',
+        'fine,U',
+        'Nalla iruken😊,neenga'
+    ];
 
-              const audioFiles = [
-              'hru1.mp3',
-              'mamapayale.mp3'
- 
-                    ];
+    const audioFiles = [
+        'hru1.mp3',
+        'mamapayale.mp3'
+    ];
 
-                     botReply = responses[Math.floor(Math.random() * responses.length)];
+    botReply = responses[Math.floor(Math.random() * responses.length)];
 
-                 setTimeout(() => {
-                    const profilePic = document.getElementById('profilePicLarge');
-                    profilePic.src = 'dpm.gif';
-                 const randomAudio = audioFiles[Math.floor(Math.random() * audioFiles.length)];
-                 playAudioWithMindVoice(randomAudio);
-                 
-                }, 2000);
-                }         
+    // Check if the "Sapti Block" condition is triggered
+    if (triggeredSaptiBlock) {
+        // Show the popup message and prevent sending the reply
+        showCustomPopup("Ippo thaaneda keta🤨");
+        triggeredSaptiBlock = false; // Reset the block state
+        e.target.value = ''; // Clear the input field
+        return; // Exit the function and don't send the message
+    } else {
+        triggeredSaptiBlock = true; // Set the flag that the block has been triggered
+    }
+
+    // If the code reaches here, send the bot's reply
+    setTimeout(() => {
+        const profilePic = document.getElementById('profilePicLarge');
+        profilePic.src = 'dpm.gif'; // Change profile pic (GIF animation)
+        
+        const randomAudio = audioFiles[Math.floor(Math.random() * audioFiles.length)];
+        playAudioWithMindVoice(randomAudio); // Play a random audio file
+        
+    }, 2000); // Delay before showing profile pic and playing audio
+}
+        
                 else if (lowerCaseMessage.match(/theriu|theriy/i)) {
                     const responses = [
                         'theriyum theriyum',
@@ -1431,11 +1812,18 @@ else if (message.toLowerCase().match(/game|truth or dare|truth/i) && !isGameResp
                          'Dosa thaan'
                          ];
                  botReply = responses[Math.floor(Math.random() * responses.length)];
-                }else if (lowerCaseMessage.match(/biryani|Biryani|biriyani|Biriyani|dosa|Dosa|idly|Idly|sapadu|Sapadu/i)) {
+
+                }else if (lowerCaseMessage.match(/biryani|Biryani|biriyani|Biriyani|dosa|Dosa|idly|Idly|sapadu|Sapadu|ippove|ippo/i)) {
                     botReply = 'Okay😊'; // Replace with your meme image URL
-                } else if (lowerCaseMessage.match(/sapadala|sapadanum|naa sapadala|Na sapadala|sapdala|illa|Illa|Naa sapadala|illa sapadala|Illa sapadala|innum sapadala|Innum sapadala|innum illa|Innum illa/i)) {
+                } else if (lowerCaseMessage.match(/sapadala|sapadanum|naa sapadala|Na sapadala|sapdala|Naa sapadala|illa sapadala|Illa sapadala|innum sapadala|Innum sapadala|innum illa|Innum illa/i)) {
                     botReply = 'sapadalaiya🥺,pooi sapudu🤨'; // Replace with your meme image URL
-                }
+                }else if (lowerCaseMessage.match(/illa/i)) {
+                    botReply = 'yen??'; // Replace with your meme image URL
+                }else if (lowerCaseMessage.match(/pasi illa|pasikala|pasikalla|pasikanum/i)) {
+                    botReply = 'pooi sapudu🤨'; // Replace with your meme image URL
+                }else if (lowerCaseMessage.match(/okay|ok|k|kk/i)) {
+            botReply = 'Ok😊';
+        }
                 else if (isRandomMessage(lowerCaseMessage)) {
     botReply = "illa puriyala😏";
     setTimeout(() => {
