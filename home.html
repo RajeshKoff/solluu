@@ -1346,7 +1346,7 @@ else if (lowerCaseMessage.match(/busy/i)) {
         }else if (lowerCaseMessage.match(/nice|wow|awww|semma|azhaga iruka|romba azhaga iruka|beautiful|pretty|uyire|haiyo|kolriye|paah|pah|cute|cutie pie|cutey|angel|devatha|azhagi/i)) {
             botReply = '🙈tq';
         }
-        else if (lowerCaseMessage.match(/amma name|amma per|mom name|mother name|aishu/i)) {
+        else if (lowerCaseMessage.match(/amma name|amma per|mom name|mother name|aishu|aishwarya/i)) {
     botReply = 'Appa kitta ketuko';
 }
 else if (lowerCaseMessage.match(/initial/i)) {
@@ -1375,6 +1375,18 @@ else if (lowerCaseMessage.match(/marry me/i)) {
 else if (lowerCaseMessage.match(/marry me/i)) {
     botReply = 'eppo🙈';
 }
+else if (lowerCaseMessage.match(/birthday eppo|birthay yennaiku|birthday ennaiku|eppo porantha/i)) {
+    botReply = 'Aug 13 da🙃';
+}
+else if (lowerCaseMessage.match(/Happy new year/i)) {
+    botReply = 'same to you🥰';
+}
+else if (lowerCaseMessage.match(/Happy diwali|happy holi|happy ramzam|happy republic day|happy independence day/i)) {
+    botReply = 'yaara nee😂';
+}
+else if (lowerCaseMessage.match(/sollu|solluu|vayasu|year/i)) {
+    botReply = 'sollamudiyathu🙂';
+}
 else if (lowerCaseMessage.match(/panra|pandra/i)) { 
                         const responses = [
                             'summa thaan iruken🙃',
@@ -1383,18 +1395,26 @@ else if (lowerCaseMessage.match(/panra|pandra/i)) {
                          ];
                  botReply = responses[Math.floor(Math.random() * responses.length)];
                 }
-                else if (lowerCaseMessage.match(/happy birthday|hbd|best wishes|piranthanaal|poranthanaal|happy burthday|pirantha naal vazhthukal|pirantha naal|poranthu|piranthu/i)) { 
-                        const responses = [
-                            'thank you❤️',
-                        'Tqsm🥰❤️'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-else if (lowerCaseMessage.match(/happy pongal|happy diwali|happy new year|merry christmas|happy holi/i)) {
+// Check for birthday-related messages
+else if (lowerCaseMessage.match(/happy birthday|hbd|best wishes|piranthanaal|poranthanaal|happy burthday|pirantha naal vazhthukal|pirantha naal|poranthu|piranthu/i)) { 
+    const currentDate = new Date();  // Get the current date
+    const currentMonth = currentDate.getMonth();  // Get the current month (0-11)
+    const currentDay = currentDate.getDate();  // Get the current day (1-31)
+
+    if (currentMonth === 7 && currentDay === 13) {  // Check if the date is 13th August (August is month 7)
+        const responses = [
+            'Thank you❤️',
+            'Tqsm🥰❤️'
+        ];
+        botReply = responses[Math.floor(Math.random() * responses.length)];
+    } else {
+        botReply = "En birthday Aug 13 da😄";  // For any other date, the bot will reply with "en birthday aug 13"
+    }
+}
+else if (lowerCaseMessage.match(/happy pongal/i)) {
     const responses = [
-                            'Same to you🥰',
-                        'Same to you da🥰🥰'
+                            'Pongal over da😄',
+                        'Belated happy pongal🥰'
                          
                          ];
                  botReply = responses[Math.floor(Math.random() * responses.length)];
