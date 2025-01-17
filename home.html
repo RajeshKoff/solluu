@@ -34,6 +34,33 @@ body {
   min-height: 100vh; /* Use min-height instead of height */
   position: relative;
 }
+/* Use Flexbox or Grid for layouts */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+/* Media queries for different screen sizes */
+@media (max-width: 768px) {
+  .container {
+    padding: 5%;
+  }
+
+}
+@media (max-width: 480px) {
+
+  .popup {
+    width: 90vw;
+    padding: 15px;
+  }
+
+  #messageInput {
+    width: 70%;
+  }
+}
         .blur-background {
             filter: blur(2px); 
         }
@@ -244,36 +271,7 @@ body {
 .bulging {
     animation: bulge 0.5s ease-in-out; 
 }
-        #butterfly {
-            display: none; 
-            position: absolute;
-            top: -40px;
-            right: 0;
-            width: 50px;
-            height: 50px;
-            background: url('butterfly.gif') no-repeat center center;
-            background-size: contain;
-            animation: moveButterfly 3s linear forwards;
-            z-index: 2001;
-            transform: rotate(-105deg);
-            filter: drop-shadow(0 0 2px rgba(255, 148, 193, 0.945)); 
-        }
-
-        @keyframes moveButterfly {
-            0% {
-              
-                top: -10px;
-            }
-            100% {
-                right: 123px;
-                top: 133px; 
-                transform: rotate(-10deg);
-            }
-        }
-        .move-left {
-            left: -150px; 
-            transition: left 1s ease-in-out; 
-        }
+      
                 .button-container {
     display: flex;               /* Use flexbox */
     justify-content: center;     /* Center horizontally */
@@ -344,61 +342,7 @@ window.addEventListener('resize', lockBodyHeight);
         backgroundVideo.pause(); // Pause background video when ending the call
     }
 </script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
 
-// Delay the butterfly's appearance by 60 seconds (60000 ms)
-setTimeout(function () {
-    const butterfly = document.getElementById('butterfly');
-    butterfly.style.display = 'block'; // Show the butterfly after 60 seconds
-}, 10000); 
-
-// Event listener for the butterfly click
-document.getElementById('butterfly').addEventListener('click', function () {
-    playAudioWithMindVoice();
-    botReply(getRandomReply()); // Call random reply function
-    moveButterfly(); // Trigger butterfly movement
-});
-
-// Play Audio Function
-function playAudioWithMindVoice() {
-    const audio = new Audio('mindVoice.mp3'); // Ensure this path is correct
-    audio.play();
-}
-
-// Bot Reply Function with random replies
-function botReply(message) {
-    const chatContainer = document.getElementById('chatContainer');
-    const botMessageDiv = document.createElement('div');
-    botMessageDiv.classList.add('flex', 'items-start', 'space-x-2');
-    botMessageDiv.innerHTML = `
-    <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
-    <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
-        <p>${message}</p>
-    </div>`;
-    chatContainer.appendChild(botMessageDiv);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-}
-
-// Function to get a random reply
-function getRandomReply() {
-    const replies = [
-        'Butterflies ku aasa padatha😂',
-        'Butterflies kaga life ah tholachidatha!🦋',
-        'Butterflies venaam namba😅',
-    ];
-    const randomIndex = Math.floor(Math.random() * replies.length);
-    return replies[randomIndex];
-}
-
-// Move the butterfly image to the left side
-function moveButterfly() {
-    const butterfly = document.getElementById('butterfly');
-    butterfly.classList.add('move-left');
-}
-});
-
-</script>
 </head>
 
 <body class="text-white h-screen flex flex-col">
@@ -409,7 +353,6 @@ function moveButterfly() {
             <i id="infoIcon" class="fas fa-info-circle text-white cursor-pointer" style="font-size: 24px; margin-bottom: 30px; margin-right: 10px;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));"></i>
         </div>
     </div>
-    <div id="butterfly" class="butterfly"></div>
     <div id="infoModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden" style="z-index: 1000;  font-family: 'Pacifico', cursive; ">
         <div class="bg-white text-black p-6 rounded-lg shadow-lg max-w-sm" style="background: linear-gradient(135deg, #ffb1d3 0%, #e01279 30%, #82003a 80%, #e01279 100%)">
             <img src="popup.png" style="width: 280px; display: block; margin: 0 auto;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); ">
@@ -609,7 +552,9 @@ let isTyping = false;  // New flag to track if bot is typing
 
 
 
-const badWords = ["sex", "fuck", "ass", "asshole","hole","pink","unaku pink ah irukuma","unaku black ah irukuma","periods","clit", "vagina", "virgin", "nude","amanama", "bra", "bikini", "jatti", "panties","amanama","avu", "uru","boobs", "punda", "sunni","Thevidiya", "dhevidiya", "*", "otha", "Ootha", "*tha","mairu","maira","matter", "hair", "kunji", "koothi", "kuthi", "koodhi","kudhi", "oluka", "pundaiya", "kanji", "oothu", "uthu","bunda", "sappu", "vai", "potta", "pochi", "pochchi","mava", "mavale", "siluku", "silk", "olukka","umburiya","umbu","oombu","kundi","poodu","podu"];
+const badWords = ["sex", "fuck", "ass", "asshole","hole","pink","unaku pink ah irukuma","unaku black ah irukuma","periods","clit", "vagina", "virgin", "nude","amanama", "bra", "bikini", "jatti", "panties",
+"amanama","avu", "uru","boobs", "punda", "sunni","Thevidiya", "dhevidiya", "*", "otha", "Ootha", "*tha","mairu","maira","matter", "hair", "kunji", "koothi", "kuthi", "koodhi","kudhi", "oluka", "pundaiya",
+ "kanji", "oothu", "uthu","bunda", "sappu", "vai", "potta", "pochi", "pochchi","mava", "mavale", "siluku", "silk", "olukka","umburiya","umbu","oombu","kundi","poodu","podu"];
 const forbiddenWords = ["what","how", "why", "where", "who", "doing", "obs", "will","could","can","not","really"]; // Words you want to detect
 
 
@@ -1139,7 +1084,7 @@ else if (isPranked && !isTyping) {
         document.getElementById('messageInput').value = '';
     }
 }
-else if (lowerCaseMessage.match(/ennachi/i)) {
+else if (lowerCaseMessage.match(/ennachi|yennachi|enachi|yenachi|enachu|ennachu/i)) {
               botReply = 'enna nonnachi🤨';
               setTimeout(() => {         
              const profilePic = document.getElementById('profilePicLarge');
@@ -1212,9 +1157,30 @@ else if (lowerCaseMessage.match(/ethachi/i)) {
                  botReply = responses[Math.floor(Math.random() * responses.length)];
                 }
 
-
-
-
+                else if (lowerCaseMessage.match(/aaidichi|mudinchi|aidichi|mudinjiruchi|aaiduchi|aiduchi|pudichi|pidichi/i)) {
+    const responses = [
+                            'oo🙃',
+                        'Mmm😐'
+                         
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
+                else if (lowerCaseMessage.match(/purin|puriya/i)) {
+    const responses = [
+                            'so what😐',
+                        'so what😒'
+                         
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
+                else if (lowerCaseMessage.match(/thirumba|therumba|marupadi|again/i)) {
+    const responses = [
+                            '😒',
+                        '🤫🙃'
+                         
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
 
 
 
@@ -1352,7 +1318,7 @@ else if (lowerCaseMessage.match(/photo|pic|image|img/i)) {
         <p>${randomMessage}</p>
     `;
 }
-                else if (lowerCaseMessage.match(/loosu|pakki|muttal|paithiyam|mental|moothevi|moodevi|modevi|mothevi/i)) { 
+                else if (lowerCaseMessage.match(/loosu|pakki|muttal|paithiyam|mental|moothevi|moodevi|modevi|mothevi|lusu|pisasu/i)) { 
                     const responses = [
               'shut up😠',
               'nee thaanda loosu payale🤨',
@@ -1495,7 +1461,7 @@ else if (lowerCaseMessage.match(/pesalama|pesalaama|pesuvoma|pesuvooma|pesu/i)) 
                          ];
                  botReply = responses[Math.floor(Math.random() * responses.length)];
                 }
-                else if (lowerCaseMessage.match(/engineering/i)) {
+                else if (lowerCaseMessage.match(/engineering|apdiya/i)) {
                     const responses = [
                         'ama🙂',
                         '🙃',
@@ -1532,6 +1498,30 @@ else if (lowerCaseMessage.match(/pesalama|pesalaama|pesuvoma|pesuvooma|pesu/i)) 
                          ];
                  botReply = responses[Math.floor(Math.random() * responses.length)];
                 }
+                else if (lowerCaseMessage.match(/cut|chat/i)) {
+                    const responses = [
+                        '🤫',
+                        '🤫🙃'
+                         
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
+                else if (lowerCaseMessage.match(/breakup/i)) {
+                    const responses = [
+                        'achoo🙃',
+                        'achoo🙂'
+                         
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
+                else if (lowerCaseMessage.match(/poona/i)) {
+                    const responses = [
+                        'illaiye🙃',
+                        '🙂'
+                         
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
 
 
 
@@ -1540,8 +1530,7 @@ else if (lowerCaseMessage.match(/pesalama|pesalaama|pesuvoma|pesuvooma|pesu/i)) 
 
 
 
-
-else if (lowerCaseMessage.match(/busy/i)) {
+else if (lowerCaseMessage.match(/busy|work/i)) {
             botReply = 'illa da,sollu';
         }
         else if (lowerCaseMessage.match(/na busy/i)) {
@@ -1604,7 +1593,7 @@ else if (lowerCaseMessage === 'mama nu kupudu') {
 else if (lowerCaseMessage.match(/marry me/i)) {
     botReply = 'eppo🙈';
 }
-else if (lowerCaseMessage.match(/marry me/i)) {
+else if (lowerCaseMessage.match(/marry me|outing|dating/i)) {
     botReply = 'eppo🙈';
 }
 else if (lowerCaseMessage.match(/birthday eppo|birthay yennaiku|birthday ennaiku|eppo porantha/i)) {
@@ -1616,13 +1605,22 @@ else if (lowerCaseMessage.match(/Happy new year/i)) {
 else if (lowerCaseMessage.match(/Happy diwali|happy holi|happy ramzam|happy republic day|happy independence day/i)) {
     botReply = 'yaara nee😂';
 }
-else if (lowerCaseMessage.match(/sollu|solluu|vayasu|year/i)) {
+else if (lowerCaseMessage.match(/sollu|solluu|vayasu|year|solluu|sol/i)) {
     botReply = 'sollamudiyathu🙂';
 }
-else if (lowerCaseMessage.match(/panra|pandra/i)) { 
+else if (lowerCaseMessage.match(/panra|pandra|panura|pannura/i)) { 
                         const responses = [
                             'summa thaan iruken🙃',
-                        'unta thaan chat pandren😅'
+                        'unta thaan chat pandren😅',
+                        'vetti🙃'
+                         
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
+                else if (lowerCaseMessage.match(/epa polam|eppa polam|eppa poolaam|poga|pooga/i)) { 
+                        const responses = [
+                            'apparam🤫',
+                        'poonuma😅'
                          
                          ];
                  botReply = responses[Math.floor(Math.random() * responses.length)];
@@ -1671,21 +1669,21 @@ else if (lowerCaseMessage.match(/good morning|gud mrg|kaalai vanakam|goodu morni
         ];
         botReply = responses[Math.floor(Math.random() * responses.length)];
     } else if (currentTimeOfDay === 'afternoon') {
-        botReply = 'Moothevi ithu kaalaila😂'; // It's actually morning, but it's afternoon
+        botReply = 'Moodevi correct ah sollu😂'; // It's actually morning, but it's afternoon
         setTimeout(() => {
             const profilePic = document.getElementById('profilePicLarge');
             profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
             playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
         }, 1300); // 1300 milliseconds = 1.3 seconds delay
     } else if (currentTimeOfDay === 'evening') {
-        botReply = 'Moothevi ithu evening😂'; // It's actually morning, but it's evening
+        botReply = 'Moodevi correct ah sollu😂'; // It's actually morning, but it's evening
         setTimeout(() => {
             const profilePic = document.getElementById('profilePicLarge');
             profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
             playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
         }, 1300); // 1300 milliseconds = 1.3 seconds delay
     } else {
-        botReply = 'Moothevi correct ah sollu😂'; // It's actually morning, but it's night
+        botReply = 'Moodevi correct ah sollu😂'; // It's actually morning, but it's night
         setTimeout(() => {
             const profilePic = document.getElementById('profilePicLarge');
             profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
@@ -1703,21 +1701,21 @@ else if (lowerCaseMessage.match(/good afternoon|gud aftn|mathiya vanakkam|goodu 
         ];
         botReply = responses[Math.floor(Math.random() * responses.length)];
     } else if (currentTimeOfDay === 'morning') {
-        botReply = 'Moothevi ithu kaalaila😂'; // It's actually afternoon, but it's morning
+        botReply = 'Moodevi correct ah sollu😂'; // It's actually afternoon, but it's morning
         setTimeout(() => {
             const profilePic = document.getElementById('profilePicLarge');
             profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
             playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
         }, 1300); // 1300 milliseconds = 1.3 seconds delay
     } else if (currentTimeOfDay === 'evening') {
-        botReply = 'Moothevi ithu evening😂'; // It's actually afternoon, but it's evening
+        botReply = 'Moodevi correct ah sollu😂'; // It's actually afternoon, but it's evening
         setTimeout(() => {
             const profilePic = document.getElementById('profilePicLarge');
             profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
             playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
         }, 1300); // 1300 milliseconds = 1.3 seconds delay
     } else {
-        botReply = 'Moothevi correct ah sollu😂'; // It's actually afternoon, but it's night
+        botReply = 'Moodevi correct ah sollu😂'; // It's actually afternoon, but it's night
         setTimeout(() => {
             const profilePic = document.getElementById('profilePicLarge');
             profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
@@ -1735,21 +1733,21 @@ else if (lowerCaseMessage.match(/good evening|gud evng|maalai vanakam|goodu even
         ];
         botReply = responses[Math.floor(Math.random() * responses.length)];
     } else if (currentTimeOfDay === 'morning') {
-        botReply = 'Moothevi ithu kaalaila😂'; // It's actually evening, but it's morning
+        botReply = 'Moodhevi correct ah sollu😂'; // It's actually evening, but it's morning
         setTimeout(() => {
             const profilePic = document.getElementById('profilePicLarge');
             profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
             playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
         }, 1300); // 1300 milliseconds = 1.3 seconds delay
     } else if (currentTimeOfDay === 'afternoon') {
-        botReply = 'Moothevi ithu kaalaila😂'; // It's actually evening, but it's afternoon
+        botReply = 'Moodhevi correct ah sollu😂'; // It's actually evening, but it's afternoon
         setTimeout(() => {
             const profilePic = document.getElementById('profilePicLarge');
             profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
             playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
         }, 1300); // 1300 milliseconds = 1.3 seconds delay
     } else {
-        botReply = 'Moothevi correct ah sollu😂'; // It's actually evening, but it's night
+        botReply = 'Moodevi correct ah sollu😂'; // It's actually evening, but it's night
         setTimeout(() => {
             const profilePic = document.getElementById('profilePicLarge');
             profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
@@ -1767,21 +1765,21 @@ else if (lowerCaseMessage.match(/good night|gud nyt|Gn|gnsm|goodu night|iravu va
         ];
         botReply = responses[Math.floor(Math.random() * responses.length)];
     } else if (currentTimeOfDay === 'morning') {
-        botReply = 'Moothevi ithu kaalaila😂'; // It's actually night, but it's morning
+        botReply = 'Moodevi correct ah sollu😂'; // It's actually night, but it's morning
         setTimeout(() => {
             const profilePic = document.getElementById('profilePicLarge');
             profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
             playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
         }, 1300); // 1300 milliseconds = 1.3 seconds delay
     } else if (currentTimeOfDay === 'afternoon') {
-        botReply = 'Moothevi ithu kaalaila😂'; // It's actually night, but it's afternoon
+        botReply = 'Moodevi correct ah sollu😂'; // It's actually night, but it's afternoon
         setTimeout(() => {
             const profilePic = document.getElementById('profilePicLarge');
             profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
             playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
         }, 1300); // 1300 milliseconds = 1.3 seconds delay
     } else {
-        botReply = 'Moothevi correct ah sollu😂'; // It's actually night, but it's night
+        botReply = 'Moodevi correct ah sollu😂'; // It's actually night, but it's night
         setTimeout(() => {
             const profilePic = document.getElementById('profilePicLarge');
             profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
@@ -1789,6 +1787,7 @@ else if (lowerCaseMessage.match(/good night|gud nyt|Gn|gnsm|goodu night|iravu va
         }, 1300); // 1300 milliseconds = 1.3 seconds delay
     }
 }
+
 
 
 
@@ -1885,10 +1884,10 @@ else if (message.toLowerCase().match(/truth or dare|truth|dare/i) && !isGameResp
                 else if (lowerCaseMessage.match(/enga poolam|enga poogalaam|poogalaam|engaiyathu poolaama|pogalama/i)) { 
                 botReply = 'movie🤔';
                 }
-                else if (lowerCaseMessage.match(/entha movie|movie ah|yaar movie|movie poolama| movie pogalama|movie poogalaama/i)) { 
+                else if (lowerCaseMessage.match(/entha movie|movie ah|yaar movie|movie poolama| movie pogalama|movie poogalaama|ena movie|yaru movie/i)) { 
                 botReply = 'un istam🥰';
                 }
-                else if (lowerCaseMessage.match(/enga iruka|engadi iruka|enga di iruka|where|engatha iruka|ippo enga iruka|veetulaiya iruka|veetlaiya iruka/i)) { 
+                else if (lowerCaseMessage.match(/enga iruka|engadi iruka|enga di iruka|engatha iruka|ippo enga iruka|veetulaiya iruka|veetlaiya iruka/i)) { 
                    const responses = [
                    'veetula thaan🙃',
                   'veetula thaan da🥴' // Keep the original response
@@ -2056,10 +2055,12 @@ else if (lowerCaseMessage.match(/theriyala|theriya/i)) {
                          ];
                  botReply = responses[Math.floor(Math.random() * responses.length)];
                 }
-                else if (lowerCaseMessage.match(/pudika|pudikala/i)) {
+                else if (lowerCaseMessage.match(/pudika|pudikala|hmm|hmmmm|hmmm|vaangi|vanki/i)) {
                     const responses = [
                         'okay🙂',
                         'Mmm',
+                        'haan',
+                        'hmm🙃'
                          
                          ];
                  botReply = responses[Math.floor(Math.random() * responses.length)];
@@ -2073,7 +2074,14 @@ else if (lowerCaseMessage.match(/theriyala|theriya/i)) {
                          ];
                  botReply = responses[Math.floor(Math.random() * responses.length)];
                 }
-                
+                else if (lowerCaseMessage.match(/v2 la ellam nalla irukangala|nalla irukaangala/i)) {
+                    const responses = [
+                        'yesss🥰',
+                        'fine❤️',
+                         
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
                 
                 
                 
@@ -2124,6 +2132,9 @@ else if (lowerCaseMessage.match(/theriyala|theriya/i)) {
                 }else if (lowerCaseMessage.match(/pasi illa|pasikala|pasikalla|pasikanum/i)) {
                     botReply = 'pooi sapudu🤨'; // Replace with your meme image URL
                 }
+                else if (lowerCaseMessage.match(/rasi/i)) {
+                    botReply = 'kanni rasi🥰'; // Replace with your meme image URL
+                }
                 else if (lowerCaseMessage.match(/apparam|aprm|apram/i)) { 
                         const responses = [
                             'onnum illa🙂',
@@ -2133,7 +2144,7 @@ else if (lowerCaseMessage.match(/theriyala|theriya/i)) {
                          ];
                  botReply = responses[Math.floor(Math.random() * responses.length)];
                 }
-                else if (lowerCaseMessage.match(/joke ah|joke|comedy ah|comedy|kalaai|kalaiki|mokka/i)) { 
+                else if (lowerCaseMessage.match(/joke ah|joke|comedy ah|comedy|kalaai|kalaiki|mokka|enaku/i)) { 
                         const responses = [
                             '😂',
                             'eee'               
