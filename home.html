@@ -2198,8 +2198,6 @@ else if (lowerCaseMessage.match(/mind/i)) {
 
 
 
-
-
 else if (lowerCaseMessage.match(/theriyala|theriya/i)) {
                     const responses = [
                         'sonnathaane theriyum🙃',
@@ -2243,8 +2241,6 @@ else if (lowerCaseMessage.match(/theriyala|theriya/i)) {
                          ];
                  botReply = responses[Math.floor(Math.random() * responses.length)];
                 }
-                
-
                 else if (lowerCaseMessage.match(/v2 la ellam nalla irukangala|nalla irukaangala/i)) {
                     const responses = [
                         'yesss🥰',
@@ -2376,6 +2372,14 @@ else if (lowerCaseMessage.match(/theriyala|theriya/i)) {
         playAudioWithMindVoice('illapuriyala.mp3'); // Ensure you have this audio file available
     }, 1000); // 1000 milliseconds = 1 second delay
 }
+else if (lowerCaseMessage.match(/thoongalaiya|thungalaiya|thongalaiya/i)) {
+    const responses = [
+                        'thokam varla😅',
+                        'illa😅'
+                         
+                         ];
+                 botReply = responses[Math.floor(Math.random() * responses.length)];
+                }
 else if (lowerCaseMessage.match(/ayyo|iyoo|iyooo|ayyai|iyai|/i)) {
     const responses = [
                         '😅',
