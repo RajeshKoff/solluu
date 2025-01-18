@@ -71,6 +71,7 @@ body {
         transition: opacity 0.5s;
         animation: pop-in 0.3s ease forwards; /* Keep only the pop-in animation */
 box-shadow:0 0 40px rgba(255, 148, 193, 0.945);
+margin-left: 6px;
 }
     @keyframes pop-in {
         from {
@@ -709,14 +710,14 @@ function handleDareCard(card) {
 
             // Attach the event listener for the Pandren button here after making it visible
             pandrenButton.addEventListener('click', () => {
-                processDareResponse('Good Boy', 'saavu.mp3', pandrenButton, maatenButton, false, true);
+                processDareResponse('Good Boy', 'saavuu.mp3', pandrenButton, maatenButton, false, true);
             });
         }
     });
 
     // Initially add the Pandren button listener (before it is shown after second Maaten click)
     pandrenButton.addEventListener('click', () => {
-        processDareResponse('Good Boy', 'saavu.mp3', pandrenButton, maatenButton, false, true);
+        processDareResponse('Good Boy', 'saavuu.mp3', pandrenButton, maatenButton, false, true);
     });
 
     // Ensure buttons are visible (if there were any hiding issues)
