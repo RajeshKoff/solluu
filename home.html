@@ -520,7 +520,11 @@ document.getElementById('videoPopupOverlay').addEventListener('click', closeVide
     <script>
         const inputField = document.getElementById('messageInput');
         const messagesContainer = document.getElementById('messages');
-
+inputField.addEventListener('focus', () => {
+    setTimeout(() => {
+      messages.scrollTop = messages.scrollHeight;
+    }, 300); 
+  });
         const gifPopup = document.getElementById('gifPopup');
         const overlay = document.getElementById('overlay');
         let audio = new Audio('sound.mp3'); 
@@ -667,5 +671,6 @@ document.getElementById('footerCamera').addEventListener('click', function () {
             }, 300); 
         });
     </script>
+    
 </body>
 </html>
