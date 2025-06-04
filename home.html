@@ -1,2509 +1,671 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Solluu</title>
-    <link rel="icon" href="logo.png">
-    <link rel="preload" href="b6.jpeg" as="image">
-    <link rel="preload" href="d.gif" as="image">
-    <link rel="preload" href="dpm.gif" as="image">
-    <link rel="preload" href="dp2.jpeg" as="image">
-    <link rel="preload" href="angry.gif" as="image">
-    <link rel="preload" href="bye.gif" as="image">
-
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lovegram</title>
+    <link rel="icon" href="icon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/4.0.1/wavesurfer.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
     <style>
-body {
-  margin: 0;
-  padding: 0;
-  background-image: url('b6.jpeg');
-  background-size: cover;
-  background-position: center;
-  min-height: 100vh; /* Use min-height instead of height */
-  position: relative;
-}
-/* Use Flexbox or Grid for layouts */
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
+ body {
+    background: url('theme.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: rgb(0, 0, 0);
+    display: flex;
+    flex-direction: column;
+     margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
 }
 
-/* Media queries for different screen sizes */
-@media (max-width: 768px) {
-  .container {
-    padding: 5%;
-  }
-
-}
-@media (max-width: 480px) {
-
-  .popup {
-    width: 90vw;
-    padding: 15px;
-  }
-
-  #messageInput {
-    width: 70%;
-  }
-}
-        .blur-background {
-            filter: blur(2px); 
+        .header, .footer {
+            padding: 1rem;
+            border-color: #c4c4c4;
+            color: #ffffff;
         }
-        .typing-indicator {
+        .header {
             display: flex;
             align-items: center;
+            background-color: #9b0072;
         }
-        .typing-indicator span {
-            display: block;
-            width: 8px;
-            height: 8px;
-            margin: 0 2px;
-            background: #fff;
-            border-radius: 50%;
-            opacity: 0;
-            animation: typing 0.9s infinite;
+.header img:not(.icon-img) {
+    border-radius: 9999px;
+    width: 2.5rem;
+    height: 2.5rem;
+}
+        .header .title {
+            margin-left: 1rem;
+            flex: 1;
         }
-        .typing-indicator span:nth-child(1) { animation-delay: 0s; }
-        .typing-indicator span:nth-child(2) { animation-delay: 0.3s; }
-        .typing-indicator span:nth-child(3) { animation-delay: 0.6s; }
-        @keyframes typing {
-            0%, 60%, 100% { opacity: 0; }
-            30% { opacity: 1; }
+        .header .title h1 {
+            font-size: 1.125rem;
+            font-weight: 600;
         }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .header .icons {
+            display: flex;
+            gap: 1rem;
+        }
+        .header .icons i {
+            font-size: 1.25rem;
+        }
+        .profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+        }
+        .profile img {
+            border-radius: 9999px;
+            width: 5rem;
+            height: 5rem;
+        }
+        .profile h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            color: #ffffff;
+        }
+        .profile p {
+            color: #9CA3AF;
+        }
+.profile button {
+    background-color: #ff0080;
+    color: white;
+    font-size: 15px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+    cursor: pointer;
+}
+        .messages {
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            gap: 1rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+        .messages p {
+            color: #888888;
+            text-align: center;
+            font-size: 16px;
+        }
+        .content p {
+            color: #ffffff;
+            text-align: center;
+        }
         .message {
-            background: linear-gradient(135deg, #ffb1d3 0%, #f73f9b 30%, #89003e 100%);
-            padding: 10px;
-            border-radius: 15px;
+            display: flex;
+            align-items: start;
+            gap: 0.5rem;
+        }
+        .message img {
+            border-radius: 9999px;
+            width: 2.2rem;
+            height: 2.2rem;
+        }
+        .message .content {
+            background-color: #5a1d66;
+            padding: 0.75rem;
+            border-radius: 30px;
+            color: #ffffff;
+        }
+        .message .content p {
+            margin: 0;
+        }
+        .message.sent {
+            justify-content: flex-end;
+        }
+        .message.sent .content {
+            background-color: #ff0090;
             color: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        .message.user {
-            background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%,  #f84da2 80%, #ffffff 100%);
-        }
-        .popup {
+
+ .message-input-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #6a3375cb;
+  color: #d1d5db;
+  border-radius: 60px;
+  padding: 5px 10px;
+  margin: 8px;
+  width: calc(100% - 16px); 
+      z-index: 999;
+
+}
+.message-input {
+  flex: 1;
+  background-color: #c084fc00;
+  color: #ffffff;       
+  border-radius: 50px;
+  padding: 6px 20px;
+  outline: none;
+  font-size: 18px;
+}
+
+.message-input::placeholder {
+  color: #9a9a9a;
+  
+}
+.left-icon {
+  background-color: #ff0084;
+  border-radius: 50%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin: 0; 
+}
+
+
+.left-icon i {
+  color: white;
+  font-size: 16px;
+  
+}
+.message-icons {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  margin-left: 1px;
+}
+
+.message-icons i {
+  font-size: 18px;
+  color: #f3f4f6;
+  cursor: pointer;
+}
+
+        .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 999;
+    }
+
+    .popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        z-index: 1000; 
+        text-align: center;
+    }
+
+    .popup-content h2 {
+        margin: 0 0 10px;
+    }
+
+    .popup-content button {
+        margin-top: 10px;
+        padding: 5px 10px;
+    }        .gif-popup {
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 300px;
-            border-radius: 10px;  
-            filter: drop-shadow(0 0 15px rgba(255, 148, 193, 0.807)); 
-            z-index: 1000; 
-        }
-        .popup img {
-            width: 600px;
+            z-index: 1000;
             border-radius: 10px;
-        }              
-        .heart {
-            position: absolute;
-
-            animation: float 2s forwards;
+            padding: 1rem;
+            width: 460px;
         }
-        @keyframes float {
-            0% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-200px);
-                opacity: 0;
-            }
+        .gif-popup img {
+            width: 400px;
         }
-         .profile-container {
-             border-radius: 20px;
-             backdrop-filter: blur(10px);
-             padding: 20px;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-.profile-pic {
-    width: 96px; 
-    height: 96px; 
-    border: 4px solid #ea0376;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-}
-
-.profile-pic:hover {
-    transform: scale(1.05);
-}
-
-.username {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #fff; 
-}
-#profilePicLarge {
-    margin-top: -30px; 
-}  
-#usernameLarge {
-    background: linear-gradient(to right, #ffffff, #ffffff); 
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; 
-} 
-
-.progress-container {
-    background-color:  #68002f;
-      border-radius: 1rem;
-        height: 0.5rem; 
-        overflow: hidden; 
-    }
-    .progress-bar {
-        position: relative;
-        background-color: transparent;
-        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3); 
-        animation: pulse 1.5s infinite alternate;
-    }
-    @keyframes pulse {
-        0% { transform: scaleX(1); }
-        100% { transform: scaleX(1.05); }
-    }
-   
-#micButton{
-    margin-right: 10px;
-    border-radius: 10px;
-    height: 40px;
-    background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%,  #f84da2 50%, #470020 100%);
-    filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));
-}
-
-
-#upload{
-    
-    margin-left: 30px;
-    border-radius: 10px;
-    height: 40px;
-    width: 28px;
-    background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%,  #f84da2 50%, #470020 100%);
-    filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));
-
-}
-.send-icon {
-    color: #a5a5a5; 
-    cursor: pointer;
-    margin-bottom: 0px;
-    margin-right: 40px;
-    
-}
-
-.send-icon:hover {
-    filter: drop-shadow(0 0 10px rgba(255, 148, 193, 0.945));
-    background: linear-gradient(135deg, #ffffff 0%, #f994be 30%,  #f84da2 50%, #470020 100%); 
-    -webkit-background-clip: text; 
-    -webkit-text-fill-color: transparent; 
-}
-#mindVoiceIcon {
-    position: absolute; 
-    top: -18px; 
-    right: 0px; 
-    z-index: 10; 
-}
-.video-call-overlay {
-            
+        .overlay {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
+            background: rgba(11, 11, 11, 0.7);
+            z-index: 999;
         }
-        .video-player {
-            position: absolute;
+        .profile-modal-content {
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    text-align: center;
+    width: 300px;
+}
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+   }
+   .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+   }
+   .heart-animation {
+    animation: heartbeat 1s infinite;
+}
+
+@keyframes heartbeat {
+    0%, 10% {
+        transform: scale(1);
+    }
+    30% {
+        transform: scale(1.2);
+    }
+    50% {
+        transform: scale(1);
+    }
+
+    70% {
+        transform: scale(1.2);
+    }
+    90% {
+        transform: scale(1);
+    }
+}
+
+.heart-red {
+    color: red;
+}
+       .white-flash {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            z-index: 0;
+            background-color: white;
+            opacity: 0;
+            transition: opacity 0s ease;
+            z-index: 999;
         }
-        .user-video-frame {
-    position: absolute;
-    bottom: 20px;
-    right: 95px;
-    width: 55vw; 
-    height: auto;
-    border: 4px solid white; 
-    border-radius: 10px; 
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.7); 
-    z-index: 10;
-    overflow: hidden; 
-}
-
-        .end-call-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%,  #f84da2 50%, #470020 100%);
-            filter: drop-shadow(0 0 10px rgba(255, 148, 193, 0.945));
-            color: #000;
-            padding: 10px 15px;
-            border-radius: 5px;
-            z-index: 1001; 
-            cursor: pointer;
+        .white-flash.active {
+            opacity: 0.76;
         }
-        @keyframes bulge {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(4.2); 
-    }
-}
-
-.bulging {
-    animation: bulge 0.5s ease-in-out; 
-}
-      
-                .button-container {
-    display: flex;               /* Use flexbox */
-    justify-content: center;     /* Center horizontally */
-    margin-top: 20px;            /* Add spacing above the button if needed */
-} 
-
-* {
+        * {
         user-select: none;
-  outline: none; /* Disable the focus outline for all elements */
-  -webkit-tap-highlight-color: transparent; /* Disable tap highlight on mobile */
-}
-</style>
-
-
-<script>
-const messageInput = document.getElementById('messageInput');
-// Lock the body height on page load and when resizing
-function lockBodyHeight() {
-  document.body.style.height = `${window.innerHeight}px`;
+  outline: none; 
+  -webkit-tap-highlight-color: transparent; 
 }
 
-// Lock body height when the page loads
-window.addEventListener('load', lockBodyHeight);
+.title h1 {
+  margin: 0;
+  font-size: 20px; 
+}
 
-// Lock body height when the viewport changes (e.g., on resize)
-window.addEventListener('resize', lockBodyHeight);
+.title h4 {
+  margin-top: 0px;
+  color: rgb(208, 207, 207);
+  font-size: 14px; 
+}
 
-</script>
-<script>
-    const videoCallButton = document.getElementById('videoCallButton');
-    const videoCallOverlay = document.getElementById('videoCallOverlay');
-    const endCallButton = document.getElementById('endCallButton');
-    const userVideo = document.getElementById('userVideo');
-    const backgroundVideo = document.getElementById('backgroundVideo'); // Reference to the background video
-
-    videoCallButton.addEventListener('click', () => {
-        videoCallOverlay.style.display = 'block'; // Show overlay
-        startVideoCall(); // Start video call logic
-    });
-
-    endCallButton.addEventListener('click', () => {
-        videoCallOverlay.style.display = 'none'; // Hide overlay
-        stopVideoCall(); // Stop video call logic
-    });
-
-    function startVideoCall() {
-        // Reset video to start from the beginning
-        backgroundVideo.currentTime = 0;
-        backgroundVideo.play(); // Ensure the background video starts playing
-        
-        // Request camera access and start video
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(stream => {
-                userVideo.srcObject = stream;
-            })
-            .catch(error => {
-                console.error('Error accessing media devices.', error);
-            });
-    }
-
-    function stopVideoCall() {
-        const stream = userVideo.srcObject;
-        if (stream) {
-            const tracks = stream.getTracks();
-            tracks.forEach(track => track.stop());
-        }
-        userVideo.srcObject = null; // Clear video feed
-        backgroundVideo.pause(); // Pause background video when ending the call
-    }
-</script>
-
+    </style>
 </head>
+<body>
 
-<body class="text-white h-screen flex flex-col">
-    <div class="flex items-center p-0">   
-        <img alt="Profile picture" id="profilePic" src="icon.png" style="margin-top: -25px; width:120px; filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
-        <div class="ml-4 flex-1"></div>
-        <div class="flex space-x-4">
-            <i id="infoIcon" class="fas fa-info-circle text-white cursor-pointer" style="font-size: 24px; margin-bottom: 30px; margin-right: 10px;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));"></i>
+    <div class="header"><a href="messages.html">
+        <i class="fas fa-arrow-left text-xl"></i></a>
+        <img src="dp.jpg" alt="Profile picture" style="margin-left: 13px;">
+        <div class="title">
+            <h1>Mr.Rishiiiii💙</h1>
+            <h4 class="subtitle">rajesh_k_rishi</h4>
+     
         </div>
+       <div class="icons">
+<img src="cl.png" id="footerPhone" class="icon-img" alt="Call"
+     style="width: 27px; height: 27px; margin-right: 4px; cursor: pointer;" />
+<img src="vc.png" id="footervideo" class="icon-img" alt="Video Call"
+     style="width: 26px; height: 26px; cursor: pointer;" />
+
+  </div>
     </div>
-    <div id="infoModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden" style="z-index: 1000;  font-family: 'Pacifico', cursive; ">
-        <div class="bg-white text-black p-6 rounded-lg shadow-lg max-w-sm" style="background: linear-gradient(135deg, #ffb1d3 0%, #e01279 30%, #82003a 80%, #e01279 100%)">
-            <img src="popup.png" style="width: 280px; display: block; margin: 0 auto;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); ">
-            <h3 class="mt-2 text-center" style="color: #fff; margin-bottom: 10px;">developed by:
-                <a href="https://www.instagram.com/rajesh_k_rishi/" style="color: #ff87c3;"><b>Rajesh K Rishi</b></a>
-            </h3>
-            <h3 class="mt-2 text-center" style="color: #fff; margin-bottom: 10px;">The app is still under development!</h3>
-            <input type="file" id="bgImageInput" accept="image/*" class="mt-4" style="display: none;" />
-            <div class="button-container">
-                <button id="closeModal" class="mt-2 px-5 py-2 bg-gray-300 rounded" style="background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%, #f13191 80%); color: #fff; border-radius: 10px;  font-family: 'Pacifico', cursive;">Mmm</button>
+    <div class="profile">
+        <img src="dp.jpg" alt="Profile picture"/>
+        <h2>Mr.Rishiiiii💙</h2>
+        <p>Lovegram</p>
+        <button>View Profile</button>
+    </div>
+    <div class="messages" id="messages">
+        <p>12 Aug, 2030, 4:25 PM</p>
+        <div class="message">
+            <img src="dp.jpg" alt="Profile picture"/>
+            <div class="content">
+                <p1>Chloo work over maa😘</p1>
             </div>
         </div>
+        <div class="message sent">
+            <div class="content">
+                <p1>seri maa🫂seekarama kelambidu chloo😘🫂</p1>
+            </div>
+        </div>
+        <div class="message">
+            <img src="dp.jpg" alt="Profile picture"/>
+            <div class="content">
+                <p1>Okay maa😘😘😘🫂🫂🫂🫂🫂</p1>
+            </div>
+        </div>
+        <div class="message">
+          <img src="dp.jpg" alt="Profile picture"/>
+          <div class="content">
+              <p1>Lunch super ah panniruntha chloo😘😘😘</p1>
+          </div>
+      </div>
+        <div class="message sent">
+          <div class="content">
+              <p1>🥰🥰🥰seekarama vaada dei🤨🤨</p1>
+          </div>
+      </div>
+      <div class="message">
+        <img src="dp.jpg" alt="Profile picture"/>
+        <div class="content">
+            <p1>Achoo,chellakutty itho vanthutenda<br> varapa unaku oru surprise kondu varen🙈🫂🫂</p1>
+        </div>
     </div>
-<!-- Custom Popup Modal -->
-<div id="customPopup" class="bg-white text-black p-6 rounded-lg shadow-lg max-w-sm hidden" style="background: linear-gradient(135deg, #ffb1d3 0%, #e01279 30%, #82003a 80%, #e01279 100%); position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;font-family: 'Pacifico', cursive;">
-    <h3 id="popupMessage" class="mt-2 text-center" style="color: #fff; margin-bottom: 10px;"></h3> <!-- This is where the message will go -->
-    <div class="button-container">
-        <button id="closePopup" class="mt-2 px-5 py-2 bg-gray-300 rounded" style="background: linear-gradient(135deg, #ffffff 0%, #ffbad7 30%, #f13191 80%); color: #fff; border-radius: 10px; font-family: 'Pacifico', cursive;">Mmm</button>
+            <div class="message sent">
+          <div class="content">
+              <p1>athulla venam enaku <br>nee thaan venum🤨🙈😘😘🫂🫂</p1>
+          </div>
+      </div>
+            <div class="message">
+        <img src="dp.jpg" alt="Profile picture"/>
+        <div class="content">
+            <p1>Vanthutennnn🙈🙈🙈😘😘😘😘😘🫂🫂</p1>
+        </div>
     </div>
+    </div>
+<div class="message-input-container">
+  <div class="left-icon">
+    <i class="fas fa-camera" id="footerCamera"></i>
+  </div>
+
+  <input
+    class="message-input"
+    id="messageInput"
+    placeholder="Message..."
+    type="text"
+  />
+
+  <div class="message-icons">
+    <i class="fas fa-heart" id="footerHeart"></i>
+  </div>
 </div>
-<div id="overlay" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
-
-
-    <div class="flex flex-col items-center p-0 rounded-lg " style="z-index: 1001;">
-
-        <div class="relative">
-            <a href="home.html">
-            <img alt="Profile picture" class="rounded-full w-20 h-20 border-4 border-pink-500 shadow-lg transition-transform duration-300 hover:scale-105" id="profilePicLarge" src="dp2.jpeg" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));" /></a>
-            <span id="onlineButton" class="absolute bottom-12 right-0 w-5 h-5 rounded-full bg-gradient-to-r from-pink-900 to-pink-500 border-2 border-white flex items-center justify-center shadow-lg transition-colors duration-300" id="onlineLarge" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
-                <i class="fas fa-heart text-white text-xs" style="margin-top: 1px;"></i>
-            </span>
-            <div id="mindVoiceIcon" class="absolute bottom-12 right-0 w-5 h-5 rounded-full bg-gradient-to-r from-pink-900 to-pink-500 border-2 border-white flex items-center justify-center hidden" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
-                <img src="icon.png" alt="Mind Voice Icon" class="w-full h-full" />
-            </div>
-        </div>
-        <h2 class="text-2xl font-bold mt-1 text-white drop-shadow-lg transition-transform duration-300 hover:scale-105" id="usernameLarge" style="font-family: 'Dancing Script', cursive;filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); z-index: 10;">the_cutie_pie </h2>
-        
+<div class="overlay" id="popupOverlay" style="display: none;"></div>
+<div class="popup" id="phonePopup" style="display: none;">
+    <div class="popup-content">
+        <h2>Un puruchan paavam ma🫠</h2>
+        <p>appo appo avanuku call pannu😅</p>
+        <button class="button" id="popupClose" onclick="closePhonePopup()">
+  <span>Seri Chloo</span>
+</button> </div>
+</div>
+<div class="overlay" id="videoPopupOverlay" style="display: none;"></div>
+<div class="popup" id="videoPopup" style="display: none;">
+    <div class="popup-content">
+        <h2>Daily adikadi video call um pesalaam😘🫂</h2>
+                <button class="button" id="popupClose" onclick="closeVideoPopup()">
+  <span>Seri Chloo</span>
+</button> </div>
+</div>
+    <div class="overlay" id="overlay"></div>
+    <div class="gif-popup" id="gifPopup">
+        <img src="hug.gif" alt="GIF">
     </div>
-
-
-    <div class="flex flex-col p-4 space-y-4 overflow-y-auto flex-1 no-scrollbar" id="chatContainer" style="font-family: 'Pacifico', cursive;" ></div>
-    <div class="flex items-center p-2"><a href="vc.html">
-        <button id="micButton" class="ml-0 p-1 rounded-full bg-pink-500 text-white">
-            <i class="fas fa-video video-call-icon text-white" style="margin-left: 3px;"></i>
-        </button></a>
-        <input class="flex-1 p-2 pl-4 pr-8 rounded-full" id="messageInput" placeholder="Solluu..." type="text" style="color: #c01f72;outline: none; font-family:'Pacifico', cursive; border-radius: 10px; margin-right: -20px;filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.945));  background-image: url('bg2.gif');filter: hue-rotate(10deg);background-size: cover; box-shadow: 0 0 20px rgba(255, 148, 193, 0.945);">
-        <i class="fas fa-paper-plane send-icon cursor-pointer text-1xl absolute right-4  hover:text-pink-600" id="sendButton"></i>         
-        <label for="imageUpload" class="cursor-pointer" id="upload">
-            <i class="fas fa-gamepad text-white" style="font-size: 15px; margin-left: 5px; margin-top: 13px;"></i>
-        </label>
-    </div>
-    <div id="imagePopup" class="popup" >
-        <img src="sms.gif" alt="Image Response" style="width: 300px;">
-        <button id="closePopup" class="mt-2 px-4 py-2 " style="color: #c01f72;"></button>
-        
-    </div>
-    <div id="breakupPopup" class="popup" style="display: none;">
-        <img src="blocked.gif" alt="Breakup Response" style="width: 300px;">
-        <button id="closeBreakupPopup" class="mt-2 px-4 py-2" style="color: #c01f72;"></button>
-    </div>
-    <div id="audioPlayerContainer" class="flex items-center hidden">
-        <audio id="audioPlayer" controls>
-            <source id="audioSource" src="winner.ogg" type="audio/mpeg">
-        </audio>
-    </div>
-    <audio id="loveYouAudio" src="loveyoutoo.mp3" preload="auto"></audio>
-    <audio id="byeAudio" src="appavantaangabye.mp3" preload="auto"></audio>
-    <audio id="badWordAlert" src="badwords.mp3" preload="auto"></audio>
-    <audio src="a.mp3" preload="auto"></audio>
-    <audio src="msg.mp3" preload="auto"></audio>
-    <audio src="tamil.mp3" preload="auto"></audio>
-    
-    <script>
-        document.getElementById('navigateToIndex').addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent the default anchor click behavior (page reload)
-            
-            // Update the URL in the address bar to "index.html"
-            window.history.pushState({ page: "index" }, "Index", "index.html");
-            document.getElementById('splashScreen').style.display = 'none';
-            document.getElementById('mainContent').style.display = 'block';
+    <div class="white-flash" id="whiteFlash" style="display: none;"></div>
+     <audio id="captureSound" src="sound.mp3" preload="auto"></audio>
+     <style>
+.popup {
+    background: linear-gradient(135deg, #65004c, #29001c, #13000f);
+    background-size: 400% 400%;
+    animation: gradientShift 5s ease infinite;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    text-align: center;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    width: 300px;
+}
+.popup h2 {
+    margin-top: 0;
+    font-size: 16px;
+}
+.popup p {
+    font-size: 16px;
+    margin: 10px 0 20px;
+}
+.button {
+  position: relative;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(45deg, #e30ca6, #a900cb, #ff009d);
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-size:1em;
+  cursor: pointer;
+}
+.button span {
+  position: relative;
+  z-index: 1;
+}
+.button::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: #272727;
+  border-radius: 9px;
+  transition: 0.5s;
+}
+.button:hover::before {
+  opacity: 0.7;
+}
+@keyframes hoverEffect {
+  0% {
+    opacity: 0;
+    filter: blur(20px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(20px);
+  }
+}
+.button::after {
+  content: "";
+  position: absolute;
+  inset: 0px;
+  background: linear-gradient(45deg, #e3d80c, #9300b0, #ff0051);
+  border-radius: 9px;
+  animation: hoverEffect 2s ease-in-out infinite alternate;
+  opacity: 1;
+  filter: blur(20px);
+}
+.button:hover::after {
+  animation: hoverEffect 1s ease-in-out infinite alternate;
+}
+     </style>
+     <script>
+        document.querySelector('#footerPhone').addEventListener('click', function () {
+            document.getElementById('popupOverlay').style.display = 'block';
+            document.getElementById('phonePopup').style.display = 'block';
         });
+    
+        function closePhonePopup() {
+            document.getElementById('popupOverlay').style.display = 'none';
+            document.getElementById('phonePopup').style.display = 'none';
+        }
+            document.getElementById('popupOverlay').addEventListener('click', closePhonePopup);
     </script>
 <script>
-function playAudioWithMindVoice(audioSrc) {
-    const audio = new Audio(audioSrc);
-    audio.play();
+    document.querySelector('#footervideo').addEventListener('click', function () {
+    document.getElementById('videoPopupOverlay').style.display = 'block';
+    document.getElementById('videoPopup').style.display = 'block';
+});
 
-    // Show the mind voice icon
-    const mindVoiceIcon = document.getElementById('mindVoiceIcon');
-    mindVoiceIcon.classList.remove('hidden'); // Show the icon
-
-    // Add the bulging effect
-    mindVoiceIcon.classList.add('bulging'); // Add bulging effect
-
-    // Remove the bulging class after the animation ends
-    mindVoiceIcon.addEventListener('animationend', () => {
-        mindVoiceIcon.classList.remove('bulging'); // Remove bulging class
-    }, { once: true }); // Ensure the listener is removed after the first execution
-
-    // Hide the icon after the audio ends
-    audio.addEventListener('ended', () => {
-        mindVoiceIcon.classList.add('hidden');
-    
-          const profilePic = document.getElementById('profilePicLarge');
-        profilePic.src = 'dp2.jpeg'; 
-    });
-      
+function closeVideoPopup() {
+    document.getElementById('videoPopupOverlay').style.display = 'none';
+    document.getElementById('videoPopup').style.display = 'none';
 }
+document.getElementById('videoPopupOverlay').addEventListener('click', closeVideoPopup);
 
 </script>
-
-
-     
-
     <script>
-                document.getElementById('messageInput').addEventListener('input', function () {
-            createHeartAnimation();
+        const inputField = document.getElementById('messageInput');
+        const messagesContainer = document.getElementById('messages');
+
+        const gifPopup = document.getElementById('gifPopup');
+        const overlay = document.getElementById('overlay');
+        let audio = new Audio('sound.mp3'); 
+
+        inputField.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && inputField.value.trim() !== '') {
+                const userMessage = inputField.value.trim();
+                addMessage(userMessage, 'sent');
+                inputField.value = '';
+
+                if (userMessage.includes('ar')) {
+                    triggerVoiceNote();
+                } else if (userMessage.toLowerCase() === 'love you','loveyou','Love you da','LOVE YOU ','LOVEYOU','love you🥰','love you💗','love you❤️','love you😘','love you🤗','Love you🥰','Love you💗','Love you❤️','Love you😘','Love you🤗') {
+                    addTypingMessage();
+                }
+            }
         });
-
-        function createHeartAnimation() {
-            const heart = document.createElement('img');
-    heart.src = 'icon.png'; // Replace with the path to your heart image
-    heart.className = 'heart'; // Optional: keep the class for styling
-    heart.style.position = 'absolute';
-    heart.style.width = '50px'; // Set the size as needed
-    heart.style.height = '50px'; // Set the size as needed
-    document.body.appendChild(heart);
-    const inputField = document.getElementById('messageInput');
-    const rect = inputField.getBoundingClientRect();
-        const randomX = Math.random() * window.innerWidth;
-    heart.style.left = `${randomX}px`; // Random horizontal position
-    heart.style.top = `${rect.top + window.scrollY - 20}px`; // Position it just above the input
-   const floatDistance = Math.random() * 50 + 30; // Random distance to float upwards
-    const floatDuration = Math.random() * 1000 + 1000; // Random duration between 1s and 2s
-    const angle = Math.random() * 360; // Random angle between 0 and 360
-    const distance = Math.random() * 50 + 30; // Random distance to float
-            // Remove heart after animation
-            heart.addEventListener('animationend', () => {
-                heart.remove();
-            });
-        }
-
-        document.getElementById('infoIcon').addEventListener('click', function () {
-        document.getElementById('infoModal').classList.remove('hidden'); // Show modal
-    });
-    
-    document.getElementById('closeModal').addEventListener('click', function () {
-        document.getElementById('infoModal').classList.add('hidden'); // Hide modal
-    });
-      </script>
-      <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        function updateProgressBar(percentage) {
-            const progressBar = document.querySelector('.progress-bar');
-            progressBar.style.width = percentage + '%';
-        }
-        updateProgressBar(80);
-    });
-
-
-    </script>
-    
-    <script>
-        // Function to show the custom popup
-        function showCustomPopup(message) {
-            // Set the popup message
-            document.getElementById('popupMessage').innerText = message;
-    
-            // Remove the 'hidden' class to show the overlay and the popup
-            document.getElementById('overlay').classList.remove('hidden');
-            document.getElementById('customPopup').classList.remove('hidden');
-        }
-    
-        // Function to close the custom popup
-        function closeCustomPopup() {
-            // Add the 'hidden' class to hide the overlay and the popup
-            document.getElementById('overlay').classList.add('hidden');
-            document.getElementById('customPopup').classList.add('hidden');
-        }
-    
-        // Add an event listener to the close button to close the popup
-        document.getElementById('closePopup').addEventListener('click', closeCustomPopup);
-    </script> 
-    
-<script>   
-let loveYouCount = 0; // Counter for "I love you" messages
-let isBreakupActive = false; // Flag to control bot replies
-let hasSaidGoodbye = false; // Flag to track if "appa vantaanga bye" has been sent
-let canSendMessage = true; // Flag to control sending messages
-let respondedNoAppa = false;
-let responseIndex = 0;
-let isGameResponseSent = false; // Flag to track if the game response is already sent
-let isPranked = false;  // Flag to track if prank reply has been given
-let lastClickTime = 0; // Track the last click time
-let triggeredSaptiBlock = false;
-let isTyping = false;  // New flag to track if bot is typing
-
-
-
-const badWords = ["sex", "fuck", "ass", "asshole","hole","pink","unaku pink ah irukuma","clit", "vagina", "virgin", "bra", "bikini", "jatti", "panties",
-"nude", "uru","boobs", "punda", "sunni","Thevidiya", "dhevidiya", "*","mairu","maira","matter", "hair", "kunji", "koothi", "kuthi", "koodhi","kudhi", "oluka", "pundaiya",
- "kanji", "oothu", "uthu","bunda", "sappu", "vai", "potta", "pochi", "pochchi","mava", "mavale", "siluku", "silk", "olukka","umburiya","umbu","oombu","kundi","poodu","podu"];
-const forbiddenWords = ["what","how", "why", "where", "who", "doing", "obs", "will","could","can","not","really"]; // Words you want to detect
-
-
-document.getElementById('sendButton').addEventListener('click', function () {
-    const messageInput = document.getElementById('messageInput');
-    const event = new KeyboardEvent('keypress', { key: 'Enter' });
-    messageInput.dispatchEvent(event);
-});
-document.querySelector('.fas.fa-gamepad').addEventListener('click', function () {
-    const currentTime = new Date().getTime(); // Get the current time
-
-    // Check if the last click was within 4 seconds
-    if (currentTime - lastClickTime < 4000) {
-        // If less than 4 seconds have passed, ignore the click
-        return;
-    }
-
-    // Set the last click time to the current time
-    lastClickTime = currentTime;
-
-    // Simulate typing a message containing "game" when the gamepad icon is clicked
-    const messageInput = document.getElementById('messageInput');
-    messageInput.value = 'games'; // Set the message to "game"
-    
-    // Trigger the 'Enter' key press to simulate sending the message
-    const event = new KeyboardEvent('keypress', { key: 'Enter' });
-    messageInput.dispatchEvent(event);
-});
-let isPageLoad = true;
-function loadChatHistory() {
-    const chatContainer = document.getElementById('chatContainer');
-    const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
-    chatHistory.forEach(message => {
-        const messageDiv = document.createElement('div');
-        if (message.sender === 'user') {
-            messageDiv.classList.add('flex', 'justify-end');
-            messageDiv.innerHTML = `<div class="message user max-w-xs" style="font-family: 'Pacifico', cursive;"><p>${message.message}</p></div>`;
-        } else if (message.sender === 'bot') {
-            messageDiv.classList.add('flex', 'items-start', 'space-x-2');
-            messageDiv.innerHTML = `
-                <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
-                <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
-                    <p>${message.message}</p>
-                </div>
-            `;
-        }
-        chatContainer.appendChild(messageDiv);
-    });
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-}
-function saveMessageToHistory(message, sender) {
-    let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
-    const newMessage = {
-        sender: sender,
-        message: message,
-        timestamp: new Date().toISOString()
-    };
-
-    chatHistory.push(newMessage);
-    localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
-}
-// Define allowed repeated character pairs (like 'kk', 'ss', 'jj', etc.)
-const allowedRepeatedPairs = ['kk', 'kkk', 'mmm', 'ff', 'ss', 'jj', 'mm', 'aa', 'ww', 'oo', 'www'];
-
-// Regex to check if the message contains repeated identical characters (e.g., 'nnn', 'lll', 'aaa', etc.)
-const repeatedCharRegex = /([a-zA-Z])\1+/; // This matches two or more consecutive identical characters
-
-// Function to check if the message contains repeated characters that should trigger a popup
-function checkMessageForRepeatedChars(message) {
-    // If message contains repeated characters
-    if (repeatedCharRegex.test(message)) {
-        // Check if the repeated characters match one of the allowed repeated pairs
-        if (!allowedRepeatedPairs.some(pair => message.includes(pair))) {
-            // Check if the repeated characters are not surrounded by other characters
-            // This prevents triggering for words like "happy" or "good"
-            const repeatedChars = message.match(repeatedCharRegex)[0]; // Get the repeated character sequence
-            if (repeatedChars.length === message.length) {
-                // If the entire message is just repeated characters (e.g., "aaa", "nnnn"), show the popup
-                showCustomPopup("En orey letter ah type pandra😐");
-                return true; // Message should not be sent
-            }
-        }
-    }
-    return false; // Message is allowed
-}
-
-document.getElementById('messageInput').addEventListener('keypress', function (e) {
-
-    if (e.key === 'Enter') {
-        const message = e.target.value.trim();
-        const chatContainer = document.getElementById('chatContainer');
-        const badWordAlert = document.getElementById('badWordAlert');
-        
-       if (message === '') {
-                 const profilePic = document.getElementById('profilePicLarge');
-                 profilePic.src = 'dpm.gif';
-                playAudioWithMindVoice('a.mp3'); // Play audio for empty message
-                return; // Exit if the message is empty
-            }
-            
-            
- // Check if message contains only emojis
- const emojiOnlyRegex = /^[\p{Emoji}\u200B]+$/gu; // Matches only emojis and invisible characters (e.g., zero-width space)
-        
-        if (emojiOnlyRegex.test(message)) {
-            // If the message is only emojis, the bot will respond with a random emoji
-            const emojiResponses = ["🙃", "🙂", "☺️"];
-            const randomEmoji = emojiResponses[Math.floor(Math.random() * emojiResponses.length)];
-            botReply = randomEmoji;  // Bot reply as random emoji
-
-            // Save the user's message to chat history
-            saveMessageToHistory(message, 'user');
-            saveMessageToHistory(botReply, 'bot');
-
-            const userMessageDiv = document.createElement('div');
-            userMessageDiv.classList.add('flex', 'justify-end');
-            userMessageDiv.innerHTML = `<div class="message user max-w-xs" style="font-family: 'Pacifico', cursive;"><p>${message}</p></div>`;
-            chatContainer.appendChild(userMessageDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-
-            // Show bot reply after a short delay
-            setTimeout(() => {
-                const botMessageDiv = document.createElement('div');
-                botMessageDiv.classList.add('flex', 'items-start', 'space-x-2');
-                botMessageDiv.innerHTML = `
-                    <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); ">
-                    <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
-                        <p>${botReply}</p>
-                    </div>
-                `;
-                chatContainer.appendChild(botMessageDiv);
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            }, 1500); // Bot reply delay
-            e.target.value = ''; // Clear input after sending emoji-only message
-            return; // Prevent further processing for emoji-only messages
-        }
-
-       if (message.length === 1) {
-            // Check if the single character is NOT one of 'k', 'm', 's', or 'y'
-            if (!['k', 'm', 's', 'y','d'].includes(message.toLowerCase())) {
-                // Show the popup for any letter other than 'k', 'm', 's', 'y'
-                showCustomPopup("En oru letter type pandra🤨");
-                e.target.value = ''; // Clear the input
-                return; // Prevent sending the message
-            }
-        }
-       // Check for repeated characters in the message (and allow only the ones that are in allowed pairs)
-       if (checkMessageForRepeatedChars(message)) {
-            e.target.value = ''; // Clear the input if the message is invalid
-            return; // Prevent sending the message
-        }   
-// Save the user's message to chat history only if it's valid
-saveMessageToHistory(message, 'user');
-
-                const containsBadWord = badWords.some(badWord => message.includes(badWord));
-        if (containsBadWord) {
-            setTimeout(() => {
-                const profilePic = document.getElementById('profilePicLarge');
-            profilePic.src = 'angry.gif';
-            playAudioWithMindVoice('badwords.mp3'); // Play the audio alert immediately
-                localStorage.removeItem('chatHistory');
-                showCustomPopup("**Ketta vaartha use pannatha😤😠**");
-            }, 0); // Show alert without delay
-            e.target.value = ''; // Clear the input
-            canSendMessage = false; // Disable sending messages until bot replies
-
-            return; // Exit the function
-        }
-    const containsThanglish = forbiddenWords.some(word => message.includes(word));
-    if (containsThanglish) { 
-setTimeout(() => {
-    const profilePic = document.getElementById('profilePicLarge');
-    profilePic.src = 'dpm.gif';
-    playAudioWithMindVoice('tamil.mp3');
-}, 2000); // 2000 milliseconds = 2 seconds delay
-
-      showCustomPopup("Thanglish la pesu da🙄"); // Alert as soon as detected
-        e.target.value = ''; // Optionally clear the input or leave it for the user to fix
-        canSendMessage = false; // You can disable sending if needed
-    }
-        let hasSaidVoice = false;  // Track whether the user has already asked for a voice note
-if (message.includes('voice')) {
-    e.target.value = '';
-    setTimeout(() => {
-                if (!hasSaidVoice) {
-        const audioPlayerDiv = document.createElement('div');
-        audioPlayerDiv.classList.add('flex', 'items-start', 'space-x-2', 'p-0', 'rounded-lg', 'shadow-lg');
-        audioPlayerDiv.innerHTML = `
-        <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); ">
-             <div class="message max-w-xs flex-1">
-                <div class="flex items-center justify-between">
-                    <audio id="audioPlayer" class="hidden">
-                        <source src="voice.mp3" type="audio/mpeg">
-                    </audio>
-                    <button id="playPauseButton" class="text-white rounded-full p-1">
-                        <i class="fas fa-play"></i>
-                    </button>
-               <div class="progress-container flex-1 mx-2">
-       <div class="progress-bar bg-gradient-to-r from-white to-white rounded-full h-2 " style="width: 0%; transition: width 0.5s ease;"></div>
-
-                </div>
+      function addTypingMessage() {
+    const typingMessage = document.createElement('div');
+    typingMessage.className = 'message received';
+    typingMessage.innerHTML = `
+        <img src="dp.jpg" alt="Profile picture"/>
+        <div class="content" style="background-color: #6a3375cb; color: white;">
+            <p style="margin-bottom: 4px;">Typing...</p>
+            <div class="typing-indicator">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
-        `;
-        chatContainer.appendChild(audioPlayerDiv);
-        const audioPlayer = audioPlayerDiv.querySelector('#audioPlayer');
-        const playPauseButton = audioPlayerDiv.querySelector('#playPauseButton');
-        const progressBar = audioPlayerDiv.querySelector('.progress-bar');
-        playPauseButton.addEventListener('click', () => {
-            if (audioPlayer.paused) {
-                audioPlayer.play();
-                playPauseButton.innerHTML = '<i class="fas fa-pause" style="margin-right:6px;"></i>';
-                updateProgressBar();
-            } 
+        </div>
+    `;
+    messagesContainer.appendChild(typingMessage);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+    setTimeout(() => {
+        messagesContainer.removeChild(typingMessage);
+        addMessage('Love you dii pondati💚💙🌍😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘🫂', 'received');
+    }, 2000);
+}
+        function addMessage(text, type) {
+
             
-            else {
-                audioPlayer.pause();
-                playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            if (type === 'sent') {
+                messageDiv.innerHTML = `<div class="content"><p style="color:white;">${text}</p></div>`;
+            } else {
+                messageDiv.innerHTML = `<img src="dp.jpg" alt="Profile picture"/><div class="content"><p>${text}</p></div>`;
             }
-        });
-        audioPlayer.addEventListener('ended', () => {
-            playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
-            progressBar.style.width = '0%';
-        });
-        function updateProgressBar() {
-                const interval = setInterval(() => {
-                    if (audioPlayer.ended) {
-                        clearInterval(interval);
-                        return;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            if (type === 'received') {
+                let lastTap = 0;
+                messageDiv.addEventListener('touchend', () => {
+                    const currentTime = new Date().getTime();
+                    if (currentTime - lastTap <= 300) {
+                        showGifPopup();
+                    } else {
+                        lastTap = currentTime;
                     }
-                    const percentage = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-                    progressBar.style.width = `${percentage}%`;
-                }, 1000);
+                });
             }
-            hasSaidVoice = true; // Set flag to prevent the voice message from repeating
         }
-    }, 3000); // Simulate audio processing time   
-} 
-// A list of common words (this can be expanded or replaced with a proper dictionary check)
-const commonWords = ['please', 'hello', 'thank', 'how', 'are', 'you', 'good', 'morning', 'happy','evening', 'love', 'friend', 'help', 'sure','mmm','kk','mm','ss','yy','y','k','jj','ff','www','s','ama','apparam','m','hehe','eee','happy ah','ah','eh','oh','hehe','haha','chlm','luv','pookie','baby','cringe','mmmm','mmmmm','mmmmmm','mmmmmmm','mmmmmmmm','mmmmmmmmm','d','di','rajesh'];
-
-function isRandomMessage(message) {
-    // Normalize the message (convert to lowercase and remove non-alphabet characters)
-    const normalizedMessage = message.replace(/[^a-zA-Z]/g, '').toLowerCase();
-
-    // If the message is a common word, return false (we don't want to flag regular words)
-    if (commonWords.includes(normalizedMessage)) {
-        return false; // It's a valid word, not random
-    }
-
-    // Check if the message contains only emojis (no letters or digits)
-    const emojiRegex = /[\p{Emoji}]/gu;  // Unicode property escape for emojis
-    if (emojiRegex.test(message)) {
-        return true; // It's a message made of emojis
-    }
-
-    // Define a regex pattern to match emoticons (e.g. (❁´◡`❁), (●'◡'●), etc.)
-    const emoticonRegex = /([^\w\s])\1{2,}/gu;
-
-    // If the message matches any of these patterns, return true (random message)
-    const restrictedSymbolsRegex = /(?:❁´◡`❁|●'◡'●|╰\(\*°▽°\*\)╯|\^\/\/\/\^|:-?D|:[O\.O~_~\+\_+\^\.^]|S\( •̀ ω •́ \)\✧|´?▽`ʃ♡ƪ|\(\/≧▽≦\))/g;
-
-    // If the message contains restricted symbols, return true (random message)
-    if (restrictedSymbolsRegex.test(message)) {
-        return true; // These are considered random or invalid messages
-    }
-
-    // If the message has fewer than 4 characters, it's likely not random
-    if (normalizedMessage.length < 4) return true; // Short words are more likely to be gibberish
-
-    // Check for random-like patterns:
-    // Condition 1: The message should have a very low number of vowels (indicating possible gibberish).
-    const vowelCount = (normalizedMessage.match(/[aeiou]/g) || []).length;
-    const hasFewVowels = vowelCount < 2; // If there are less than 2 vowels, consider it more random.
-
-    // Condition 2: The message is a string of random letters (not a recognizable word).
-    const isNotStructured = /^[a-z]+$/.test(normalizedMessage);  // Check if it's made of alphabetic characters only.
-    if (hasFewVowels && isNotStructured) {
-        return true; // Looks like random gibberish
-    }
-
-    // Condition 3: Check for patterns of repeated or adjacent characters (this indicates randomness).
-    if (/([a-z])\1{2,}/.test(normalizedMessage)) {
-        return true; // Repeated characters like "aaa", "bbb", "ccc"
-    }
-
-    // Condition 4: If the word is longer and doesn't match typical patterns, we can still flag it.
-    if (normalizedMessage.length > 4 && !/[aeiou]{2,}/.test(normalizedMessage)) {
-        return true; // No vowel pairs in longer words might indicate gibberish.
-    }
-
-    return false; // If it passed all conditions, it's a valid word or common structure.
-}
-// Function to get the current time of the day
-function getCurrentTimeOfDay() {
-    const currentHour = new Date().getHours(); // Get current hour (0-23)
-    
-    if (currentHour >= 0 && currentHour < 12) {
-        return 'morning'; // 12 AM to 11:59 AM
-    } else if (currentHour >= 12 && currentHour < 17) {
-        return 'afternoon'; // 12 PM to 4:59 PM
-    } else if (currentHour >= 17 && currentHour < 20) { 
-        return 'evening'; // 5 PM to 7:59 PM
-    } else {
-        return 'night'; // 8 PM to 11:59 PM
-    }
-}
-
-const currentTimeOfDay = getCurrentTimeOfDay(); // Determine the current time of day
-
-if (isBreakupActive) {
-            e.target.value = ''; // Clear input
-            return; // Exit the function if breakup is active
-        }
-        const userMessageDiv = document.createElement('div');
-        userMessageDiv.classList.add('flex', 'justify-end');
-        userMessageDiv.innerHTML = `<div class="message user max-w-xs" style="font-family: 'Pacifico', cursive;"><p>${message}</p></div>`;
-        chatContainer.appendChild(userMessageDiv);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-        e.target.value = ''; // Clear input
-        let botReply = '';
-        const lowerCaseMessage = message.toLowerCase();          
-        if (hasSaidGoodbye) {
-    messageCountAfterGoodbye++;
-    if (messageCountAfterGoodbye === 3) {
-        setTimeout(() => {
-            document.getElementById('onlineButton').style.display = 'block'; // Show the image popup
-            document.getElementById('imagePopup').style.display = 'block'; // Show SMS popup
-        }, 7000); // 7000 milliseconds = 7 seconds
-    }
-    e.target.value = ''; // Clear input
-    return; // Exit the function
-} // Check if message is a valid arithmetic expression
-        if (isValidArithmeticExpression(message)) {
-            botReply = evaluateExpression(message);
-        }
-else if (lowerCaseMessage.match(/love you/i)) {
-    loveYouCount++; // Increment the count for "I love you"
-    if (loveYouCount === 2) {
-        botReply = 'en appa oththuka maatrada, lets breakup💔';
-        isBreakupActive = true; // Stop further replies
-        setTimeout(() => {
-            hasSaidGoodbye = true; // Set the flag to true
-        document.getElementById('onlineButton').style.display = 'none'; // Hide the online button
-
-        // Get the profile picture element
-        const profilePic = document.getElementById('profilePicLarge');
-
-        // Change the profile picture to 'byee.gif'
-        profilePic.src = 'byee.gif';
-
-        // Preload dp2empty.png to avoid flickering
-        const dp2emptyImage = new Image();
-        dp2emptyImage.src = 'dp2empty.png';
-
-        // Once dp2empty.png is loaded, change the profile picture
-        dp2emptyImage.onload = () => {
+        function showGifPopup() {
+            overlay.style.display = 'block';
+            gifPopup.style.display = 'block';
             setTimeout(() => {
-                localStorage.removeItem('chatHistory');
-                profilePic.src = 'dp2empty.png'; // Change image to 'dp2empty.png' after 3 seconds
-            }, 3000);}
-            document.getElementById('onlineButton').style.display = 'none'; // Hide the online button
-            document.getElementById('breakupPopup').style.display = 'block'; // Show the breakup popup image
-        }, 5000);
-    } else {
-        botReply = 'love you too🙈😘';
-        setTimeout(() => {
-                              // Get the profile picture element
-    const profilePic = document.getElementById('profilePicLarge');
-
-// Replace the profile picture with the dphi.gif
-profilePic.src = 'dpm.gif';
-
-// After 3 seconds, restore the profile picture to dp2.jpeg
-setTimeout(() => {
-    profilePic.src = 'dp2.jpeg'; // Restore original image
-}, 6400); // 3000 milliseconds = 3 seconds
-            const mindVoiceIcon = document.getElementById('mindVoiceIcon');
-            mindVoiceIcon.classList.remove('hidden'); // Show the mind voice icon
-            const loveYouAudio = document.getElementById('loveYouAudio');
-            playAudioWithMindVoice('loveyoutoo.mp3');
-
-            // Remove animation after it finishes
-            setTimeout(() => {
-                mindVoiceIcon.classList.add('hidden'); // Hide the mind voice icon after the audio
-                // Assuming there's some animation element to hide
-                colorBlast.style.display = 'none';
-            }, 7000); // Match this to the animation duration
-        }, 2000); // 2000 milliseconds = 2 seconds
-    }
-}
-else if (lowerCaseMessage.match(/games|game/i)) {
-    botReply = `
-        Entha game velaiyadalaam,click pannu:
-        <br>
-        <ol>
-            <li><a href="game.html" target="_blank" class="game-link">1. Burj Khalifa</a></li>
-            <li><a href="game5.html" target="_blank" class="game-link">2. Achamilla Oodu</a></li>
-            <li><a href="game3.html" target="_blank" class="game-link">3. AquaQuest</a></li>
-            <li><a href="game4.html" target="_blank" class="game-link">4. Blast</a></li>
-        </ol>
-    `;
-}
-else if (lowerCaseMessage.match(/^Burj Khalifa|bk$/)) {
-    window.location.href = 'game.html';  // Redirect to game1
-} else if (lowerCaseMessage.match(/^Achamilla Oodu|ao$/)) {
-    window.location.href = 'game5.html';  // Redirect to game2
-} else if (lowerCaseMessage.match(/^AquaQuest|aq$/)) {
-    window.location.href = 'game3.html';  // Redirect to game3
-} else if (lowerCaseMessage.match(/^Blast$/)) {
-    window.location.href = 'game4.html';  // Redirect to game4
-} 
-
-
-else if (lowerCaseMessage.match(/fav color|fav colour|pudicha colour|colour|color/i)) {
-    // Prevent multiple prank triggers
-    if (isPranked || isTyping) return;
-
-    // Create a full-screen black overlay
-    const blackOverlay = document.createElement('div');
-    blackOverlay.style.position = 'fixed';
-    blackOverlay.style.top = '0';
-    blackOverlay.style.left = '0';
-    blackOverlay.style.width = '100%';
-    blackOverlay.style.height = '100%';
-    blackOverlay.style.backgroundColor = 'black';
-    blackOverlay.style.zIndex = '9999';  // Ensure it's on top
-    blackOverlay.style.opacity = '100';  // Optional: Adds slight transparency
-
-    // Append the overlay to the body
-    document.body.appendChild(blackOverlay);
-
-    // Wait for 3 seconds before showing the bot's reply
-    setTimeout(() => {
-        // Remove the black overlay
-        document.body.removeChild(blackOverlay);
-
-        // Send the bot's reply after the overlay disappears
-        botReply = "black color, bayanthutiya😂";
-
-        // Show the bot's reply in the chat
-        const typingDiv = document.createElement('div');
-        typingDiv.classList.add('flex', 'items-start', 'space-x-2');
-        typingDiv.innerHTML = ` 
-            <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
-            <div class="message max-w-xs">
-                <p>Typing</p>
-                <div class="typing-indicator" style="margin-top:5px;">
-                    <span></span><span></span><span></span>
-                </div>
-            </div>`;
-        chatContainer.appendChild(typingDiv);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-
-        // Save the bot reply to localStorage
-        saveMessageToHistory(botReply, 'bot');
-
-        // Set isTyping to true to prevent sending multiple typing animations
-        isTyping = true;
-
-        // Handle the bot reply after a delay
-        setTimeout(() => {
-            chatContainer.removeChild(typingDiv); // Remove typing indicator
-            const botMessageDiv = document.createElement('div');
-            botMessageDiv.classList.add('flex', 'items-start', 'space-x-2');
-            botMessageDiv.innerHTML = ` 
-                <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
-                <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
-                    <p>${botReply}</p>
-                </div>`;
-            chatContainer.appendChild(botMessageDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }, 1500); // Bot reply delay
-
-        // Set the prank flag to true to prevent it from being triggered again
-        isPranked = true;
-
-        // Clear the input field
-        document.getElementById('messageInput').value = '';
-    }, 3000); // Wait 3 seconds before showing the bot reply
-}
-
-// Check for any further messages after the prank response
-else if (isPranked && !isTyping) {
-    // Prevent the "😄" response from being triggered if bot is still typing
-    if (document.getElementById('messageInput').value === '') {
-        botReply = "😄";
-
-        // Show the bot's reply in the chat
-        const typingDiv = document.createElement('div');
-        typingDiv.classList.add('flex', 'items-start', 'space-x-2');
-        typingDiv.innerHTML = ` 
-            <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
-            <div class="message max-w-xs">
-                <p>Typing</p>
-                <div class="typing-indicator" style="margin-top:5px;">
-                    <span></span><span></span><span></span>
-                </div>
-            </div>`;
-        chatContainer.appendChild(typingDiv);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-
-        // Save the bot reply to localStorage
-        saveMessageToHistory(botReply, 'bot');
-
-        // Set isTyping to true again to avoid multiple "😄" responses
-        isTyping = true;
-
-        // Handle the bot reply after a delay
-        setTimeout(() => {
-            chatContainer.removeChild(typingDiv); // Remove typing indicator
-            const botMessageDiv = document.createElement('div');
-            botMessageDiv.classList.add('flex', 'items-start', 'space-x-2');
-            botMessageDiv.innerHTML = ` 
-                <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
-                <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
-                    <p>${botReply}</p>
-                </div>`;
-            chatContainer.appendChild(botMessageDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-
-            // Reset the prank flag and typing flag after the "😄" response
-            isPranked = false;
-            isTyping = false;
-        }, 1500); // Bot reply delay
-
-        // Clear the input field after sending the "😄" response
-        document.getElementById('messageInput').value = '';
-    }
-}
-else if (lowerCaseMessage.match(/ennachi|yennachi|enachi|yenachi|enachu|ennachu|yenachu/i)) {
-              botReply = 'enna nonnachi🤨';
-              setTimeout(() => {         
-             const profilePic = document.getElementById('profilePicLarge');
-             profilePic.src = 'dpm.gif';
-             playAudioWithMindVoice('nonachi.mp3');
-             }, 2000); // 2000 milliseconds = 2 seconds delay
-             }
-             else if (lowerCaseMessage.match(/pudikathu|pidikathu/i)) {
-              botReply = '🤨';
-              setTimeout(() => {         
-             const profilePic = document.getElementById('profilePicLarge');
-             profilePic.src = 'dpm.gif';
-             playAudioWithMindVoice('kalutha.mp3');
-             }, 2000); // 2000 milliseconds = 2 seconds delay
-             }
-             else if (lowerCaseMessage.match(/problem|perchana|pirchanai|prechanai/i)) {
-              botReply = 'all problem😅';
-              setTimeout(() => {         
-             const profilePic = document.getElementById('profilePicLarge');
-             profilePic.src = 'dpm.gif';
-             playAudioWithMindVoice('problem.mp3');
-             }, 2000); // 2000 milliseconds = 2 seconds delay
-             }
-             else if (lowerCaseMessage.match(/mama/i)) {
-                const responses = [
-                            'chi pooda🙈',
-                        'aiii😅❤️'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-else if (lowerCaseMessage.match(/ethachi|yethachi/i)) {
-    const responses = [
-                            'yenna😒',
-                        'kk🙂'                        
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/kalyanam pannikalaam|kalyanam pannikala|marriage|kalyanam/i)) {
-    const responses = [
-                            'eppo🙈',
-                        'aiii😅❤️'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-
-                else if (lowerCaseMessage.match(/kovama|kova|varuthama/i)) {
-    const responses = [
-                            'illaiye😒',
-                        'illa🤨'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/pesalama|pesalaama|pesuvoma|pesuvooma|pesu/i)) {
-    const responses = [
-                            'pesalaamey🥰',
-                        'pesu pesi tholaiyum😅'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/ama/i)) {
-    const responses = [
-                            'oh okay🙃',
-                        'kk🙂'                        
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/pudicha movie|pidicha movie|pudicha song|pidicha song|fav song|fav movie|favorite movie|favorite song/i)) {
-    const responses = [
-                            'appidi onnu illa🙃',
-                        'ellamey pudikum🙂',
-                        'all are my fav❤️'                          
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/pidikalaiya|pidikatha|pudikatha|pudikalaiya/i)) {
-    const responses = [
-                            'appidi illa🙂',
-                        'appidithaan🤨'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-
-                else if (lowerCaseMessage.match(/solra/i)) {
-    const responses = [
-                            'avlothaan😒',
-                            'enna sollanum😅'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/avaloth|avlo/i)) {
-    const responses = [
-                            'poo😒',
-                        '🤨'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-
-
-
-                else if (lowerCaseMessage.match(/aaidichi|mudinchi|aidichi|mudinjiruchi|aaiduchi|aiduchi/i)) {
-    const responses = [
-                            'oo🙃',
-                        'Mmm😐'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/pudichi|pidichi/i)) {
-    const responses = [
-                            '🥰',
-                        'Mmm❤️'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/purin|puriya/i)) {
-    const responses = [
-                            'ss😐',
-                        'so what😒'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/thirumba|therumba|marupadi|again/i)) {
-    const responses = [
-                            '😒',
-                        '🤫🙃'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/birthday eppo|birthay yennaiku|birthday ennaiku|eppo porantha/i)) {
-    botReply = 'Aug 13 da🙃';
-}
-                else if (lowerCaseMessage.match(/eppo|yeppo|epo/i)) {
-    const responses = [
-                        'ippo😅',
-                        'ippoo🙃'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-
-                else if (lowerCaseMessage.match(/rajesh|rishi|rkr/i)) {
-                 botReply = '❤️';
-                }
-
-                else if (lowerCaseMessage.match(/loosu|pakki|muttal|paithiyam|mental|moothevi|moodevi|modevi|mothevi|lusu|pisasu/i)) { 
-                    const responses = [
-              'shut up😠',
-              'nee thaanda loosu payale🤨',
-             'nee thaan🤨😠'
-         ];
-
-              const audioFiles = [
-              'shutup.mp3'
-          ];
-
-    botReply = responses[Math.floor(Math.random() * responses.length)];
-
-    setTimeout(() => {
-        const randomAudio = audioFiles[Math.floor(Math.random() * audioFiles.length)];
-        const profilePic = document.getElementById('profilePicLarge');
-        profilePic.src = 'angry.gif';
-        playAudioWithMindVoice(randomAudio);
-    }, 2000);
-} 
-else if (lowerCaseMessage.match(/irunga bhai|irunga bai/i)) { 
-                        const responses = [
-                            '😄😄',
-                        'seringa bhai😄'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-else if (lowerCaseMessage.match(/hi|hy|hello|hlo|hei|hii|hai|hay|hey/i)) {
-    const responses = [
-        'hi🙋🏻‍♀️',
-        'Hii😊'
-    ];
-    botReply = responses[Math.floor(Math.random() * responses.length)];
-
-    // Get the profile picture element
-    const profilePic = document.getElementById('profilePicLarge');
-
-    // Preload the d.gif image to avoid delays
-    const gifImage = new Image();
-    gifImage.src = 'd.gif';
-
-    // Apply fade-out effect and change the image immediately
-    profilePic.classList.add('fade-out'); // Start fading out the old image
-    setTimeout(() => {
-        profilePic.src = gifImage.src; // Change to the new image after the fade-out
-        profilePic.classList.remove('fade-out'); // Remove fade-out class to restore visibility
-    }, 500); // Wait for the fade-out effect to complete (500ms)
-
-    // Set a timeout to revert back to dp2.jpeg after 3.4 seconds
-    setTimeout(() => {
-        profilePic.classList.add('fade-out'); // Fade-out again when reverting
-        setTimeout(() => {
-            profilePic.src = 'dp2.jpeg'; // Restore the original image
-            profilePic.classList.remove('fade-out'); // Remove fade-out class to restore visibility
-        }, 500); // Wait for the fade-out to complete before restoring the original image
-    }, 3400); // 3400 milliseconds = 3.4 seconds
-}
-
-
-              
-                else if (lowerCaseMessage.match(/saree|sare|pudava/i)) {   
-    // This condition will handle saree/pudava related requests first
-    botReply = `
-    <img src="photo2.jpg"  style="width: 100%; border-radius: 15px; filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">`;
-} 
-
-else if (lowerCaseMessage.match(/video call|vc|vedio|facetime/i)) {
-    const responses = [
-                            'button angathaan iruku click pannu🤨',
-                            'button iruku paaruda😒'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-else if (lowerCaseMessage.match(/call/i)) {
-    if (respondedNoAppa) {
-        // Define the ordered responses
-        const orderedResponses = [
-            "naathaan sonnenla appa irukaanganu🤨", 
-            "purinjikoda😕❤️",  
-            "Seri iru pandren😕🤗❤️"
-        ];
-
-        // Use the responseIndex to pick the next response in order
-        botReply = orderedResponses[responseIndex];
-
-        // Increment the index and reset it if it exceeds the length of the array
-        responseIndex = (responseIndex + 1) % orderedResponses.length;
-    } 
-
-else {
-        // Define possible responses for "call"
-        const callResponses = [
-            "nooo appa irukaanga😮",
-            "naane call pandren🥰",
-            "iru naan pandren🤗",
-            "wait naane pandren🤗",
-            "nooo appa irukaanga😮"
-        ];
-
-        // Choose a random response from the available call responses
-        botReply = callResponses[Math.floor(Math.random() * callResponses.length)];
-    }
-
-    // Check if botReply is one of the responses that should trigger the redirect
-    const redirectReplies = [
-        "naane call pandren🥰",
-        "iru naan pandren🤗",
-        "wait naane pandren🤗",
-        "Seri iru pandren😕🤗❤️"
-    ];
-
-    // If the botReply matches any of the redirectReplies, initiate the redirect
-    if (redirectReplies.includes(botReply)) {
-        console.log("Redirecting to call.html..."); // Debug log to ensure the correct response
-        setTimeout(() => {
-            window.location.href = 'call.html'; // Redirect to call.html after 4 seconds
-        }, 3500);
-    }
-
-    // If the response is "nooo appa irukaanga", set respondedNoAppa to true
-    if (botReply === "nooo appa irukaanga😮") {
-        respondedNoAppa = true;
-    }
-}
-
-
-else if (lowerCaseMessage.match(/photo|pic|image|img/i)) {
-    // This condition will handle general image requests only if no saree/pudava request is found
-    const photos = [
-        'photo2.jpg',
-        'photo3.png',
-        'photo.png'
-    ];
-
-    const messages = [
-        'Eppidi iruken🥰',
-        '🥰'
-    ];
-
-    // Select a random photo and message
-    const randomPhoto = photos[Math.floor(Math.random() * photos.length)];
-    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-
-    botReply = `
-        <img src="${randomPhoto}" alt="Here’s your photo!" style="width: 100%; border-radius: 15px; filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945));">
-        <p>${randomMessage}</p>
-    `;
-}
-       
-                
-                else if (lowerCaseMessage.match(/arivu illa|arivu iruka|arivvu iruka|aruvu iruka/i)) { 
-                        const responses = [
-                            'enaku iruku unaku iruka😠',
-                        'dei avalothaan😠'
-                         
-                         ];
-                         const audioFiles = [
-              'shutup.mp3'
-          ];
-
-            botReply = responses[Math.floor(Math.random() * responses.length)];
-
-         setTimeout(() => {
-         const randomAudio = audioFiles[Math.floor(Math.random() * audioFiles.length)];
-        const profilePic = document.getElementById('profilePicLarge');
-        profilePic.src = 'angry.gif';
-        playAudioWithMindVoice(randomAudio);
-    }, 2000);
-}        
-
-                else if (lowerCaseMessage.match(/single ah|or commited/i)) { 
-                        const responses = [
-                            'Single thaan🙂nee',
-                        'single thaan😌nee'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/naanum single|na single|mee to/i)) { 
-                        const responses = [
-                            'Appo okay🙈',
-                        'okay okay🥰'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-
-                else if (lowerCaseMessage.match(/na illa|naalaam illa|naanthaan|naa illa|naailla/i)) { 
-                        const responses = [
-                            'ok ok',
-                        'okay'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage === "oi") {
-                    botReply = 'Oh Hoi😅';
-}
-else if (lowerCaseMessage === "oii") {
-                    botReply = 'Oh Hoi😅';
-}
-else if (lowerCaseMessage === "oiii") {
-                    botReply = 'Oh Hoi😅';
-}
-else if (lowerCaseMessage === "oiiii") {
-                    botReply = 'Oh Hoi😅';
-}
-else if (lowerCaseMessage.match(/attitude/i)) {
-    const responses = [
-                            'oh ho🙂',
-                        '🤨'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-
-
-                else if (lowerCaseMessage.match(/mani enna|time/i)) {
-    const responses = [
-                            'pooi clock paaru🤨',
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-
-                else if (lowerCaseMessage.match(/sorry|manichiru|mannichiru|neethan|netha|manichu|sry/i)) {
-    const responses = [
-                            'okay vidu😒',
-                        'seri vidu'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-
-                else if (lowerCaseMessage.match(/oh|ohoho|ohh|illa/i)) {
-    const responses = [
-                            'mm🙃',
-                        'mmm🙂'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/appidiya|appi|appu|apdiya/i)) {
-    const responses = [
-                            'appidithaanda🤨',
-                        'appithaan haan🙂'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                
-
-                else if (lowerCaseMessage.match(/same pinch/i)) {
-                    const responses = [
-                        'appo give me a choki🙂',
-                        '☺️☺️',
-                        'okay🙃' 
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/engineering|english/i)) {
-                    const responses = [
-                        'ama🙂',
-                        '🙃',
-                        's🙃' 
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/ithuva|itha|idhuva|idha/i)) {
-                    const responses = [
-                        'ama🙂',
-                        '🙃',
-                        's🙃' 
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/department|dept|dpt/i)) {
-                    const responses = [
-                        'CSE❤️',
-                        'Cse☺️',
-                        'Cse🙃' 
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-
-                else if (lowerCaseMessage.match(/all the best|best wishes|wish you|best of luck/i)) {
-                    const responses = [
-                        'nandri❤️',
-                        'thank you❤️'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/pudikala/i)) {
-                    const responses = [
-                        'yen',
-                        'yen pudikala🙃',
-                        'yen?yennachi' 
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/cut|chat/i)) {
-                    const responses = [
-                        '🤫',
-                        '🤫🙃'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/breakup/i)) {
-                    const responses = [
-                        'achoo🙃',
-                        'achoo🙂'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/shut up|shutup|moodu/i)) { 
-                        const responses = [
-                            'nee shutup😠',
-                        'dei avalothaan😠'
-                         
-                         ];
-                         const audioFiles = [
-              'shutup.mp3'
-          ];
-
-            botReply = responses[Math.floor(Math.random() * responses.length)];
-
-         setTimeout(() => {
-         const randomAudio = audioFiles[Math.floor(Math.random() * audioFiles.length)];
-        const profilePic = document.getElementById('profilePicLarge');
-        profilePic.src = 'angry.gif';
-        playAudioWithMindVoice(randomAudio);
-    }, 2000);
-}   
-
-
-
-
-                else if (lowerCaseMessage.match(/poona/i)) {
-                    const responses = [
-                        'illaiye🙃',
-                        '🙂'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/hate you/i)) {
-                    const responses = [
-                        'yen😒',
-                        'yen?yennachi🤨' 
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/love pannalama|pannuviya|panuviya|love panalama|interest|intrest|love/i)) {
-                 botReply = 'pannalamey🙈';
-                }
-                else if (lowerCaseMessage.match(/ootha|umbu|oombu|panni|sunni|naiye|pei|naai/i)) { 
-                        const responses = [
-                            'shutup***😠',
-                        'dei avalothaan😠'
-                         
-                         ];
-                         const audioFiles = [
-              'shutup.mp3'
-          ];
-
-            botReply = responses[Math.floor(Math.random() * responses.length)];
-
-         setTimeout(() => {
-         const randomAudio = audioFiles[Math.floor(Math.random() * audioFiles.length)];
-        const profilePic = document.getElementById('profilePicLarge');
-        profilePic.src = 'angry.gif';
-        playAudioWithMindVoice(randomAudio);
-    }, 2000);
-} 
-
-else if (lowerCaseMessage.match(/pudikum|pudiku/i)) {
-                    const responses = [
-                        'yesss🥰',
-                        'romba❤️',
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/evalo|avalo|yevalo/i)) {
-    const responses = [
-                            '🤫🤫',
-                        '🤔🤐'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/sirikira|sirikura|siri/i)) {
-                    const responses = [
-                        'en🙃',
-                        'enna ippo😒',
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-
-
-                else if (lowerCaseMessage.match(/na busy/i)) {
-            botReply = 'okay🙂';
+                overlay.style.display = 'none';
+                gifPopup.style.display = 'none';
+            }, 5000);
         }
-else if (lowerCaseMessage.match(/busy|work/i)) {
-            botReply = 'illa da,sollu';
-        }
-else if (lowerCaseMessage.match(/bye/i)) {
-            botReply = 'Byee👋';
-            hasSaidGoodbye = true; // Set the flag to true
-            setTimeout(() => {
-        const mindVoiceIcon = document.getElementById('mindVoiceIcon');
-        hasSaidGoodbye = true; // Set the flag to true
-        document.getElementById('onlineButton').style.display = 'none'; // Hide the online button
-
-        // Get the profile picture element
-        const profilePic = document.getElementById('profilePicLarge');
-
-        // Change the profile picture to 'byee.gif'
-        profilePic.src = 'byee.gif';
-
-        // Preload dp2empty.png to avoid flickering
-        const dp2emptyImage = new Image();
-        dp2emptyImage.src = 'dp2empty.png';
-
-        // Once dp2empty.png is loaded, change the profile picture
-        dp2emptyImage.onload = () => {
-            setTimeout(() => {
-                profilePic.src = 'dp2empty.png'; // Change image to 'dp2empty.png' after 3 seconds
-            }, 3000);
-        };
-
-    }, 2000); // Initial delay before bot says "appa vantaanga bye"
-} 
-    
- else if (lowerCaseMessage.match(/un appa yaaru|Un appa yaru|Unn appa name enna|who made you?|Un appa per enna|Un appa name enna|Un appa per enna|unnoda appa name yenna|Un appa per yenna|Un appa name yenna|Unga appa name enna|who made you?|who created you?|created by?|whose your creater?|developer|developer name|Developer name|developer|developed by|father/i)) {
-            botReply = 'Rajesh K Rishi💗';
-        }else if (lowerCaseMessage.match(/nice|wow|awww|semma|azhaga iruka|romba azhaga iruka|beautiful|pretty|uyire|haiyo|kolriye|paah|pah|cute|cutie pie|cutey|angel|devatha|azhagi/i)) {
-            const responses = [
-                        'thanks❤️🥰',
-                        'tq🙈',
-                        'tq😘🥰'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-        else if (lowerCaseMessage.match(/amma name|amma per|mom name|mother name|aishu|aishwarya|un amma |unga amma/i)) {
-    botReply = 'Appa kitta ketuko';
-}
-else if (lowerCaseMessage.match(/brother|sister|bro|sis|anne|anna|akka|thambi|tambi|thangachi/i)) {
-    botReply = 'noo🙃';
-}
-else if (lowerCaseMessage.match(/initial/i)) {
-    botReply = 'AR💗';
-}
-else if (lowerCaseMessage.match(/papa/i)) {
-    botReply = 'papa va🥰';
-}else if (lowerCaseMessage.match(/podi|poodi|poo di/i)) {
-    botReply = 'pooda🤨';
-}
-else if (lowerCaseMessage.match(/cute|wow|super|enjoy|paarah|paara|vera lvl|veralevel|vera level uh/i)) {
-    botReply = '🥰🥰';
-}
-
-else if (lowerCaseMessage.match(/marry me/i)) {
-    botReply = 'eppo🙈';
-}
-else if (lowerCaseMessage.match(/marry me|outing|dating/i)) {
-    botReply = 'eppo🙈';
-}
-else if (lowerCaseMessage.match(/vayasu/i)) {
-    const responses = [
-                            'sollamudiyathu🙃',
-                        'en sollanum😅',
-                        'nooo🙃'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-else if (lowerCaseMessage.match(/vaa|va/i)) {
-    const responses = [
-                            'enga🙈',
-                        'enga nga🙈🙈',
-                        'yeppo🥰'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/love ethum/i)) {
-                 botReply = 'pannalanu idea iruku😅🥰'; 
-                } else if (lowerCaseMessage.match(/love pandriya/i)) {
-                 botReply = 'pannalanu idea iruku😅🥰'; 
-                }else if (lowerCaseMessage.match(/love pannuviya/i)) {
-                 botReply = 'pannalamey🙈';
-                }
-  
-
-
-
-
-
-
-
-else if (lowerCaseMessage.match(/Happy new year/i)) {
-    botReply = 'same to you🥰';
-}
-else if (lowerCaseMessage.match(/Happy diwali|happy holi|happy ramzam|happy republic day|happy independence day/i)) {
-    botReply = 'yaara nee😂';
-}
-else if (lowerCaseMessage.match(/epa polam|eppa polam|eppa poolaam|poga|pooga|enga poolam|enga polam|yenga polaam|yenga polam|yenga poogalaam/i)) { 
-                        const responses = [
-                            'apparama🤫',
-                        'poonuma😅'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/please|plzz|plz|plzzz|plsss|pls|plsss/i)) { 
-                        const responses = [
-                            'enda please laam solra😥🫂',
-                        'please sollatha🫂'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-else if (lowerCaseMessage.match(/sollu|solluu|year|solluu|sol|solra|solla/i)) {
-    const responses = [
-                            'sollamudiyathu🙃',
-                        'en sollanum😅',
-                        'nooo🙃'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/chellam|thangam|vairam|kutty|pattu|umma|kiss|hug/i)) {
-    const responses = [
-                            '🙈🙈🙈',
-                        '😘🙈',
-                        '🥰🙈❤️'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-else if (lowerCaseMessage.match(/panra|pandra|panura|pannura/i)) { 
-                        const responses = [
-                            'summa thaan iruken🙃',
-                        'unta thaan chat pandren😅',
-                        'vetti🙃'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/naanumn|nanum|naanum thaga| naanum thaanga|naan|nama/i)) {
-                    const responses = [
-                        'haan🙂',
-                        'seri seri',
-                        'okay🙃' 
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-// Check for birthday-related messages
-else if (lowerCaseMessage.match(/happy birthday|hbd|piranthanaal|poranthanaal|happy burthday|pirantha naal vazhthukal|pirantha naal|poranthu|piranthu/i)) { 
-    const currentDate = new Date();  // Get the current date
-    const currentMonth = currentDate.getMonth();  // Get the current month (0-11)
-    const currentDay = currentDate.getDate();  // Get the current day (1-31)
-
-    if (currentMonth === 7 && currentDay === 13) {  // Check if the date is 13th August (August is month 7)
-        const responses = [
-            'Thank you❤️',
-            'Tqsm🥰❤️'
-        ];
-        botReply = responses[Math.floor(Math.random() * responses.length)];
-    } else {
-        botReply = "En birthday Aug 13 da😄";  // For any other date, the bot will reply with "en birthday aug 13"
-    }
-}
-else if (lowerCaseMessage.match(/happy pongal/i)) {
-    const responses = [
-                            'Pongal over da😄',
-                        'Belated happy pongal🥰'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-
-// First check for phone number requests
-else if (lowerCaseMessage.match(/number|phone number/i)) {
-    botReply = '0091446461'; // Bot reply with phone number
-    setTimeout(() => {
-        const profilePic = document.getElementById('profilePicLarge');
-        profilePic.src = 'dpm.gif'; // Change the profile picture to a new gif
-        playAudioWithMindVoice('number.mp3'); // Play the "number" audio
-    }, 1300); // 1300 milliseconds = 1.3 seconds delay
-}
-// Then, check for time-of-day based greetings like Good Morning, Good Night, etc.
-else if (lowerCaseMessage.match(/good morning|gud mrg|kaalai vanakam|goodu morning|goodu mrg/i)) {
-    if (currentTimeOfDay === 'morning') {
-        const responses = [
-            'Good morning❤️',
-            'Happy morning da🥰',
-            'gud mrg da🤗'
-        ];
-        botReply = responses[Math.floor(Math.random() * responses.length)];
-    } else if (currentTimeOfDay === 'afternoon') {
-        botReply = 'Moodevi correct ah sollu😂'; // It's actually morning, but it's afternoon
-        setTimeout(() => {
-            const profilePic = document.getElementById('profilePicLarge');
-            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
-            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
-        }, 1300); // 1300 milliseconds = 1.3 seconds delay
-    } else if (currentTimeOfDay === 'evening') {
-        botReply = 'Moodevi correct ah sollu😂'; // It's actually morning, but it's evening
-        setTimeout(() => {
-            const profilePic = document.getElementById('profilePicLarge');
-            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
-            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
-        }, 1300); // 1300 milliseconds = 1.3 seconds delay
-    } else {
-        botReply = 'Moodevi correct ah sollu😂'; // It's actually morning, but it's night
-        setTimeout(() => {
-            const profilePic = document.getElementById('profilePicLarge');
-            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
-            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
-        }, 1300); // 1300 milliseconds = 1.3 seconds delay
-    }
-}
-
-// Check for "Good Afternoon" type messages
-else if (lowerCaseMessage.match(/good afternoon|gud aftn|mathiya vanakkam|goodu afternoon|goodu aftn|madhiya vanakkam|happy morning/i)) {
-    if (currentTimeOfDay === 'afternoon') {
-        const responses = [
-            'Good Afternoon❤️',
-            'gud aftn da🥰'
-        ];
-        botReply = responses[Math.floor(Math.random() * responses.length)];
-    } else if (currentTimeOfDay === 'morning') {
-        botReply = 'Moodevi correct ah sollu😂'; // It's actually afternoon, but it's morning
-        setTimeout(() => {
-            const profilePic = document.getElementById('profilePicLarge');
-            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
-            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
-        }, 1300); // 1300 milliseconds = 1.3 seconds delay
-    } else if (currentTimeOfDay === 'evening') {
-        botReply = 'Moodevi correct ah sollu😂'; // It's actually afternoon, but it's evening
-        setTimeout(() => {
-            const profilePic = document.getElementById('profilePicLarge');
-            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
-            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
-        }, 1300); // 1300 milliseconds = 1.3 seconds delay
-    } else {
-        botReply = 'Moodevi correct ah sollu😂'; // It's actually afternoon, but it's night
-        setTimeout(() => {
-            const profilePic = document.getElementById('profilePicLarge');
-            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
-            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
-        }, 1300); // 1300 milliseconds = 1.3 seconds delay
-    }
-}
-
-// Check for "Good Evening" type messages
-else if (lowerCaseMessage.match(/good evening|gud evng|maalai vanakam|goodu evening|goodu evng|maalai vanakkam/i)) {
-    if (currentTimeOfDay === 'evening') {
-        const responses = [
-            'Good evening da❤️',
-            'gud evng da🥰'
-        ];
-        botReply = responses[Math.floor(Math.random() * responses.length)];
-    } else if (currentTimeOfDay === 'morning') {
-        botReply = 'Moodhevi correct ah sollu😂'; // It's actually evening, but it's morning
-        setTimeout(() => {
-            const profilePic = document.getElementById('profilePicLarge');
-            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
-            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
-        }, 1300); // 1300 milliseconds = 1.3 seconds delay
-    } else if (currentTimeOfDay === 'afternoon') {
-        botReply = 'Moodhevi correct ah sollu😂'; // It's actually evening, but it's afternoon
-        setTimeout(() => {
-            const profilePic = document.getElementById('profilePicLarge');
-            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
-            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
-        }, 1300); // 1300 milliseconds = 1.3 seconds delay
-    } else {
-        botReply = 'Moodevi correct ah sollu😂'; // It's actually evening, but it's night
-        setTimeout(() => {
-            const profilePic = document.getElementById('profilePicLarge');
-            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
-            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
-        }, 1300); // 1300 milliseconds = 1.3 seconds delay
-    }
-}
-
-// Check for "Good Night" type messages
-else if (lowerCaseMessage.match(/good night|gud nyt|Gn|gnsm|goodu night|iravu vanakkam|good night sweet dreams|gn sleep well/i)) {
-    if (currentTimeOfDay === 'night') {
-        const responses = [
-            'Gnsm❤️',
-            'gud night da😴'
-        ];
-        botReply = responses[Math.floor(Math.random() * responses.length)];
-    } else if (currentTimeOfDay === 'morning') {
-        botReply = 'Moodevi correct ah sollu😂'; // It's actually night, but it's morning
-        setTimeout(() => {
-            const profilePic = document.getElementById('profilePicLarge');
-            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
-            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
-        }, 1300); // 1300 milliseconds = 1.3 seconds delay
-    } else if (currentTimeOfDay === 'afternoon') {
-        botReply = 'Moodevi correct ah sollu😂'; // It's actually night, but it's afternoon
-        setTimeout(() => {
-            const profilePic = document.getElementById('profilePicLarge');
-            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
-            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
-        }, 1300); // 1300 milliseconds = 1.3 seconds delay
-    } else {
-        botReply = 'Moodevi correct ah sollu😂'; // It's actually night, but it's night
-        setTimeout(() => {
-            const profilePic = document.getElementById('profilePicLarge');
-            profilePic.src = 'dpm.gif';  // Change the profile picture to a new gif
-            playAudioWithMindVoice('moothevi.mp3');  // Play the "moothevi" sound
-        }, 1300); // 1300 milliseconds = 1.3 seconds delay
-    }
-}
-
-
-
-else if (lowerCaseMessage.match(/name|per/i)) {
-    botReply = 'Haha Hasini🥰';
-    setTimeout(() => {
-        const profilePic = document.getElementById('profilePicLarge');
-        profilePic.src = 'dpm.gif';
-        playAudioWithMindVoice('hasini.mp3');
-    }, 2000); // 2000 milliseconds = 2 seconds delay
-}
-else if (message.toLowerCase().match(/truth or dare|truth|dare/i) && !isGameResponseSent) {
-    isGameResponseSent = true; // Set the flag to true to prevent duplicate replies
-    
-    // Show the bot reply
-    setTimeout(() => {
-        // Bot reply setup
-        botReply = "Truth or Dare velaiyadalaam😀, but naanthaan kepen😁";
-        botReply = botReply.replace(/, /g, '<br>');
-        const typingDiv = document.createElement('div');
-        typingDiv.classList.add('flex', 'items-start', 'space-x-2');
-        typingDiv.innerHTML = `
-            <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); ">
-            <div class="message max-w-xs">
-                <p>Typing</p>
-                <div class="typing-indicator"  style="margin-top:5px;">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>`;
-        chatContainer.appendChild(typingDiv);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-
-        // Save the bot reply to localStorage
-        saveMessageToHistory(botReply, 'bot');
-
-        // Handle the bot reply after a delay
-        setTimeout(() => {
-            chatContainer.removeChild(typingDiv); // Remove typing indicator
-            const botMessageDiv = document.createElement('div');
-            botMessageDiv.classList.add('flex', 'items-start', 'space-x-2');
-            botMessageDiv.innerHTML = `
-                <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); ">
-                <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
-                    <p>${botReply.replace("\n", "<br>")}</p>  <!-- Line break after comma -->
-                </div>
-            `;
-            chatContainer.appendChild(botMessageDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-
-            // After 4 seconds, open the td.html page
-            setTimeout(() => {
-                window.location.href = 'td.html'; // Open the td.html page
-            }, 2000);
-        }, 1500); // Delay for bot's reply
-    }, 0); // Initial delay before the reply
-}
-
-                else if (lowerCaseMessage.match(/nice name|cute/i)) { 
-                botReply = 'Thanks🥰';
-                }
-                else if (lowerCaseMessage.match(/happy/i)) { 
-                botReply = '🥰';
-                }
-                else if (lowerCaseMessage.match(/nalla iruku/i)) { 
-                botReply = 'Thanks🥰';
-                }
-                else if (lowerCaseMessage.match(/sapten|saptachi|saptuten/i)) { 
-                botReply = 'okay,good boi😊';
-                }
-                else if (lowerCaseMessage.match(/enga poolam|enga poogalaam|poogalaam|engaiyathu poolaama|pogalama/i)) { 
-                botReply = 'movie🤔';
-                }
-                else if (lowerCaseMessage.match(/entha movie|movie ah|yaar movie|movie poolama| movie pogalama|movie poogalaama|ena movie|yaru movie|movie|park|theatre/i)) { 
-                botReply = 'un istam🥰';
-                }
-                else if (lowerCaseMessage.match(/enga iruka|engadi iruka|enga di iruka|engatha iruka|ippo enga iruka|veetulaiya iruka|veetlaiya iruka/i)) { 
-                   const responses = [
-                   'veetula thaan🙃',
-                  'veetula thaan da🥴' // Keep the original response
-                 ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                botReply = botReply.replace(/, /g, '<br>');
-                    // Check if the "Sapti Block" condition is triggered
-                }
-                else if (lowerCaseMessage.match(/address|adress/i)) { 
-                    botReply = 'Osama Bin Laden, Indugus malai, kabul nagar, Afghanistan, care of  Mullah Omar';
-                    botReply = botReply.replace(/, /g, '<br>');
-           setTimeout(() => {
-            const profilePic = document.getElementById('profilePicLarge');
-            profilePic.src = 'dpm.gif';
-            playAudioWithMindVoice('address.mp3');
-            }, 2000);
-        }
-        else if (lowerCaseMessage.match(/nakku/i)) { 
-                    botReply = 'seththa payale🤬';
-                    setTimeout(() => {
-        const profilePic = document.getElementById('profilePicLarge');
-    profilePic.src = 'dpm.gif'; 
-                        playAudioWithMindVoice('nakku.mp3');
-                     }, 2000);
-        }
-        else if (lowerCaseMessage.match(/kastam|kastama|senthurava|sethuruven|sethuten|seththurava|seththuten|sethuru|sethura|seththura|sethth|seth|saaga|saga|saavu|savu/i)) { 
-            const responses = [
-                        'Saavu😠',
-                         'Saavu da😤',
-                         'Saavula Seththapayala🤬'
-                         ];
-                         
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                   setTimeout(() => {
-                    const profilePic = document.getElementById('profilePicLarge');
-                    profilePic.src = 'angry.gif';
-                    playAudioWithMindVoice('saavu.mp3');
-                   }, 2000);
-        }
-        else if (lowerCaseMessage.match(/sapudu|take care|paathuko|paathukalaam|pathu|paathu|feel pannatha|ooti|miss you|unna paakanum|unta pesanum|good girl/i)) {
-             const responses = [
-              '😏',
-              'Seri🙄',
-             'haan🙃'
-         ];
-
-              const audioFiles = [
-              'nallavan1.mp3',
-              'nallavan2.mp3'
- 
-          ];
-
-    botReply = responses[Math.floor(Math.random() * responses.length)];
-
-    setTimeout(() => {
-        const randomAudio = audioFiles[Math.floor(Math.random() * audioFiles.length)];
-        const profilePic = document.getElementById('profilePicLarge');
-        profilePic.src = 'dpm.gif';
-        playAudioWithMindVoice(randomAudio);
-    }, 2000);
-}            
-else if (lowerCaseMessage.match(/eppidi iruka|iruka|iruki|how|how are you|hru/i)) {
-    const responses = [
-        'Nalla iruken,neenga',
-        'fine,U',
-        'Nalla iruken😊,neenga'
-    ];
-
-    const audioFiles = [
-        'hru1.mp3',
-        'mamapayale.mp3'
-    ];
-
-    botReply = responses[Math.floor(Math.random() * responses.length)];
-
-    // Check if the "Sapti Block" condition is triggered
-    if (triggeredSaptiBlock) {
-        // Show the popup message and prevent sending the reply
-        showCustomPopup("Ippo thaaneda keta🤨");
-        triggeredSaptiBlock = false; // Reset the block state
-        e.target.value = ''; // Clear the input field
-        return; // Exit the function and don't send the message
-    } else {
-        triggeredSaptiBlock = true; // Set the flag that the block has been triggered
-    }
-
-    // If the code reaches here, send the bot's reply
-    setTimeout(() => {
-        const profilePic = document.getElementById('profilePicLarge');
-        profilePic.src = 'dpm.gif'; // Change profile pic (GIF animation)
-        
-        const randomAudio = audioFiles[Math.floor(Math.random() * audioFiles.length)];
-        playAudioWithMindVoice(randomAudio); // Play a random audio file
-        
-    }, 2000); // Delay before showing profile pic and playing audio
-}
-
-
-
-
-else if (lowerCaseMessage.match(/mind/i)) { 
-                botReply = 'i know😏';
-                }
-
-                else if (lowerCaseMessage.match(/ooru/i)) { 
-                botReply = 'Trichy❤️';
-                }else if (lowerCaseMessage.match(/area/i)) { 
-                botReply = 'Trichy thaan ';
-                }else if (lowerCaseMessage.match(/place/i)) { 
-                botReply = 'Trichy❤️';
-                }
-                else if (lowerCaseMessage.match(/varava|varata|varalama|varalaama|vartuma|vantha|vanthu|polama|poolaama|polaama|pub|bar|massage/i)) { 
-                botReply = 'Adi vaanguva😅';
-                
-                }else if (lowerCaseMessage.match(/saptiya|saptacha|sapti/i)) {
-                    const responses = [
-                        'illa pasikala, nee',
-                        'Illa vanthu ooturiya',
-                        'Sapten,nee saptiya😊', 
-                         'Sapten, nee'
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                 if (triggeredSaptiBlock) {
-                showCustomPopup("Ippo thaaneda keta🤨");
-                triggeredSaptiBlock = false; 
-                e.target.value = ''; // Clear the input
-                return; // Exit the function  
-                } else {
-                triggeredSaptiBlock = true; 
-                }}
-
-
-
-else if (lowerCaseMessage.match(/theriyala|theriya/i)) {
-                    const responses = [
-                        'sonnathaane theriyum🙃',
-                        '🤨' 
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/theriu|theriy/i)) {
-                    const responses = [
-                        'theriyum theriyum',
-                        'enaku theriyum',
-                        'theriyum' 
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/samayal|samapi|samai/i)) {
-                    const responses = [
-                        'samaikala,nee vanthu samaikiriya😄',
-                        'amma samayal😄',
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/choki|choco/i)) {
-                    const responses = [
-                        'KitKat❤️',
-                        'kitkat🥰',
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/pudika|pudikala|hmm|hmmmm|hmmm|vaangi|vanki/i)) {
-                    const responses = [
-                        'okay🙂',
-                        'Mmm',
-                        'haan',
-                        'hmm🙃'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/v2 la ellam nalla irukangala|nalla irukaangala/i)) {
-                    const responses = [
-                        'yesss🥰',
-                        'fine❤️',
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }                        
-               else if (lowerCaseMessage.match(/eppidi iruka/i)) {
-                 botReply = 'nalla iruken,neenga😊';
-                }else if (lowerCaseMessage.match(/eppidi irukinga/i)) {
-                 botReply = 'nalla iruken,neenga😊';
-                }else if (lowerCaseMessage.match(/how are you/i)) {
-                 botReply = 'nalla iruken,neenga😊';
-                }else if (lowerCaseMessage.match(/hru?/i)) {
-                 botReply = 'nalla iruken,neenga😊';
-                }else if (lowerCaseMessage.match(/school/i)) {
-                 botReply = 'JJ college,neenga';
-                }else if (lowerCaseMessage.match(/college/i)) {
-                 botReply = 'JJ college,neenga';
-                }else if (lowerCaseMessage.match(/clg/i)) {
-                 botReply = 'JJ college,neenga';
-                }else if (lowerCaseMessage.match(/scl/i)) {
-                 botReply = 'JJ college,neenga';
-                }else if (lowerCaseMessage.match(/fan/i)) {
-                 botReply = 'Thalapathy❤️';
-                }else if (lowerCaseMessage.match(/hero/i)) {
-                 botReply = 'Thalapathy❤️';
-                }else if (lowerCaseMessage.match(/enna sapta|Enna sapta|Enna saptinga|enna saptinga|enna di sapta|Enna di sapta|Enna ma sapta|enna ma sapta|enna pa sapta|Enna pa sapta|ennanga saptinga/i)) {
-                    const responses = [
-                        'Biryani😋',
-                         'Dosa thaan'
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-
-                }else if (lowerCaseMessage.match(/biryani|Biryani|biriyani|Biriyani|dosa|Dosa|idly|Idly|sapadu|Sapadu|ippove|ippo/i)) {
-                    botReply = 'Okay😊'; // Replace with your meme image URL
-                } else if (lowerCaseMessage.match(/sapadala|sapadanum|naa sapadala|Na sapadala|sapdala|Naa sapadala|illa sapadala|Illa sapadala|innum sapadala|Innum sapadala|innum illa|Innum illa/i)) {
-                    botReply = 'sapadalaiya🥺,pooi sapudu🤨'; // Replace with your meme image URL
-                }else if (lowerCaseMessage.match(/illa/i)) {
-                    botReply = 'yen??'; // Replace with your meme image URL
-                }else if (lowerCaseMessage.match(/pasi illa|pasikala|pasikalla|pasikanum/i)) {
-                    botReply = 'pooi sapudu🤨'; // Replace with your meme image URL
-                }
-                else if (lowerCaseMessage.match(/rasi/i)) {
-                    botReply = 'kanni rasi🥰'; // Replace with your meme image URL
-                }
-                else if (lowerCaseMessage.match(/apparam|aprm|apram/i)) { 
-                        const responses = [
-                            'onnum illa🙂',
-                        'vilupuram🙃',
-                        'ivan vera🙃'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (lowerCaseMessage.match(/joke ah|joke|comedy ah|comedy|kalaai|kalaiki|mokka|enaku/i)) { 
-                        const responses = [
-                            '😂',
-                            'eee'               
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                // Check for messages about being an AI or robot
-              else if (lowerCaseMessage.match(/nee ai ah|robot ah|nee robo ah|artificial intelligence|ne ai ah|nee ponna|ne ponna|ne ponnu|nee ponnu/i)) {
-              botReply = 'Dei naa ponnuda😆';  // Respond with "dei naa ponnuda"
-              }
-              else if (lowerCaseMessage.match(/nadakum|nadakuma|nadakumla|nadaku/i)) {
-              botReply = 'nadakumda❤️';
-              setTimeout(() => {         
-             const profilePic = document.getElementById('profilePicLarge');
-             profilePic.src = 'dpm.gif';
-             playAudioWithMindVoice('nadakum.mp3');
-             }, 2000); // 2000 milliseconds = 2 seconds delay
-             }
-             else if (lowerCaseMessage.match(/kedaikum|kedaikuma|kidaikumla|kedaiku|kidaiku|kedaiki|kidaiki/i)) {
-              botReply = 'yellam kedaikumda❤️';
-              setTimeout(() => {         
-             const profilePic = document.getElementById('profilePicLarge');
-             profilePic.src = 'dpm.gif';
-             playAudioWithMindVoice('kedaikum.mp3');
-             }, 2000); // 2000 milliseconds = 2 seconds delay
-             }
-
-
-             
-             else if (lowerCaseMessage.match(/yen|why|en/i)) {
-                    const responses = [
-                        'en sollanum🙃',
-                        'chumma thaan😅',
-                        'chumma😅'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-
-                else if (lowerCaseMessage.match(/theriyala|theriya/i)) {
-                    const responses = [
-                        'sonnathaane theriyum🙃',
-                        '🤨' 
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                
-                else if (lowerCaseMessage.match(/yeppo|eppo/i)) {
-                    const responses = [
-                        'ippo😅',
-                        '🤨' 
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-
-                else if (lowerCaseMessage.match(/okay|ok|k|kk|haan/i)) {
-                    const responses = [
-                        'haan🙂',
-                        'kk',
-                        'okay🙃' 
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-                else if (isRandomMessage(lowerCaseMessage)) {
-    botReply = "illa puriyala😏";
-    setTimeout(() => {
-        const profilePic = document.getElementById('profilePicLarge');
-        profilePic.src = 'dpm.gif';
-        playAudioWithMindVoice('illapuriyala.mp3'); // Ensure you have this audio file available
-    }, 1000); // 1000 milliseconds = 1 second delay
-}
-else if (lowerCaseMessage.match(/thoongalaiya|thungalaiya|thongalaiya/i)) {
-    const responses = [
-                        'thokam varla😅',
-                        'illa😅'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-else if (lowerCaseMessage.match(/ayyo|iyoo|iyooo|ayyai|iyai|/i)) {
-    const responses = [
-                        '😅',
-                        '😂😂'
-                         
-                         ];
-                 botReply = responses[Math.floor(Math.random() * responses.length)];
-                }
-
-else {
-    const randomResponses =  [ "seri", "ok", "okay","Mmm", "appa vantaanga bye","Mmm","appa vantaanga bye"];
-    botReply = randomResponses[Math.floor(Math.random() * randomResponses.length)];
-
-    if (botReply === "appa vantaanga bye") {
-    setTimeout(() => {
-        localStorage.removeItem('chatHistory');
-        const mindVoiceIcon = document.getElementById('mindVoiceIcon');
-        hasSaidGoodbye = true; // Set the flag to true
-        document.getElementById('onlineButton').style.display = 'none'; // Hide the online button
-
-        // Display mind voice icon and popup message
-        setTimeout(() => {
-            mindVoiceIcon.classList.remove('hidden'); // Show the mind voice icon
-            mindVoiceIcon.classList.add('hidden'); // Hide the mind voice icon
-            document.getElementById('imagePopup').style.display = 'block'; // Show SMS popup
-        }, 8000);
-
-        // Get the profile picture element
-        const profilePic = document.getElementById('profilePicLarge');
-
-        // Change the profile picture to 'byee.gif'
-        profilePic.src = 'byee.gif';
-
-        // Preload dp2empty.png to avoid flickering
-        const dp2emptyImage = new Image();
-        dp2emptyImage.src = 'dp2empty.png';
-
-        // Once dp2empty.png is loaded, change the profile picture
-        dp2emptyImage.onload = () => {
-            setTimeout(() => {
-                profilePic.src = 'dp2empty.png'; // Change image to 'dp2empty.png' after 3 seconds
-            }, 3000);
-        };
-
-    }, 2000); // Initial delay before bot says "appa vantaanga bye"
-}
- }
-    if (!botReply) {
-            console.log("No reply from bot, exiting."); // Log when no reply
-            return; // Exit early if no bot reply is set
-        }
-
-        console.log("Bot reply:", botReply); // Log the bot reply
-const typingDiv = document.createElement('div');
-typingDiv.classList.add('flex', 'items-start', 'space-x-2');
-typingDiv.innerHTML = `
-    <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); ">
-    <div class="message max-w-xs">
+        document.getElementById('messageInput').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+     const message = e.target.value;
+     const chatContainer = document.getElementById('chatContainer');
+     const profilePicSrc = document.getElementById('profilePic').src;
+     const userMessageDiv = document.createElement('div');
+     userMessageDiv.classList.add('flex', 'justify-end');
+     userMessageDiv.innerHTML = `<div class="message user max-w-xs"><p>${message}</p></div>`;
+     chatContainer.appendChild(userMessageDiv);
+     chatContainer.scrollTop = chatContainer.scrollHeight;
+     if (message.toLowerCase() === 'hi') {
+      const typingDiv = document.createElement('div');
+      typingDiv.classList.add('flex', 'items-start', 'space-x-2');
+      typingDiv.innerHTML = `
+       <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="${profilePicSrc}" width="40"/>
+       <div class="message max-w-xs">
         <p>Typing</p>
-        <div class="typing-indicator"  style="margin-top:5px;">
-            <span></span>
-            <span></span>
-            <span></span>
+        <div class="typing-indicator">
+         <span></span>
+         <span></span>
+         <span></span>
         </div>
-    </div>`;
-chatContainer.appendChild(typingDiv);
-chatContainer.scrollTop = chatContainer.scrollHeight;
-      // Save the bot reply to localStorage
-      saveMessageToHistory(botReply, 'bot');
+       </div>`;
+      chatContainer.appendChild(typingDiv);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
 
-// Handle the bot reply after a delay
-setTimeout(() => {
-    chatContainer.removeChild(typingDiv); // Remove typing indicator
-    const botMessageDiv = document.createElement('div');
-    botMessageDiv.classList.add('flex', 'items-start', 'space-x-2');
-    botMessageDiv.innerHTML = `
-        <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="dp2.jpeg" width="40" style="filter: drop-shadow(0 0 5px rgba(255, 148, 193, 0.945)); ">
-        <div class="message max-w-xs" style="font-family: 'Pacifico', cursive;">
-            <p>${botReply}</p>
-        </div>
-    `;
-    chatContainer.appendChild(botMessageDiv);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-}, 1500); // Bot reply delay
-}
-});
-
-// Initialize chat history loading and set up periodic clearing of history
-document.addEventListener("DOMContentLoaded", function () {
-loadChatHistory();  // Load chat history once when the page is loaded
-clearChatHistoryPeriodically();  // Start periodic clearing of the chat history
-isPageLoad = false; // Set the flag to false after page load
-});
-
-// Clear chat history on profile image click
-document.getElementById('profilePicLarge').addEventListener('click', function () {
-// Clear the chat history in localStorage
-localStorage.removeItem('chatHistory');
-
-// Clear the chat container
-const chatContainer = document.getElementById('chatContainer');
-chatContainer.innerHTML = ''; // Clear the displayed messages
-});
-// Function to validate if the message is a valid arithmetic expression
-function isValidArithmeticExpression(message) {
-    const validExpressionRegex = /^[\d+\-*/().\s]+$/; // Only allow numbers, operators, and parentheses
-    return validExpressionRegex.test(message);
-}
-
-function evaluateExpression(expression) {
-    try {
-        const result = eval(expression); // Evaluating the arithmetic expression
-        return `Ans vanthu: ${result}`;
-    } catch (e) {
-        return "Theriyala🙄";
+      setTimeout(() => {
+       chatContainer.removeChild(typingDiv);
+       const addMessage = document.createElement('div');
+       addMessage.classList.add('flex', 'items-start', 'space-x-2');
+       addMessage.innerHTML = `
+        <img alt="Profile picture" class="rounded-full w-10 h-10" height="40" src="${profilePicSrc}" width="40"/>
+        <div class="message max-w-xs">
+         <p>hello</p>
+        </div>`;
+       chatContainer.appendChild(addMessage);
+       chatContainer.scrollTop = chatContainer.scrollHeight;
+      }, 3000);
+     }
+     e.target.value = '';
     }
-}document.getElementById('messageInput').addEventListener('input', function (e) {
-    const maxLength = 37;
-    if (e.target.value.length > maxLength) {
-        showCustomPopup(`Ivalo perusalaam type pannatha🥱`);
-        e.target.value = e.target.value.substring(0, maxLength); // Trim the input to max length
-    }
-});
-</script>
-
+   });
+   document.getElementById('footerHeart').addEventListener('click', function () {
+        this.classList.toggle('heart-red');
+        this.classList.toggle('heart-animation');
+    });
+document.getElementById('footerCamera').addEventListener('click', function () {
+            const whiteFlash = document.getElementById('whiteFlash');
+            whiteFlash.style.display = 'block'; // Show the flash overlay
+            setTimeout(() => {
+                whiteFlash.classList.add('active'); 
+            }, 10); 
+            
+            setTimeout(() => {
+                whiteFlash.classList.remove('active');
+                whiteFlash.style.display = 'none';
+            }, 300); 
+        });
+        document.getElementById('footerCamera').addEventListener('click', function () {
+            const whiteFlash = document.getElementById('whiteFlash');
+            const captureSound = document.getElementById('captureSound');
+            captureSound.play().catch(error => {
+                console.error('Audio playback failed:', error);
+            });
+            whiteFlash.style.display = 'block'; 
+            setTimeout(() => {
+                whiteFlash.classList.add('active'); 
+            }, 10);
+            setTimeout(() => {
+                whiteFlash.classList.remove('active'); 
+                whiteFlash.style.display = 'none';
+            }, 300); 
+        });
+    </script>
 </body>
 </html>
