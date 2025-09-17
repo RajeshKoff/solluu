@@ -1,10 +1,17 @@
 {
+  "id": "com.rajeshkoff.solluu",
   "name": "Solluu",
   "short_name": "Solluu",
+  "description": "Solluu - Fun chats, games, calls, and interactions all in one place.",
   "start_url": "/solluu/index.html",
+  "scope": "/solluu/",
   "display": "standalone",
+  "display_override": ["standalone", "fullscreen", "minimal-ui"],
   "background_color": "#ffffff",
   "theme_color": "#000000",
+  "orientation": "portrait",
+  "lang": "en",
+  "dir": "ltr",
   "icons": [
     {
       "src": "icon.png",
@@ -17,14 +24,28 @@
       "type": "image/png"
     }
   ],
+  "categories": ["games", "communication", "entertainment"],
   "shortcuts": [
     { "name": "Home", "url": "/solluu/home.html" },
-    { "name": "Game", "url": "/solluu/game.html" },
+    { "name": "Game 1", "url": "/solluu/gam1.html" },
+    { "name": "Game 2", "url": "/solluu/game2.html" },
     { "name": "Game 3", "url": "/solluu/game3.html" },
     { "name": "Game 4", "url": "/solluu/game4.html" },
     { "name": "Game 5", "url": "/solluu/game5.html" },
     { "name": "Call", "url": "/solluu/call.html" },
     { "name": "Video Call", "url": "/solluu/vc.html" },
     { "name": "TD", "url": "/solluu/td.html" }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot1.png",
+      "sizes": "321x697",
+      "type": "image/png"
+    },
+    {
+      "src": "screenshot2.png",
+      "sizes": "322x697",
+      "type": "image/png"
+    }
   ]
 }
