@@ -1,7 +1,7 @@
 {
   "name": "Solluu",
   "short_name": "Solluu",
-  "start_url": "/solluu/",
+  "start_url": "/solluu/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
@@ -16,5 +16,15 @@
       "sizes": "512x512",
       "type": "image/png"
     }
+  ],
+  "shortcuts": [
+    { "name": "Home", "url": "/solluu/home.html" },
+    { "name": "Game", "url": "/solluu/game.html" },
+    { "name": "Game 3", "url": "/solluu/game3.html" },
+    { "name": "Game 4", "url": "/solluu/game4.html" },
+    { "name": "Game 5", "url": "/solluu/game5.html" },
+    { "name": "Call", "url": "/solluu/call.html" },
+    { "name": "Video Call", "url": "/solluu/vc.html" },
+    { "name": "TD", "url": "/solluu/td.html" }
   ]
 }
