@@ -1,18 +1,21 @@
-const CACHE_NAME = "solluu-cache-v1";
+const CACHE_NAME = "solluu-cache-v2";
 
-// Pre-cache only the core files
+// Pre-cache only core pages and icons
 const CORE_ASSETS = [
   "/solluu/",
   "/solluu/index.html",
   "/solluu/home.html",
-  "/solluu/gam1.html",
-  "/solluu/game2.html",
+  "/solluu/game.html",
   "/solluu/game3.html",
   "/solluu/game4.html",
+  "/solluu/game5.html",
   "/solluu/call.html",
+  "/solluu/call1.html",
   "/solluu/vc.html",
-  "/solluu/icon-192.png", // app icon
-  "/solluu/icon-512.png"  // app icon
+  "/solluu/td.html",
+  "/solluu/icon.png",      // your icon
+  "/solluu/photo.png",     // fallback image
+  "/solluu/online.png"     // optional
 ];
 
 self.addEventListener("install", event => {
@@ -23,31 +26,35 @@ self.addEventListener("install", event => {
   );
 });
 
-// Fetch handler: serve from cache, then network, then cache new stuff
+// Serve from cache → if not found, fetch & cache dynamically
 self.addEventListener("fetch", event => {
+  if (event.request.method !== "GET") return;
+
   event.respondWith(
     caches.match(event.request).then(cachedResponse => {
       if (cachedResponse) {
-        return cachedResponse; // return cached version
+        return cachedResponse;
       }
 
-      // Fetch from network and cache it for later
       return fetch(event.request).then(networkResponse => {
         return caches.open(CACHE_NAME).then(cache => {
-          // Cache only if request is GET (not POST)
-          if (event.request.method === "GET") {
-            cache.put(event.request, networkResponse.clone());
-          }
+          cache.put(event.request, networkResponse.clone());
           return networkResponse;
         });
       }).catch(() => {
-        // Optional: return a fallback (like offline.html) if network fails
+        // Optional: fallback for offline
+        if (event.request.destination === "document") {
+          return caches.match("/solluu/index.html");
+        }
+        if (event.request.destination === "image") {
+          return caches.match("/solluu/photo.png"); // fallback image
+        }
       });
     })
   );
 });
 
-// Clear old caches when you update service worker
+// Clear old cache versions when updating SW
 self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys().then(keys =>
